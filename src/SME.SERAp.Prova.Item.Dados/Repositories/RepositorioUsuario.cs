@@ -1,5 +1,4 @@
-﻿using SME.SERAp.Prova.Item.Dados.Interfaces;
-using SME.SERAp.Prova.Item.Dados.Repositories;
+﻿using SME.SERAp.Prova.Item.Dados.Repositories;
 using SME.SERAp.Prova.Item.Dominio;
 using SME.SERAp.Prova.Item.Infra.Dtos.Autenticacao;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;

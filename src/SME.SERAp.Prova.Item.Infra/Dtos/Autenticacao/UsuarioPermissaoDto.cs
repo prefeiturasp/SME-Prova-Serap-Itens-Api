@@ -2,7 +2,7 @@
 {
     public class UsuarioPermissaoDto
     {
-        public UsuarioPermissaoDto () { }
+        public UsuarioPermissaoDto() { }
         public UsuarioPermissaoDto(string login, string nome, string grupo, bool permiteConsultar, bool permiteInserir, bool permiteAlterar, bool permiteExcluir)
         {
             Login = login;

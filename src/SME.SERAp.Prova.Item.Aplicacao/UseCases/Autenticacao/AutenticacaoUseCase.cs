@@ -18,7 +18,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
         {
             var grupoIdGuid = Guid.NewGuid();
             _ = Guid.TryParse(autenticacaoDto.Perfil, out grupoIdGuid);
-            
+
             var usuarioPermissao = await mediator.Send(new ObterPermissaoUsuarioPorLoginGrupoIdQuery(autenticacaoDto.Login, grupoIdGuid));
 
             if (usuarioPermissao == null)

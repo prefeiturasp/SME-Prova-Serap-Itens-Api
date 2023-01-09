@@ -1,4 +1,4 @@
-﻿namespace SME.SERAp.Prova.Item.Dominio
+﻿namespace SME.SERAp.Prova.Item.Dominio.Enums
 {
     public enum StatusGeral
     {
