@@ -32,12 +32,18 @@ namespace SME.SERAp.Prova.Item.IoC
 
         private static void RegistrarRepositorios(IServiceCollection services)
         {
+            services.AddScoped<IRepositorioMatriz, RepositorioMatriz>();
+            services.AddScoped<IRepositorioDisciplina, RepositorioDisciplina>();
+            services.AddScoped<IRepositorioAreaConhecimento, RepositorioAreaConhecimento>();
             services.AddScoped<IRepositorioCache, RepositorioCache>();
             services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
         {
+            services.AddScoped<IObterAreasConhecimentoUseCase, ObterAreasConhecimentoUseCase>();
+            services.AddScoped<IObterDisciplinasPorAreaConhecimento, ObterDisciplinasPorAreaConhecimentoUseCase>();
+            services.AddScoped<IObterMatrizesPorDisciplinaUseCase, ObterMatrizesPorDisciplinaUseCase>();
             services.AddScoped<IAutenticacaoUseCase, AutenticacaoUseCase>();
             services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
             services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
@@ -47,6 +53,9 @@ namespace SME.SERAp.Prova.Item.IoC
         {
             FluentMapper.Initialize(config =>
             {
+                config.AddMap(new AreaConhecimentoMap());
+                config.AddMap(new DisciplinaMap());
+                config.AddMap(new MatrizMap());
                 config.AddMap(new UsuarioMap());
                 config.ForDommel();
             });
