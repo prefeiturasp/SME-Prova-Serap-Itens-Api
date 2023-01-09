@@ -2,10 +2,15 @@
 {
     public static class CacheChave
     {
+        public static string ObterChave(string chave, params object[] parametros)
+        {
+            return string.Format(chave, parametros);
+        }
+
         /// <summary>
         /// Autenticação
         /// 0 - Código
         /// </summary>
-        public const string Autenticacao = "acomp-auth-{0}";
+        public const string Autenticacao = "serap-itens-auth-{0}";
     }
 }

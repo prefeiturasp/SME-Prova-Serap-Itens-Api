@@ -17,8 +17,4 @@
     <ProjectReference Include="..\SME.SERAp.Prova.Item.Dominio\SME.SERAp.Prova.Item.Dominio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\" />
-  </ItemGroup>
-
 </Project>

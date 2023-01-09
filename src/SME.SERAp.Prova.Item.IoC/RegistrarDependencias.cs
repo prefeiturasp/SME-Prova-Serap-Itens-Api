@@ -2,12 +2,11 @@
 using Dapper.FluentMap.Dommel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
-using SME.SERAp.Prova.Item.Aplicacao.UseCases;
+using SME.SERAp.Prova.Item.Dados;
 using SME.SERAp.Prova.Item.Dados.Cache;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
-using SME.SERAp.Prova.Item.Dados.Mappings;
-using SME.SERAp.Prova.Item.Dados.Repositories;
 using SME.SERAp.Prova.Item.Infra.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Services;
 using SME.SERAp.Prova.Item.IoC.Extensions;
@@ -33,20 +32,22 @@ namespace SME.SERAp.Prova.Item.IoC
 
         private static void RegistrarRepositorios(IServiceCollection services)
         {
-            services.AddScoped<IRepositorioTeste, RepositorioTeste>();
+            services.AddScoped<IRepositorioCache, RepositorioCache>();
+            services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
         {
-            services.AddScoped<IInserirTesteUseCase, InserirTesteUseCase>();
-            services.AddScoped<IObterTodosTesteUseCase, ObterTodosTesteUseCase>();
+            services.AddScoped<IAutenticacaoUseCase, AutenticacaoUseCase>();
+            services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
+            services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
         }
 
         private static void RegistraMapeamentos()
         {
             FluentMapper.Initialize(config =>
             {
-                config.AddMap(new TesteMap());
+                config.AddMap(new UsuarioMap());
                 config.ForDommel();
             });
         }

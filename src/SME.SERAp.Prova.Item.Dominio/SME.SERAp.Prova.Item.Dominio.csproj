@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Constraints\" />
-    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>
