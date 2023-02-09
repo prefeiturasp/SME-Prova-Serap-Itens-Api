@@ -51,7 +51,6 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterMatrizesPorDisciplinaUseCase, ObterMatrizesPorDisciplinaUseCase>();
             services.AddScoped<IRepositorioItem, RepositorioItem>();
             services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
-            services.AddScoped<IInserirTesteUseCase, InserirTesteUseCase>();
             services.AddScoped<IAutenticacaoUseCase, AutenticacaoUseCase>();
             services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
             services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
