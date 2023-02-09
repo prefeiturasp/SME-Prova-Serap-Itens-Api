@@ -16,7 +16,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
         }
 
-        public async Task<long> Executar(ItemDto itemDto)
+        public async Task<long> Executar(ItemRascunhoDto itemDto)
         {
             try
             {
@@ -31,8 +31,12 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                     throw new Exception($"A disciplina com o id legado: {itemDto.DisciplinaLegadoId} não foi encontrada.");
                
                 long ultimoSequencial = 0;
-
-                if (itemDto.CodigoItem == 0)
+                //----------------------------------------------------------------------------------------------------------
+                // Tratar sequencial em uma query separadaa 
+           //----------------------------------------------------------------------------------------------------------    
+               
+                
+                if (itemDto.CodigoItem == 0 || itemDto.Id == 0)
                     itemDto.CodigoItem = await TrataSequencialItem(areaConhecimento, disciplina, ultimoSequencial);
 
                 var item = new Dominio.Entities.Item(
@@ -43,9 +47,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             {
                 throw ex;
             }
-            // Verificar se item já existe 
-
-
         }
 
         private async Task<long> TrataSequencialItem(AreaConhecimento areaConhecimento, Disciplina disciplina, long ultimoSequencial)

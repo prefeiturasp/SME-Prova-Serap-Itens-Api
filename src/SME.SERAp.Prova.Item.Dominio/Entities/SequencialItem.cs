@@ -12,7 +12,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public SequencialItem() { }
         public SequencialItem(long? id,long  codigoAreaConhecimento, long codigoDisciplina, long sequencial, DateTime? criadoEm = null)
         {
-            if (id <= 0)
+            if (id <= 0 || id == null)
                 CriadoEm = AlteradoEm = DateTime.Now;
             else
             {

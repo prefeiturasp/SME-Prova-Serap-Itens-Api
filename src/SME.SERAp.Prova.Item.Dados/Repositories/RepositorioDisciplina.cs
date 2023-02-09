@@ -20,7 +20,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 var query = @"select id, 
                                      legado_id as LegadoId, 
                                      descricao,
-                                     nivel_ensino,
+                                     nivel_ensino as NivelEnsino,
                                      criado_em as CriadoEm,
                                      alterado_em as AlteradoEm,
                                      status

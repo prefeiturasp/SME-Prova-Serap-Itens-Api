@@ -15,7 +15,17 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
 
-        public async Task<IActionResult> SalvarRascunho(ItemDto itemDto, [FromServices] ISalvarRascunhoItemUseCase inserirRascunhoUseCase)
+        public async Task<IActionResult> SalvarRascunho(ItemRascunhoDto itemDto, [FromServices] ISalvarRascunhoItemUseCase inserirRascunhoUseCase)
+        {
+            return Ok(await inserirRascunhoUseCase.Executar(itemDto));
+        }
+
+
+        [HttpPost("salvar")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+
+        public async Task<IActionResult> Salvar(ItemRascunhoDto itemDto, [FromServices] ISalvarRascunhoItemUseCase inserirRascunhoUseCase)
         {
             return Ok(await inserirRascunhoUseCase.Executar(itemDto));
         }
