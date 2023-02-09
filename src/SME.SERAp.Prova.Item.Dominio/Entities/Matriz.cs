@@ -11,7 +11,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
 
         }
 
-        public Matriz(long? id, long legadoId, long disciplinaId, string descricao, StatusGeral status)
+        public Matriz(long? id, long legadoId, long disciplinaId, string descricao, string modelo, StatusGeral status)
         {
             if (id == null)
             {
@@ -27,12 +27,14 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
 
             LegadoId = legadoId;
             Descricao = descricao;
+            Modelo = modelo;
             DisciplinaId = disciplinaId;
             Status = (int)status;
         }
 
         public long LegadoId { get; set; }
         public string Descricao { get; set; }
+        public string Modelo { get; set; }
         public DateTime CriadoEm { get; set; }
         public DateTime AlteradoEm { get; set; }
         public long DisciplinaId { get; set; }
