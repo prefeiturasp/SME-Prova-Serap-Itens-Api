@@ -14,6 +14,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
         public RepositorioDisciplina(ConnectionStringOptions connectionStrings) : base(connectionStrings)
         {
         }
+
         public async Task<IEnumerable<Disciplina>> ObterPorAreaconhecimentoId(long areaconhecimentoId)
         {
             using var conn = ObterConexao();
@@ -40,5 +41,51 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
+        public async Task<long> ObterCodigoDisciplinaPorId(long id)
+        {
+            using var conn = ObterConexao();
+            try
+            {
+                var query = @"select codigo 
+                                from disciplina d  
+                               where id = @id ";
+
+                return await conn.QueryFirstOrDefaultAsync<long>(query, new { id });
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+
+
+        }
+
+        public async Task<Disciplina> ObterDisciplinaPorLegadoId(long legadoId)
+        {
+
+            using var conn = ObterConexao();
+            try
+            {
+                var query = @"select * 
+                                from disciplina d  
+                               where legado_id = @legadoId ";
+
+                return await conn.QueryFirstOrDefaultAsync<Disciplina>(query, new { legadoId });
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
     }
 }

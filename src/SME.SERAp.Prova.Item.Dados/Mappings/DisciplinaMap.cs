@@ -19,6 +19,7 @@ namespace SME.SERAp.Prova.Item.Dados.Mappings
             Map(c => c.AreaConhecimentoId).ToColumn("area_conhecimento_id");
             Map(c => c.Descricao).ToColumn("descricao");
             Map(c => c.CriadoEm).ToColumn("criado_em");
+            Map(c => c.Codigo).ToColumn("codigo");
             Map(c => c.AlteradoEm).ToColumn("alterado_em");
             Map(c => c.Status).ToColumn("status");
         }
