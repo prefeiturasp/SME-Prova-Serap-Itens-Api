@@ -33,6 +33,8 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public string Descricao { get; set; }
         public DateTime CriadoEm { get; set; }
         public DateTime AlteradoEm { get; set; }
+
+        public long Codigo { get; set; }
         public int Status { get; set; }
 
     }

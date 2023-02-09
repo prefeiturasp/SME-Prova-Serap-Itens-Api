@@ -40,6 +40,8 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioAreaConhecimento, RepositorioAreaConhecimento>();
             services.AddScoped<IRepositorioCache, RepositorioCache>();
             services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            services.AddScoped<IRepositorioItem, RepositorioItem>();
+            services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
@@ -47,9 +49,13 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterAreasConhecimentoUseCase, ObterAreasConhecimentoUseCase>();
             services.AddScoped<IObterDisciplinasPorAreaConhecimento, ObterDisciplinasPorAreaConhecimentoUseCase>();
             services.AddScoped<IObterMatrizesPorDisciplinaUseCase, ObterMatrizesPorDisciplinaUseCase>();
+            services.AddScoped<IRepositorioItem, RepositorioItem>();
+            services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
+            services.AddScoped<IInserirTesteUseCase, InserirTesteUseCase>();
             services.AddScoped<IAutenticacaoUseCase, AutenticacaoUseCase>();
             services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
             services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
+            services.AddScoped<ISalvarRascunhoItemUseCase, SalvarRascunhoItemUseCase>();
         }
 
         private static void RegistraMapeamentos()
@@ -60,6 +66,8 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new DisciplinaMap());
                 config.AddMap(new MatrizMap());
                 config.AddMap(new UsuarioMap());
+                config.AddMap(new ItemMap());
+                config.AddMap(new SequencialMap());
                 config.ForDommel();
             });
         }

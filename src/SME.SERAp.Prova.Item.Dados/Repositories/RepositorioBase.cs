@@ -95,7 +95,6 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
 
         }
-
         public virtual async Task<long> IncluirAsync(T entidade)
         {
             var conexao = ObterConexao();
