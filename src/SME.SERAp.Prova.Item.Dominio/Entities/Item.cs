@@ -9,7 +9,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public Item() { }   
         public Item(long? id, long codigoItem, long areaconhecimentoId, long? matrizId, long disciplinaId) 
         {
-            if (id > 0 && id == null)
+            if (id > 0 && id != null)
                 Id = (long)id;
 
             CodigoItem = codigoItem;

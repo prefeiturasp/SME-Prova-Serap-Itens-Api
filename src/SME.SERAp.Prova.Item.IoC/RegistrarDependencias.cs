@@ -55,6 +55,8 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
             services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
             services.AddScoped<ISalvarRascunhoItemUseCase, SalvarRascunhoItemUseCase>();
+            services.AddScoped<ISalvarItemUseCase, SalvarItemUseCase>();
+            
         }
 
         private static void RegistraMapeamentos()

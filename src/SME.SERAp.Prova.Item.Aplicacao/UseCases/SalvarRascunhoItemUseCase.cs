@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Elastic.Apm.Model;
+using MediatR;
+using Nest;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
@@ -29,15 +31,12 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 
                 if (disciplina == null)
                     throw new Exception($"A disciplina com o id legado: {itemDto.DisciplinaLegadoId} não foi encontrada.");
-               
-                long ultimoSequencial = 0;
-                //----------------------------------------------------------------------------------------------------------
-                // Tratar sequencial em uma query separadaa 
-           //----------------------------------------------------------------------------------------------------------    
-               
-                
-                if (itemDto.CodigoItem == 0 || itemDto.Id == 0)
-                    itemDto.CodigoItem = await TrataSequencialItem(areaConhecimento, disciplina, ultimoSequencial);
+         
+
+                if (itemDto.Id == null || itemDto.Id <= 0)
+                    itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));  
+                //  if (itemDto.CodigoItem == 0 || itemDto.Id == 0)
+                //       itemDto.CodigoItem = await TrataSequencialItem(areaConhecimento, disciplina, ultimoSequencial);
 
                 var item = new Dominio.Entities.Item(
                     itemDto?.Id, itemDto.CodigoItem, itemDto.AreaConhecimentoLegadoId, itemDto.MatrizLegadoId, itemDto.DisciplinaLegadoId);
