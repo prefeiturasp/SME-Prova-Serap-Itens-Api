@@ -20,8 +20,8 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             {
                 var query = @"select id, 
                                      legado_id as LegadoId,
-                                    
                                      descricao,
+                                     modelo,
                                      criado_em as CriadoEm,
                                      alterado_em as AlteradoEm,
                                      status,
@@ -29,10 +29,6 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                 from matriz where disciplina_id = @disciplinaId";
 
                 return await conn.QueryAsync<Matriz>(query, new { disciplinaId });
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {

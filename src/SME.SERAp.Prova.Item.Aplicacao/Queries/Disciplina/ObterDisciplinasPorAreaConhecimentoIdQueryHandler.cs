@@ -20,7 +20,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
 
         public async Task<IEnumerable<Disciplina>> Handle(ObterDisciplinasPorAreaConhecimentoIdQuery request, CancellationToken cancellationToken)
         {
-            return await repositorioDisciplina.ObterPorAreaconhecimentoId(request.AreaConhecimentoId); ;
+            return await repositorioDisciplina.ObterPorAreaconhecimentoId(request.AreaConhecimentoId);
         }
     }
 }

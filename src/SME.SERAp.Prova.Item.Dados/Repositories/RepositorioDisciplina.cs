@@ -19,16 +19,13 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 var query = @"select id, 
                                      legado_id as LegadoId, 
                                      descricao,
+                                     nivel_ensino,
                                      criado_em as CriadoEm,
                                      alterado_em as AlteradoEm,
                                      status
                                 from disciplina where area_conhecimento_id = @areaconhecimentoId";
 
                 return await conn.QueryAsync<Disciplina>(query, new { areaconhecimentoId });
-            }
-            catch (System.Exception)
-            {
-                throw;
             }
             finally
             {
