@@ -2,8 +2,10 @@
 using Dapper.FluentMap.Dommel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Aplicacao.UseCases;
+using SME.SERAp.Prova.Item.Dados;
 using SME.SERAp.Prova.Item.Dados.Cache;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dados.Mappings;
@@ -33,20 +35,40 @@ namespace SME.SERAp.Prova.Item.IoC
 
         private static void RegistrarRepositorios(IServiceCollection services)
         {
-            services.AddScoped<IRepositorioTeste, RepositorioTeste>();
+            services.AddScoped<IRepositorioMatriz, RepositorioMatriz>();
+            services.AddScoped<IRepositorioDisciplina, RepositorioDisciplina>();
+            services.AddScoped<IRepositorioAreaConhecimento, RepositorioAreaConhecimento>();
+            services.AddScoped<IRepositorioCache, RepositorioCache>();
+            services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            services.AddScoped<IRepositorioItem, RepositorioItem>();
+            services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
         {
-            services.AddScoped<IInserirTesteUseCase, InserirTesteUseCase>();
-            services.AddScoped<IObterTodosTesteUseCase, ObterTodosTesteUseCase>();
+            services.AddScoped<IObterAreasConhecimentoUseCase, ObterAreasConhecimentoUseCase>();
+            services.AddScoped<IObterDisciplinasPorAreaConhecimento, ObterDisciplinasPorAreaConhecimentoUseCase>();
+            services.AddScoped<IObterMatrizesPorDisciplinaUseCase, ObterMatrizesPorDisciplinaUseCase>();
+            services.AddScoped<IRepositorioItem, RepositorioItem>();
+            services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
+            services.AddScoped<IAutenticacaoUseCase, AutenticacaoUseCase>();
+            services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
+            services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
+            services.AddScoped<ISalvarRascunhoItemUseCase, SalvarRascunhoItemUseCase>();
+            services.AddScoped<ISalvarItemUseCase, SalvarItemUseCase>();
+            
         }
 
         private static void RegistraMapeamentos()
         {
             FluentMapper.Initialize(config =>
             {
-                config.AddMap(new TesteMap());
+                config.AddMap(new AreaConhecimentoMap());
+                config.AddMap(new DisciplinaMap());
+                config.AddMap(new MatrizMap());
+                config.AddMap(new UsuarioMap());
+                config.AddMap(new ItemMap());
+                config.AddMap(new SequencialMap());
                 config.ForDommel();
             });
         }

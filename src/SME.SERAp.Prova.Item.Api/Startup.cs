@@ -2,13 +2,11 @@ using Elastic.Apm.AspNetCore;
 using Elastic.Apm.DiagnosticSource;
 using Elastic.Apm.SqlClient;
 using Elastic.Apm.StackExchange.Redis;
-using Elasticsearch.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Nest;
 using RabbitMQ.Client;
 using SME.SERAp.Prova.Item.Api.Configurations;
 using SME.SERAp.Prova.Item.Dados;
@@ -17,7 +15,6 @@ using SME.SERAp.Prova.Item.Infra.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Services;
 using SME.SERAp.Prova.Item.IoC;
 using StackExchange.Redis;
-using System;
 
 namespace SME.SERAp.Prova.Item.Api
 {
@@ -80,6 +77,18 @@ namespace SME.SERAp.Prova.Item.Api
 
             var conexaoRabbitLog = factoryLog.CreateConnection();
             IModel channelLog = conexaoRabbitLog.CreateModel();
+
+            var redisOptions = new RedisOptions();
+            Configuration.GetSection(RedisOptions.Secao).Bind(redisOptions, c => c.BindNonPublicProperties = true);
+
+            var redisConfigurationOptions = new ConfigurationOptions()
+            {
+                Proxy = redisOptions.Proxy,
+                SyncTimeout = redisOptions.SyncTimeout,
+                EndPoints = { redisOptions.Endpoint }
+            };
+            var muxer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+            services.AddSingleton<IConnectionMultiplexer>(muxer);
 
             var telemetriaOptions = new TelemetriaOptions();
             Configuration.GetSection(TelemetriaOptions.Secao).Bind(telemetriaOptions, c => c.BindNonPublicProperties = true);
