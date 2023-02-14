@@ -12,7 +12,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
     public class DisciplinaController : ControllerBase
     {
         [HttpGet("AreaConhecimento/{idAreaConhecimento}")]
-        [ProducesResponseType(typeof(IEnumerable<Disciplina>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
         public async Task<IActionResult> ObterMatrizesPorAreaConhecimento(long idAreaConhecimento, [FromServices] IObterDisciplinasPorAreaConhecimento obterDisciplinas)
         {

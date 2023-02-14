@@ -14,7 +14,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
     {
 
         [HttpGet()]
-        [ProducesResponseType(typeof(IEnumerable<Teste>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
         public async Task<IActionResult> ObterAreasConhecimento([FromServices] IObterAreasConhecimentoUseCase obterAreasConhecimento)
         {
