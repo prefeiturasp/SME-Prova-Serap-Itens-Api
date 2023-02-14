@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
-using SME.SERAp.Prova.Item.Aplicacao.UseCases;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System.Threading.Tasks;
 
