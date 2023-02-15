@@ -18,12 +18,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         public async Task<IEnumerable<SelectDto>> Executar(long areaConhecimentoId)
         {
             var listaDisciplinas =  await mediator.Send(new ObterDisciplinasPorAreaConhecimentoIdQuery(areaConhecimentoId));
-
-
             if (listaDisciplinas != null)
-                return listaDisciplinas.Select(x => new SelectDto(x.Id, x.Descricao));
+                return listaDisciplinas.Select(x => new SelectDto(x.Id, !string.IsNullOrEmpty(x.NivelEnsino) ? $"{x.Descricao} - {x.NivelEnsino}" : x.Descricao));
             return null;
-
         }
 
     }
