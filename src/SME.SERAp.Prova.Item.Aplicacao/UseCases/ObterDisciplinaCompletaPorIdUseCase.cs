@@ -14,7 +14,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao
 
         public async Task<Disciplina> Executar(long disciplinaId)
         {
-            return await mediator.Send(new ObterDisciplinaPorIdQuery(disciplinaId));
+            if (disciplinaId > 0)
+                return await mediator.Send(new ObterDisciplinaPorIdQuery(disciplinaId));
+            return null;
         }
     }
 }
