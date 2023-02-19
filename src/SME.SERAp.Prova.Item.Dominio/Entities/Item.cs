@@ -1,8 +1,4 @@
-﻿
-using SME.SERAp.Prova.Item.Dominio.Enums;
-using System;
-
-namespace SME.SERAp.Prova.Item.Dominio.Entities
+﻿namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
     public class Item : EntidadeBase
     {

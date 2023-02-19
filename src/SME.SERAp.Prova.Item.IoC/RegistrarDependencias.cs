@@ -58,6 +58,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<ISalvarItemUseCase, SalvarItemUseCase>();
             services.AddScoped<IObterDisciplinaCompletaPorIdUseCase, ObterDisciplinaCompletaPorIdUseCase>();
             services.AddScoped<IObterMatrizPorIdUseCase, ObterMatrizPorIdUseCase>();
+            services.AddScoped<IObterItemPorIdUseCase, ObterItemPorIdUseCase>();
         }
 
         private static void RegistraMapeamentos()
