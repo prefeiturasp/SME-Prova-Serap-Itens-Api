@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
-using SME.SERAp.Prova.Item.Infra.Dtos.Competencia;
+using SME.SERAp.Prova.Item.Infra.Dtos;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
@@ -15,9 +16,15 @@ namespace SME.SERAp.Prova.Item.Aplicacao
             this.mediator = mediator;
         }
 
-        public async Task<IEnumerable<RetornoCompetenciaDto>> Executar(long matrizId)
+        public async Task<IEnumerable<SelectDto>> Executar(long matrizId)
         {
-            return await mediator.Send(new ObterCompetenciasPorMatrizIdQuery(matrizId));
+            var competencias = await mediator.Send(new ObterCompetenciasPorMatrizIdQuery(matrizId));
+
+            return competencias.Select(c => new SelectDto
+            {
+                Valor = c.Id,
+                Descricao = c.Descricao
+            });
         }
     }
 }
