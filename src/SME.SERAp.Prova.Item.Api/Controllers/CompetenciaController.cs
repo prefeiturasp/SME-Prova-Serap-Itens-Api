@@ -13,7 +13,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
     public class CompetenciaController : ControllerBase
     {
         [HttpGet("Matriz/{idMatriz}")]
-        [ProducesResponseType(typeof(IEnumerable<RetornoCompetenciaDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
         public async Task<IActionResult> ObterCompetenciasPorMatrizId([Required] long idMatriz, 
             [FromServices] IObterCompetenciasPorMatrizIdUseCase useCase)
