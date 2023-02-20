@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Api.Filters;
+using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
-using SME.SERAp.Prova.Item.Aplicacao.UseCases;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System.Threading.Tasks;
+using ItemConsulta = SME.SERAp.Prova.Item.Dominio.Entities.Item;
 
 namespace SME.SERAp.Prova.Item.Api.Controllers
 {
@@ -22,7 +22,6 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
             return Ok(await inserirRascunhoUseCase.Executar(itemDto));
         }
 
-
         [HttpPost("salvar")]
         [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
@@ -30,6 +29,14 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         public async Task<IActionResult> Salvar(ItemDto itemDto, [FromServices] ISalvarItemUseCase salvarItemUseCase)
         {
             return Ok(await salvarItemUseCase.Executar(itemDto));
+        }
+
+        [HttpGet("{itemId}")]
+        [ProducesResponseType(typeof(ItemConsulta), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterItemPorId(long itemId, [FromServices] IObterItemPorIdUseCase obterItemPorIdUseCase)
+        {
+            return Ok(await obterItemPorIdUseCase.Executar(itemId));
         }
     }
 }
