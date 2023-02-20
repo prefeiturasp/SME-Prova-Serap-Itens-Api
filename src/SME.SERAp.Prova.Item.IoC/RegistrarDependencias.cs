@@ -42,6 +42,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
             services.AddScoped<IRepositorioItem, RepositorioItem>();
             services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
+            services.AddScoped<IRepositorioCompetencia, RepositorioCompetencia>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
@@ -59,6 +60,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterDisciplinaCompletaPorIdUseCase, ObterDisciplinaCompletaPorIdUseCase>();
             services.AddScoped<IObterMatrizPorIdUseCase, ObterMatrizPorIdUseCase>();
             services.AddScoped<IObterItemPorIdUseCase, ObterItemPorIdUseCase>();
+            services.AddScoped<IObterCompetenciasPorMatrizIdUseCase, ObterCompetenciasPorMatrizIdUseCase>();
         }
 
         private static void RegistraMapeamentos()
@@ -71,6 +73,7 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new UsuarioMap());
                 config.AddMap(new ItemMap());
                 config.AddMap(new SequencialMap());
+                config.AddMap(new CompetenciaMap());
                 config.ForDommel();
             });
         }
