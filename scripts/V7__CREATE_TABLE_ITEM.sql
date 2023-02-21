@@ -16,5 +16,3 @@ CREATE table if not exists public.sequencial_item (
 	 alterado_em timestamp null,
 	CONSTRAINT sequencial_item_pk PRIMARY KEY (id)
 ); 
-
-

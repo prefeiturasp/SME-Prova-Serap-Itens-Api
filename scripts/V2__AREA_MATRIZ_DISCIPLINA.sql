@@ -22,8 +22,6 @@ create table if not exists public.disciplina
 
 );
 
- 
-
 create table if not exists public.matriz
 (
     id int8 NOT NULL GENERATED ALWAYS AS IDENTITY ,
@@ -33,6 +31,6 @@ create table if not exists public.matriz
     alterado_em timestamptz NULL,
     status int NOT NULL,
     disciplina_id int  NULL,
-  CONSTRAINT matriz_pk PRIMARY KEY (id),
-constraint  disciplina_fk FOREIGN KEY (disciplina_id)  REFERENCES  public.disciplina (id)
+    CONSTRAINT matriz_pk PRIMARY KEY (id),
+    constraint  disciplina_fk FOREIGN KEY (disciplina_id)  REFERENCES  public.disciplina (id)
 );
