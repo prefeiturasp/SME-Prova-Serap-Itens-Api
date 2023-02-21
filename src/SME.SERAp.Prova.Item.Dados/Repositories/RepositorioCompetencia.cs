@@ -24,7 +24,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                             c.descricao
                                         from competencia c
                                         where c.matriz_id = @matrizId
-                                        and status = @status";
+                                        and c.status = @status";
 
                 return await conn.QueryAsync<RetornoCompetenciaDto>(query,
                     new { matrizId, status = (int)StatusGeral.Ativo });
