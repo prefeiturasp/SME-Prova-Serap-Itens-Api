@@ -15,7 +15,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [HttpGet("AreaConhecimento/{idAreaConhecimento}")]
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
-        public async Task<IActionResult> ObterDisciplinasPorAreaConhecimento(long idAreaConhecimento, [FromServices] IObterDisciplinasPorAreaConhecimento obterDisciplinas)
+        public async Task<IActionResult> ObterDisciplinasPorAreaConhecimento(long idAreaConhecimento, [FromServices] IObterDisciplinasPorAreaConhecimentoUseCase obterDisciplinas)
         {
             return Ok(await obterDisciplinas.Executar(idAreaConhecimento));
         }

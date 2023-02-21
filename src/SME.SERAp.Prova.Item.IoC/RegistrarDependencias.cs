@@ -44,15 +44,14 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
             services.AddScoped<IRepositorioCompetencia, RepositorioCompetencia>();
             services.AddScoped<IRepositorioHabilidade, RepositorioHabilidade>();
+            services.AddScoped<IRepositorioTipoGrade, RepositorioTipoGrade>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
         {
             services.AddScoped<IObterAreasConhecimentoUseCase, ObterAreasConhecimentoUseCase>();
-            services.AddScoped<IObterDisciplinasPorAreaConhecimento, ObterDisciplinasPorAreaConhecimentoUseCase>();
+            services.AddScoped<IObterDisciplinasPorAreaConhecimentoUseCase, ObterDisciplinasPorAreaConhecimentoUseCase>();
             services.AddScoped<IObterMatrizesPorDisciplinaUseCase, ObterMatrizesPorDisciplinaUseCase>();
-            services.AddScoped<IRepositorioItem, RepositorioItem>();
-            services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
             services.AddScoped<IAutenticacaoUseCase, AutenticacaoUseCase>();
             services.AddScoped<IAutenticacaoValidarUseCase, AutenticacaoValidarUseCase>();
             services.AddScoped<IAutenticacaoRevalidarUseCase, AutenticacaoRevalidarUseCase>();
@@ -63,6 +62,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterItemPorIdUseCase, ObterItemPorIdUseCase>();
             services.AddScoped<IObterCompetenciasPorMatrizIdUseCase, ObterCompetenciasPorMatrizIdUseCase>();
             services.AddScoped<IObterHabilidadesPorCompetenciaIdUseCase, ObterHabilidadesPorCompetenciaIdUseCase>();
+            services.AddScoped<IObterTiposGradePorMatrizIdUseCase, ObterTiposGradePorMatrizIdUseCase>();
         }
 
         private static void RegistraMapeamentos()
@@ -77,6 +77,7 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new SequencialMap());
                 config.AddMap(new CompetenciaMap());
                 config.AddMap(new HabilidadeMap());
+                config.AddMap(new TipoGradeMap());
                 config.ForDommel();
             });
         }
