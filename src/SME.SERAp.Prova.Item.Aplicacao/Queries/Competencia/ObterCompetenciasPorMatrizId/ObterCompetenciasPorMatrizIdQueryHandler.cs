@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
 
         public ObterCompetenciasPorMatrizIdQueryHandler(IRepositorioCompetencia repositorioCompetencia)
         {
-            this.repositorioCompetencia = repositorioCompetencia;
+            this.repositorioCompetencia = repositorioCompetencia ?? throw new ArgumentNullException(nameof(repositorioCompetencia));
         }
 
         public async Task<IEnumerable<RetornoCompetenciaDto>> Handle(ObterCompetenciasPorMatrizIdQuery request, CancellationToken cancellationToken)
