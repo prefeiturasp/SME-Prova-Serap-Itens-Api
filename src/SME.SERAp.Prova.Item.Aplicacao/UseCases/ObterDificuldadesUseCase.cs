@@ -15,7 +15,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         public async Task<IEnumerable<SelectDto>> Executar()
         {
-            var dificuldades = await mediator.Send(new ObterTodosDificuldadeQuery());
+            var dificuldades = await mediator.Send(new ObterIdDescricaoOrdemQuery());
             if (dificuldades != null && dificuldades.Any())
             {
                 return dificuldades
