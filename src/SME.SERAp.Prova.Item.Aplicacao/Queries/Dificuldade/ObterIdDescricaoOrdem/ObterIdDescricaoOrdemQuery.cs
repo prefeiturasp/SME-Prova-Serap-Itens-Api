@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class ObterTodosDificuldadeQuery : IRequest<IEnumerable<Dificuldade>>
+    public class ObterIdDescricaoOrdemQuery : IRequest<IEnumerable<Dificuldade>>
     {
     }
 }

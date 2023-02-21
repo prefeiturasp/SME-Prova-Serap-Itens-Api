@@ -1,6 +1,7 @@
 ﻿using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Repositories
@@ -11,23 +12,16 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
         {
         }
 
-        public async Task<Dificuldade> ObterPorLegadoIdAsync(long legadoId)
+        public async Task<IEnumerable<Dificuldade>> ObterIdDescricaoOrdemAsync()
         {
-
             using var conn = ObterConexao();
             try
             {
-                var query = @"select id, 
-                                legado_id as LegadoId, 
-                                descricao,
-                                ordem,
-                                criado_em as CriadoEm,
-                                alterado_em as AlteradoEm,
-                                status
-                              from dificuldade 
-                              where legado_id = @legadoId";
+                var query = @"select id, descricao, ordem
+                              from dificuldade
+                              where status = 1";
 
-                return await conn.QueryFirstOrDefaultAsync<Dificuldade>(query, new { legadoId });
+                return await conn.QueryAsync<Dificuldade>(query);
             }
             finally
             {

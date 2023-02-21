@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class ObterTodosDificuldadeQueryHandler : IRequestHandler<ObterTodosDificuldadeQuery, IEnumerable<Dificuldade>>
+    public class ObterIdDescricaoOrdemQueryHandler : IRequestHandler<ObterIdDescricaoOrdemQuery, IEnumerable<Dificuldade>>
     {
         private readonly IRepositorioDificuldade repositorioDificuldade;
 
-        public ObterTodosDificuldadeQueryHandler(IRepositorioDificuldade repositorioDificuldade)
+        public ObterIdDescricaoOrdemQueryHandler(IRepositorioDificuldade repositorioDificuldade)
         {
             this.repositorioDificuldade = repositorioDificuldade ?? throw new ArgumentNullException(nameof(repositorioDificuldade));
         }
 
-        public async Task<IEnumerable<Dificuldade>> Handle(ObterTodosDificuldadeQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Dificuldade>> Handle(ObterIdDescricaoOrdemQuery request, CancellationToken cancellationToken)
         {
-            return await repositorioDificuldade.ObterTudoAsync();
+            return await repositorioDificuldade.ObterIdDescricaoOrdemAsync();
         }
     }
 }
