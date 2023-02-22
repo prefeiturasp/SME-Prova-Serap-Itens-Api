@@ -30,11 +30,10 @@ create table if not exists public.usuario_grupo (
 	criado_em timestamptz  null,
     alterado_em timestamptz NULL,
     status int NOT NULL,    
-	CONSTRAINT usuario_grupo_pk PRIMARY KEY (id)
+	CONSTRAINT usuario_grupo_pk PRIMARY KEY (id),
+	CONSTRAINT usuario_fk FOREIGN KEY (usuario_id) REFERENCES public.usuario(id),
+	CONSTRAINT grupo_fk FOREIGN KEY (grupo_id) REFERENCES public.grupo(id)
 );
-
-ALTER TABLE public.usuario_grupo add constraint usuario_fk FOREIGN KEY (usuario_id) REFERENCES public.usuario(id);
-ALTER TABLE public.usuario_grupo add constraint grupo_fk FOREIGN KEY (grupo_id) REFERENCES public.grupo(id);
 
 create index if not exists grupo_legado_id_idx ON public.grupo (legado_id);
 create index if not exists usuario_legado_id_idx ON public.usuario (legado_id);

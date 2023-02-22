@@ -42,6 +42,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
             services.AddScoped<IRepositorioItem, RepositorioItem>();
             services.AddScoped<IRepositoSequencialItem, RepositorioSequencialItem>();
+            services.AddScoped<IRepositorioDificuldade, RepositorioDificuldade>();
             services.AddScoped<IRepositorioCompetencia, RepositorioCompetencia>();
             services.AddScoped<IRepositorioHabilidade, RepositorioHabilidade>();
             services.AddScoped<IRepositorioTipoGrade, RepositorioTipoGrade>();
@@ -60,6 +61,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterDisciplinaCompletaPorIdUseCase, ObterDisciplinaCompletaPorIdUseCase>();
             services.AddScoped<IObterMatrizPorIdUseCase, ObterMatrizPorIdUseCase>();
             services.AddScoped<IObterItemPorIdUseCase, ObterItemPorIdUseCase>();
+            services.AddScoped<IObterDificuldadesUseCase, ObterDificuldadesUseCase>();
             services.AddScoped<IObterCompetenciasPorMatrizIdUseCase, ObterCompetenciasPorMatrizIdUseCase>();
             services.AddScoped<IObterHabilidadesPorCompetenciaIdUseCase, ObterHabilidadesPorCompetenciaIdUseCase>();
             services.AddScoped<IObterTiposGradePorMatrizIdUseCase, ObterTiposGradePorMatrizIdUseCase>();
@@ -75,6 +77,7 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new UsuarioMap());
                 config.AddMap(new ItemMap());
                 config.AddMap(new SequencialMap());
+                config.AddMap(new DificuldadeMap());
                 config.AddMap(new CompetenciaMap());
                 config.AddMap(new HabilidadeMap());
                 config.AddMap(new TipoGradeMap());
