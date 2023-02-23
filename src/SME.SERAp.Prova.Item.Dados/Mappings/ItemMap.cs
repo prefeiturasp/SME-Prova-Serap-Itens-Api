@@ -14,6 +14,13 @@ namespace SME.SERAp.Prova.Item.Dados.Mappings
             Map(c => c.AreaconhecimentoId).ToColumn("are_conhecimento_legado_id");
             Map(c => c.DisciplinaId).ToColumn("disciplina_legado_id");
             Map(c => c.MatrizId).ToColumn("matriz_legado_id");
+            Map(c => c.CompetenciaId).ToColumn("competencia_id");
+            Map(c => c.HabilidadeId).ToColumn("habilidade_id");
+            Map(c => c.AnoMatrizId).ToColumn("tipo_grade_id");
+            Map(c => c.DificuldadeSugeridaId).ToColumn("dificuldade_sugerida_id");
+            Map(c => c.Discriminacao).ToColumn("discriminacao");
+            Map(c => c.AcertoCasual).ToColumn("acerto_casual");
+            Map(c => c.Dificuldade).ToColumn("dificuldade");
         }
     }
 }
