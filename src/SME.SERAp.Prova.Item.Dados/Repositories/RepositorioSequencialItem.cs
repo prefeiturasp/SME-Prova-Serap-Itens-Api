@@ -1,4 +1,4 @@
-﻿using Dommel;
+﻿    using Dommel;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;
@@ -32,10 +32,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 return await conn.QueryFirstOrDefaultAsync<SequencialItem>(query, new { codigoAreaConhecimento, codigoDisciplina });
             }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
+            
             finally
             {
                 conn.Close();
