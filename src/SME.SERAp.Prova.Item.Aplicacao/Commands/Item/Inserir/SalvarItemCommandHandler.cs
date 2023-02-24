@@ -20,7 +20,14 @@ namespace SME.SERAp.Prova.Item.Aplicacao
 
         public async Task<long> Handle(SalvarItemCommand request, CancellationToken cancellationToken)
         {
-            return await repositorioItem.SalvarAsync(request.Item);
+            try
+            {
+                return await repositorioItem.SalvarAsync(request.Item);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
