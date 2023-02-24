@@ -20,7 +20,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             {
                 return dificuldades
                     .OrderBy(o => o.Ordem)
-                    .Select(s => new SelectDto(s.Id, s.Descricao));
+                    .Select(s => new SelectDto(s.Id, $"{s.Ordem} - {s.Descricao}"));
             }
 
             return default;
