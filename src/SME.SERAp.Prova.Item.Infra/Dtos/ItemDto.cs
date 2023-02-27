@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using SME.SERAp.Prova.Item.Infra.Attributes;
 
 namespace SME.SERAp.Prova.Item.Infra.Dtos
 {
@@ -31,9 +32,15 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public long? AnoMatrizId { get; set; }
         [Required(ErrorMessage = "É necessário informar o id da Dificuldade Sugerida")]
         [Range(1, long.MaxValue, ErrorMessage = "DificuldadeSugeridaId tem que ser maior que zero ")]
+       
         public long? DificuldadeSugeridaId { get; set; }
+
+        [PrecisaoDecimalAttribute(18, 10)]
         public decimal? Discriminacao { get; set; }
+
+        [PrecisaoDecimalAttribute(18, 10)]
         public decimal? AcertoCasual { get; set; }
+        [RegularExpression("^(?=(\\D*\\d\\D*){0,5}$)-?\\d*(\\.\\d{0,2})?$",ErrorMessage = "TeSTE")]
         public decimal? Dificuldade { get; set; }
     }
 }
