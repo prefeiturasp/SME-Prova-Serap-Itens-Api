@@ -16,10 +16,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         public async Task<long> Executar(ItemDto itemDto)
         {
-            try
-            {
-
-
                 var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemDto.AreaConhecimentoId));
 
                 if (areaConhecimento == null)
@@ -35,12 +31,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
                 Dominio.Entities.Item item = MapItemDto(itemDto, areaConhecimento, disciplina);
                 return await mediator.Send(new SalvarItemCommand(item));
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
 
         }
 
