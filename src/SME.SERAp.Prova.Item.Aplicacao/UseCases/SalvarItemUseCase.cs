@@ -33,7 +33,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
 
             var item = new Dominio.Entities.Item(
-                itemDto?.Id, itemDto.CodigoItem, areaConhecimento.LegadoId, matriz.LegadoId, disciplina.LegadoId);
+                itemDto?.Id, itemDto.CodigoItem, areaConhecimento.Id, itemDto.MatrizId, disciplina.Id);
             return await mediator.Send(new SalvarItemCommand(item));
         }
 
