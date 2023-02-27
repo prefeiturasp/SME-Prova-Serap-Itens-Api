@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using SME.SERAp.Prova.Item.Aplicacao.Queries;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using System;
@@ -23,7 +22,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
         public async Task<IEnumerable<AreaConhecimento>> Handle(ObterAreasConhecimentoQuery request, CancellationToken cancellationToken)
         {
             var areasConhecimento = await repositorioAreaConhecimento.ObterTudoAsync();
-            return areasConhecimento.OrderBy(c => c.Descricao);
+            return areasConhecimento.Where(a => a.Status == 1).OrderBy(c => c.Descricao);
         }
     }
 }

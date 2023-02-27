@@ -24,7 +24,9 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                      criado_em as CriadoEm,
                                      alterado_em as AlteradoEm,
                                      status
-                                from disciplina where area_conhecimento_id = @areaconhecimentoId";
+                                from disciplina 
+                               where area_conhecimento_id = @areaconhecimentoId
+                                 and status = 1";
 
                 return await conn.QueryAsync<Disciplina>(query, new { areaconhecimentoId });
             }

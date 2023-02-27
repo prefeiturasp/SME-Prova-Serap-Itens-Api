@@ -26,7 +26,9 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                      alterado_em as AlteradoEm,
                                      status,
                                      disciplina_id as DisciplinaId
-                                from matriz where disciplina_id = @disciplinaId";
+                                from matriz 
+                               where disciplina_id = @disciplinaId
+                                 and status = 1";
 
                 return await conn.QueryAsync<Matriz>(query, new { disciplinaId });
             }
