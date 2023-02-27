@@ -34,13 +34,8 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         [Range(1, long.MaxValue, ErrorMessage = "DificuldadeSugeridaId tem que ser maior que zero ")]
        
         public long? DificuldadeSugeridaId { get; set; }
-
-        [PrecisaoDecimalAttribute(18, 10)]
         public decimal? Discriminacao { get; set; }
-
-        [PrecisaoDecimalAttribute(18, 10)]
         public decimal? AcertoCasual { get; set; }
-        [RegularExpression("^(?=(\\D*\\d\\D*){0,5}$)-?\\d*(\\.\\d{0,2})?$",ErrorMessage = "TeSTE")]
         public decimal? Dificuldade { get; set; }
     }
 }
