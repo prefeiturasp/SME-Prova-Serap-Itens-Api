@@ -21,7 +21,6 @@ ALTER TABLE item ADD CONSTRAINT item_matriz FOREIGN KEY (matriz_id) REFERENCES m
 ALTER TABLE item DROP CONSTRAINT IF EXISTS item_competencia;
 ALTER TABLE item ADD CONSTRAINT item_competencia FOREIGN KEY (competencia_id) REFERENCES competencia(id) ON DELETE cascade;
 
-
 ALTER TABLE item DROP CONSTRAINT IF EXISTS  item_habilidade; 
 ALTER TABLE item ADD CONSTRAINT item_habilidade FOREIGN KEY (habilidade_id) REFERENCES habilidade(id) ON DELETE cascade;
 
