@@ -16,7 +16,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         public async Task<IEnumerable<SelectDto>> Executar()
         {
             var listaAreaConhecimento =  await mediator.Send(new ObterAreasConhecimentoQuery());
-            return listaAreaConhecimento?.Select(x => new SelectDto(x.Id, x.Descricao));
+            return listaAreaConhecimento?.Select(x => new SelectDto(x.Id, x.Descricao)).OrderBy(x => x.Descricao);
         }
     }
 }
