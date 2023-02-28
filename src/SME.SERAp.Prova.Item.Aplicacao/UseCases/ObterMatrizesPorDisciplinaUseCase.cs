@@ -21,7 +21,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
 
 
             if (listaMatrizes != null)
-                return listaMatrizes.Select(x => new SelectDto(x.Id, x.Descricao));
+                return listaMatrizes.Select(x => new SelectDto(x.Id, x.Descricao)).OrderBy(x=> x.Descricao);
             return null;
         }
     }

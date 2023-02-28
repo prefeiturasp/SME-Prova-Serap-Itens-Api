@@ -19,7 +19,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
             var listaDisciplinas =  await mediator.Send(new ObterDisciplinasPorAreaConhecimentoIdQuery(areaConhecimentoId));
             if (listaDisciplinas != null)
-                return listaDisciplinas.Select(x => new SelectDto(x.Id, !string.IsNullOrEmpty(x.NivelEnsino) ? $"{x.Descricao} - {x.NivelEnsino}" : x.Descricao));
+                return listaDisciplinas.Select(x => new SelectDto(x.Id, !string.IsNullOrEmpty(x.NivelEnsino) ? $"{x.Descricao} - {x.NivelEnsino}" : x.Descricao)).OrderBy(y=> y.Descricao);
             return null;
         }
 
