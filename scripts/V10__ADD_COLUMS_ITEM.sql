@@ -10,7 +10,7 @@ ALTER table if exists  item ADD column IF NOT EXISTS  dificuldade  decimal;
 create index if not exists item_codigo_idx ON public.item (codigo_item);
 
 ALTER TABLE item  DROP CONSTRAINT IF EXISTS  item_area_conhecimento; 
-ALTER TABLE item ADD CONSTRAINT item_area_conhecimento FOREIGN KEY (area_conhecimento_id) REFERENCES area_conhecimento(id) ON DELETE cascade;]
+ALTER TABLE item ADD CONSTRAINT item_area_conhecimento FOREIGN KEY (area_conhecimento_id) REFERENCES area_conhecimento(id) ON DELETE cascade;
 
 ALTER TABLE item  DROP CONSTRAINT IF EXISTS  item_disciplina; 
 ALTER TABLE item ADD CONSTRAINT item_disciplina FOREIGN KEY (disciplina_id) REFERENCES disciplina(id) ON DELETE cascade;
