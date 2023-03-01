@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
+using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System;
 using System.Threading.Tasks;
@@ -16,28 +17,31 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         public async Task<long> Executar(ItemRascunhoDto itemDto)
         {
 
-            var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemDto.AreaConhecimentoId));
-            if (areaConhecimento == null)
-                throw new Exception($"A area de conhecimento com o id: {itemDto.AreaConhecimentoId} não foi encontrada.");
+                var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemDto.AreaConhecimentoId));
+                if (areaConhecimento == null)
+                    throw new Exception($"A area de conhecimento com o id: {itemDto.AreaConhecimentoId} não foi encontrada.");
 
-            var disciplina = await mediator.Send(new ObterDisciplinaPorIdQuery(itemDto.DisciplinaId));
-            if (disciplina == null)
-                throw new Exception($"A disciplina com o id: {itemDto.DisciplinaId} não foi encontrada.");
+                var disciplina = await mediator.Send(new ObterDisciplinaPorIdQuery(itemDto.DisciplinaId));
+                if (disciplina == null)
+                    throw new Exception($"A disciplina com o id: {itemDto.DisciplinaId} não foi encontrada.");
 
-            long? matrizLegadoId = null;
-            if (itemDto.MatrizId != null)
-            {
-                var matriz = await mediator.Send(new ObterMatrizPorIdQuery((long)itemDto.MatrizId));
-                if (matriz == null)
-                    throw new Exception($"A matriz com o id: {itemDto.MatrizId} não foi encontrada.");
-                matrizLegadoId = matriz.LegadoId;
-            }
+                if (itemDto.Id == null || itemDto.Id <= 0)
+                    itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
 
-            if (itemDto.Id == null || itemDto.Id <= 0)
-                itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
-            var item = new Dominio.Entities.Item(
-                itemDto?.Id, itemDto.CodigoItem, areaConhecimento.LegadoId, matrizLegadoId, disciplina.LegadoId);
-            return await mediator.Send(new SalvarItemCommand(item));
+                if ((itemDto.Id != null || itemDto.Id <= 0) && itemDto.CodigoItem == 0)
+                    throw new Exception($"O codigo do item não pode ser zero, pois o item já existe na base de dados");
+                
+                Dominio.Entities.Item item = MapItemDto(itemDto, areaConhecimento, disciplina);
+
+                return await mediator.Send(new SalvarItemCommand(item));
+
+      
+        }
+
+        private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
+        {
+            return new Dominio.Entities.Item(
+                            itemDto?.Id, itemDto.CodigoItem, areaConhecimento.Id, disciplina.Id, itemDto.MatrizId, itemDto.CompetenciaId, itemDto.HabilidadeId, itemDto.AnoMatrizId, itemDto.DificuldadeSugeridaId, itemDto.Discriminacao, itemDto.AcertoCasual, itemDto.Dificuldade);
         }
     }
 }

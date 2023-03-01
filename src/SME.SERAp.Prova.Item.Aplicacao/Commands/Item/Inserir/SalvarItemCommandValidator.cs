@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class InserirItemCommandValidator : AbstractValidator<SalvarItemCommand>
+    public class SalvarItemCommandValidator : AbstractValidator<SalvarItemCommand>
     {
-        public InserirItemCommandValidator()
+        public SalvarItemCommandValidator()
         {
             RuleFor(c => c.Item.AreaconhecimentoId)
               .NotEmpty()
