@@ -2,6 +2,7 @@
 using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
+using SME.SERAp.Prova.Item.Aplicacao.UseCases;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System.Threading.Tasks;
 using ItemConsulta = SME.SERAp.Prova.Item.Dominio.Entities.Item;
@@ -37,6 +38,24 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         public async Task<IActionResult> ObterItemPorId(long itemId, [FromServices] IObterItemPorIdUseCase obterItemPorIdUseCase)
         {
             return Ok(await obterItemPorIdUseCase.Executar(itemId));
+        }
+
+
+        [HttpGet("Situacoes")]
+        [ProducesResponseType(typeof(ItemConsulta), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterSituacoesItem([FromServices] IObterSituacoesItemUseCase obterSituacoesItem)
+        {
+            return Ok(await obterSituacoesItem.Executar());
+        }
+
+
+        [HttpGet("Tipos")]
+        [ProducesResponseType(typeof(ItemConsulta), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterTiposItem([FromServices] IObterTiposItemUseCase obterTiposItem)
+        {
+            return Ok(await obterTiposItem.Executar());
         }
     }
 }
