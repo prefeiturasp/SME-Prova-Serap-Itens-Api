@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SME.SERAp.Prova.Item.Api.Controllers
 {
-    [Route("api/Assuntos")]
+    [Route("api/v1/Assuntos")]
     [ApiController]
     public class AssuntoController : ControllerBase
     {
