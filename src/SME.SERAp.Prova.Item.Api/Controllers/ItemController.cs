@@ -2,8 +2,8 @@
 using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
-using SME.SERAp.Prova.Item.Aplicacao.UseCases;
 using SME.SERAp.Prova.Item.Infra.Dtos;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItemConsulta = SME.SERAp.Prova.Item.Dominio.Entities.Item;
 
@@ -42,7 +42,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 
 
         [HttpGet("Situacoes")]
-        [ProducesResponseType(typeof(ItemConsulta), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
         public async Task<IActionResult> ObterSituacoesItem([FromServices] IObterSituacoesItemUseCase obterSituacoesItem)
         {
@@ -51,7 +51,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 
 
         [HttpGet("Tipos")]
-        [ProducesResponseType(typeof(ItemConsulta), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
         public async Task<IActionResult> ObterTiposItem([FromServices] IObterTiposItemUseCase obterTiposItem)
         {
