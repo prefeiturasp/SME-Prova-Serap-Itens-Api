@@ -36,13 +36,24 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         private static Dominio.Entities.Item MapItemDto(ItemDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
         {
+            string palavrasChave = string.Empty;
+
+            if (itemDto.PalavrasChave[0].Length > 0)
+                palavrasChave = string.Join(";", itemDto.PalavrasChave);
+
+
+
             return new Dominio.Entities.Item(
                             itemDto?.Id, itemDto.CodigoItem,
                             areaConhecimento.Id, disciplina.Id,
                             itemDto.MatrizId, itemDto.CompetenciaId,
                             itemDto.HabilidadeId, itemDto.AnoMatrizId,
                             itemDto.DificuldadeSugeridaId, itemDto.Discriminacao,
-                            itemDto.AcertoCasual, itemDto.Dificuldade);
+                            itemDto.AcertoCasual, itemDto.Dificuldade, itemDto.AssuntoId,
+                            itemDto.SubAssuntoId, itemDto.Situacao, itemDto.Tipo,
+                            itemDto.QuantidadeAlternativasId, palavrasChave,
+                            itemDto.ParametroBTransformado, itemDto.MediaEhDesvio,
+                            itemDto.Observacao, DateTime.Now);
         }
 
     }
