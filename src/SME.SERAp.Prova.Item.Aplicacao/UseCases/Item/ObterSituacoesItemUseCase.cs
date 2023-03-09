@@ -1,12 +1,9 @@
 ﻿using MediatR;
-using Nest;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
@@ -26,7 +23,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             foreach (var situacao in SituacoesValores)
             {
                 var situacaoSelect = new SelectDto();
-                situacaoSelect.Valor = (int)Enum.Parse(typeof(TipoItem), situacao);
+                situacaoSelect.Valor = (int)Enum.Parse(typeof(SituacaoItem), situacao);
                 situacaoSelect.Descricao = situacao;
                 listaSituacoesItem.Add(situacaoSelect);
             }
