@@ -37,7 +37,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public long QuantidadeAlternativasId { get; set; }
         public string[] PalavrasChave { get; set; }
         public decimal? ParametroBTransformado { get; set; }
-        public decimal? MediaEhDesvio { get; set; }
+        public string MediaEhDesvio { get; set; }
         [MaxLength(100, ErrorMessage = "A observação pode ter no máximo 100 caracteres.")]
         public string Observacao { get; set; }
 
