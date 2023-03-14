@@ -1,8 +1,6 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Entities;
-using System;
+using SME.SERAp.Prova.Item.Infra.Dtos;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Interfaces
@@ -10,5 +8,6 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
     public interface IRepositorioQuantidadeAlternativas : IRepositorioBase<QuantidadeAlternativas>
     {
         Task<IEnumerable<QuantidadeAlternativas>> ObterQuantidadeAlternativas();
+        Task<IEnumerable<SelectDto>> ObterListaQuantidadeAlternativas();
     }
 }

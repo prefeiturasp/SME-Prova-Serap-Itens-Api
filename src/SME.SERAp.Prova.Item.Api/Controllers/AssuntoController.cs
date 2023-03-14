@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Api.Controllers
 {
@@ -13,12 +12,12 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
     public class AssuntoController : ControllerBase
     {
 
-        [HttpGet]
+        [HttpGet("{disciplinaId}")]
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
-        public async Task<IActionResult> ObterAssuntos([FromServices] IObterAssuntosUseCase obterAssuntosUseCase)
+        public async Task<IActionResult> ObterAssuntos([Required] long disciplinaId, [FromServices] IObterAssuntosUseCase obterAssuntosUseCase)
         {
-            return Ok(await obterAssuntosUseCase.Executar());
+            return Ok(await obterAssuntosUseCase.Executar(disciplinaId));
         }
 
 
