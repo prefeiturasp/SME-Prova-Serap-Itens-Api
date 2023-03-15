@@ -22,7 +22,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
 
         public async Task<IEnumerable<Assunto>> Handle(ObterAssuntosQuery request, CancellationToken cancellationToken)
         {
-            var areasConhecimento = await repositorioAssunto.ObterAssuntos();
+            var areasConhecimento = await repositorioAssunto.ObterAssuntos(request.DisciplinaId);
             return areasConhecimento.OrderBy(c => c.Descricao);
         }
     }

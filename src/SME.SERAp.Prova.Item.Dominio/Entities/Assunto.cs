@@ -1,16 +1,12 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
     public class Assunto : EntidadeBase
     {
         public Assunto() { }
-        public Assunto(long? id, long legadoId, string descricao, StatusGeral status)
+        public Assunto(long? id, long legadoId, long disciplinaId, string descricao, StatusGeral status)
         {
             if (id == null)
             {
@@ -24,11 +20,13 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             }
 
             LegadoId = legadoId;
+            DisciplinaId = disciplinaId;
             Descricao = descricao;
             Status = (int)status;
         }
 
         public long LegadoId { get; set; }
+        public long DisciplinaId { get; set; }
         public string Descricao { get; set; }
         public DateTime CriadoEm { get; set; }
         public DateTime AlteradoEm { get; set; }

@@ -1,10 +1,7 @@
 ﻿using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Repositories
@@ -13,18 +10,27 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
     {
         public RepositorioAssunto(ConnectionStringOptions connectionStrings) : base(connectionStrings)
         {
+
         }
 
-        public async Task<IEnumerable<Assunto>> ObterAssuntos()
+        public async Task<IEnumerable<Assunto>> ObterAssuntos(long disciplinaId)
         {
             using var conn = ObterConexao();
             try
             {
-                var query = @"select *
-                              from Assunto
-                              where status = 1";
+                var query = @"select 
+                                Id,
+                                Legado_Id LegadoId,
+                                Disciplina_Id DisciplinaId,
+                                Descricao,
+                                Criado_Em CriadoEm,
+                                Alterado_Em AlteradoEm,
+                                Status
+                              from assunto
+                              where status = 1
+                              and disciplina_id = @disciplinaId";
 
-                return await conn.QueryAsync<Assunto>(query);
+                return await conn.QueryAsync<Assunto>(query, new { disciplinaId });
             }
             finally
             {
