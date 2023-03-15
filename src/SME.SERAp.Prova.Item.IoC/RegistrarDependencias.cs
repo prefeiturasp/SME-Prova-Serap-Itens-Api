@@ -46,6 +46,10 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioCompetencia, RepositorioCompetencia>();
             services.AddScoped<IRepositorioHabilidade, RepositorioHabilidade>();
             services.AddScoped<IRepositorioTipoGrade, RepositorioTipoGrade>();
+            services.AddScoped<IRepositorioAssunto, RepositorioAssunto>();
+            services.AddScoped<IRepositorioSubAssunto, RepositorioSubAssunto>();
+            services.AddScoped<IRepositorioQuantidadeAlternativas, RepositorioQuantidadeAlternativas>();
+
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
@@ -65,6 +69,16 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterCompetenciasPorMatrizIdUseCase, ObterCompetenciasPorMatrizIdUseCase>();
             services.AddScoped<IObterHabilidadesPorCompetenciaIdUseCase, ObterHabilidadesPorCompetenciaIdUseCase>();
             services.AddScoped<IObterTiposGradePorMatrizIdUseCase, ObterTiposGradePorMatrizIdUseCase>();
+
+            services.AddScoped<IObterAssuntosUseCase, ObterAssuntosUseCase>();
+            services.AddScoped<IObterSubAssuntosPorAssuntoIdUseCase, ObterSubAssuntosPorAssuntoIdUseCase>();
+            services.AddScoped<IObterQuantidadesAlternativasUseCase, ObterQuantidadesAlternativasUseCase>();
+            services.AddScoped<IObterTiposItemUseCase, ObterTiposItemUseCase>();
+            services.AddScoped<IObterSituacoesItemUseCase, ObterSituacoesItemUseCase>();
+            
+                
+
+
         }
 
         private static void RegistraMapeamentos()
@@ -81,6 +95,9 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new CompetenciaMap());
                 config.AddMap(new HabilidadeMap());
                 config.AddMap(new TipoGradeMap());
+                config.AddMap(new AssuntoMap());
+                config.AddMap(new SubAssuntoMap());
+                config.AddMap(new QuantidadeAlternativaMap());
                 config.ForDommel();
             });
         }

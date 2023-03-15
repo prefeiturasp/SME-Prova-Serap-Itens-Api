@@ -1,4 +1,5 @@
 ﻿
+using SME.SERAp.Prova.Item.Dominio.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,16 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public decimal? Discriminacao { get; set; }
         public decimal? AcertoCasual { get; set; }
         public decimal? Dificuldade { get; set; }
+        public long? AssuntoId { get; set; }
+        public long? SubAssuntoId { get; set; }
+        public SituacaoItem Situacao { get; set; }
+        public TipoItem Tipo { get; set; }
+        public long QuantidadeAlternativasId { get; set; }
+        public string[] PalavrasChave { get; set; }
+        public decimal? ParametroBTransformado { get; set; }
+        public string MediaEhDesvio { get; set; }
+        [MaxLength(100, ErrorMessage = "A observação pode ter no máximo 100 caracteres.")]
+        public string Observacao { get; set; }
 
 
 
