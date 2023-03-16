@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Nest;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
+using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         }
         public async Task<long> Executar(ItemRascunhoDto itemDto)
         {
-
+            
             var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemDto.AreaConhecimentoId));
             if (areaConhecimento == null)
                 throw new Exception($"A area de conhecimento com o id: {itemDto.AreaConhecimentoId} não foi encontrada.");
@@ -32,6 +34,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             Dominio.Entities.Item item = MapItemDto(itemDto, areaConhecimento, disciplina);
 
             return await mediator.Send(new SalvarItemCommand(item));
+
         }
 
         private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
@@ -39,8 +42,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             // CRIAR QUERY PARA ISSO 
             string palavrasChave = string.Empty;
 
-            if (itemDto.PalavrasChave[0].Length > 0)
+            if (itemDto.PalavrasChave?.Length > 0)
                 palavrasChave = string.Join(";", itemDto.PalavrasChave);
+
 
             return new Dominio.Entities.Item(
                             itemDto?.Id, itemDto.CodigoItem,
