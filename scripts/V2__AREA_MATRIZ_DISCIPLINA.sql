@@ -5,7 +5,7 @@ create table if not exists public.area_conhecimento
     descricao varchar(50) NULL,
     status int NOT NULL,
     criado_em timestamptz  null,
-    alterado_em timestamptz null
+    alterado_em timestamptz null,
     CONSTRAINT area_conhecimento_pk PRIMARY KEY (id)
 );
 
