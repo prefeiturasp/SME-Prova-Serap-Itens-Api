@@ -6,7 +6,6 @@ ALTER table if exists  item ADD column IF NOT EXISTS  discriminacao  decimal;
 ALTER table if exists  item ADD column IF NOT EXISTS  acerto_casual  decimal; 
 ALTER table if exists  item ADD column IF NOT EXISTS  dificuldade  decimal; 
 
-
 create index if not exists item_codigo_idx ON public.item (codigo_item);
 
 ALTER TABLE item  DROP CONSTRAINT IF EXISTS  item_area_conhecimento; 
