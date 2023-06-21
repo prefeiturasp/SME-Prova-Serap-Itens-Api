@@ -20,7 +20,7 @@ create table if not exists public.subassunto (
 	CONSTRAINT assunto_fk FOREIGN KEY (assunto_id) REFERENCES public.assunto(id)
 );
 
-create table if not exists public.tipo_item (
+create table if not exists public.tipo_item and not exists public.quantidade_alternativa (
 	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	legado_id int8 NOT null,
 	eh_padrao boolean not null,
