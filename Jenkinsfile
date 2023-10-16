@@ -53,6 +53,7 @@ pipeline {
             }
           }
           steps {
+            checkout scm
             script {
               imagename1 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/serap-itens-api"
               dockerImage1 = docker.build(imagename1, "-f src/SME.SERAp.Prova.Item.Api/Dockerfile .")
