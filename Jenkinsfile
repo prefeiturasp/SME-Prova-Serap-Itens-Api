@@ -6,9 +6,11 @@ pipeline {
       namespace = "${env.branchname == 'develop' ? 'serap-itens-dev' : env.branchname == 'release' ? 'serap-itens-hom' : env.branchname == 'release-r2' ? 'serap-itens-hom2' : 'sme-serap-itens' }"
     }
   
-    agent {
-      node { label 'dotnet-5-rc' }
-    }
+    agent { kubernetes { 
+              label 'dotnet5-rc'
+              defaultContainer 'dotnet5-rc'
+            }
+          }
 
     options {
       buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '20'))
@@ -45,6 +47,11 @@ pipeline {
 
         stage('Docker Build') {
           when { anyOf { branch 'master'; branch 'main'; branch 'develop'; branch 'release'; branch 'release-r2'; } }
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
           steps {
             script {
               imagename1 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/serap-itens-api"
@@ -59,7 +66,12 @@ pipeline {
         }
 	    
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'release';  } }        
+            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'release';  } }
+            agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }        
             steps {
                 script{
                     if ( env.branchname == 'main' ||  env.branchname == 'master' || env.branchname == 'homolog' || env.branchname == 'release' ) {
@@ -88,7 +100,11 @@ pipeline {
 
         stage('Flyway') {
           when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'release';  } }
-          agent { label 'master' }
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
           steps{
             withCredentials([string(credentialsId: "flyway_serapitens_${branchname}", variable: 'url')]) {
             checkout scm
