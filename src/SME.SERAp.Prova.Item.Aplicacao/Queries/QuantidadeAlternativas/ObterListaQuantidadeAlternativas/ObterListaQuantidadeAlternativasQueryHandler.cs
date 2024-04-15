@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class ObterListaQuantidadeAlternativasQueryHandler : IRequestHandler<ObterListaQuantidadeAlternativasQuery, IEnumerable<SelectDto>>
+    public class ObterListaQuantidadeAlternativasQueryHandler : IRequestHandler<ObterListaQuantidadeAlternativasQuery, IEnumerable<QuantidadeAlternativasDto>>
     {
         private readonly IRepositorioQuantidadeAlternativas repositorioQuantidadeAlternativas;
 
@@ -17,7 +17,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
             this.repositorioQuantidadeAlternativas = repositorioQuantidadeAlternativas ?? throw new ArgumentNullException(nameof(repositorioQuantidadeAlternativas));
         }
 
-        public async Task<IEnumerable<SelectDto>> Handle(ObterListaQuantidadeAlternativasQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<QuantidadeAlternativasDto>> Handle(ObterListaQuantidadeAlternativasQuery request, CancellationToken cancellationToken)
         {
             return await repositorioQuantidadeAlternativas.ObterListaQuantidadeAlternativas();
         }

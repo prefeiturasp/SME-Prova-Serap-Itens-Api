@@ -33,6 +33,9 @@ namespace SME.SERAp.Prova.Item.Dados.Mappings
             Map(c => c.Observacao).ToColumn("observacao");
             Map(c => c.DataCriacao).ToColumn("criado_em");
             Map(c => c.DataAlteracao).ToColumn("alterado_em");
+            Map(c => c.TextoBase).ToColumn("texto_base");
+            Map(c => c.Fonte).ToColumn("fonte");
+            Map(c => c.Enunciado).ToColumn("enunciado");
         }
     }
 }

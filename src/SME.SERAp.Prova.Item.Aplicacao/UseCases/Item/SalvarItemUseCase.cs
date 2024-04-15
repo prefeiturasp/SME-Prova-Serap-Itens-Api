@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
@@ -30,7 +31,15 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
 
             Dominio.Entities.Item item = MapItemDto(itemDto, areaConhecimento, disciplina);
-            return await mediator.Send(new SalvarItemCommand(item));
+            var itemId =  await mediator.Send(new SalvarItemCommand(item));
+
+            foreach(var altDto in itemDto.AlternativasDto)
+            {
+                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao, altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
+                 await mediator.Send(new SalvarAlternativaCommand(alternativa));
+            }
+
+            return itemId;
 
         }
 
@@ -38,7 +47,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
             string palavrasChave = string.Empty;
 
-            if (itemDto.PalavrasChave[0].Length > 0)
+            if (itemDto.PalavrasChave?.Length > 0)
                 palavrasChave = string.Join(";", itemDto.PalavrasChave);
 
 
@@ -53,7 +62,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                             itemDto.SubAssuntoId, itemDto.Situacao, itemDto.Tipo,
                             itemDto.QuantidadeAlternativasId, palavrasChave,
                             itemDto.ParametroBTransformado, itemDto.MediaEhDesvio,
-                            itemDto.Observacao, DateTime.Now);
+                            itemDto.Observacao, DateTime.Now, itemDto.TextoBase, itemDto.Fonte, itemDto.Enunciado);
         }
 
     }

@@ -8,6 +8,8 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
     public interface IRepositorioQuantidadeAlternativas : IRepositorioBase<QuantidadeAlternativas>
     {
         Task<IEnumerable<QuantidadeAlternativas>> ObterQuantidadeAlternativas();
-        Task<IEnumerable<SelectDto>> ObterListaQuantidadeAlternativas();
+
+
+        Task<IEnumerable<QuantidadeAlternativasDto>> ObterListaQuantidadeAlternativas();
     }
 }

@@ -49,6 +49,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioAssunto, RepositorioAssunto>();
             services.AddScoped<IRepositorioSubAssunto, RepositorioSubAssunto>();
             services.AddScoped<IRepositorioQuantidadeAlternativas, RepositorioQuantidadeAlternativas>();
+            services.AddScoped<IRepositorioAlternativa, RepositorioAlternativa>();
 
         }
 
@@ -98,6 +99,7 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new AssuntoMap());
                 config.AddMap(new SubAssuntoMap());
                 config.AddMap(new QuantidadeAlternativaMap());
+                config.AddMap(new AlternativaMap());
                 config.ForDommel();
             });
         }
