@@ -11,7 +11,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
             SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave, 
-            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, DateTime dataCriacao)
+            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
         {
             if (id > 0 && id != null)
             {

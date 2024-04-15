@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Dominio.Enums;
