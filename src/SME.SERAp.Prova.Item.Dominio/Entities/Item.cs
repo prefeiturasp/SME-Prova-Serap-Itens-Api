@@ -10,8 +10,8 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public Item(long? id, long codigoItem, long areaconhecimentoId, long disciplinaId,
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
-            SituacaoItem situacao, TipoItem tipo, long quantidadeAlternativaId, string palavrasChave, 
-            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
+            SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave, 
+            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, DateTime dataCriacao)
         {
             if (id > 0 && id != null)
             {
@@ -59,9 +59,9 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public decimal? Dificuldade { get; set; }
         public long? AssuntoId { get; set; }
         public long? SubAssuntoId { get; set; }
-        public SituacaoItem Situacao { get; set; }
-        public TipoItem Tipo { get; set; }
-        public long QuantidadeAlternativasId { get; set; }
+        public SituacaoItem? Situacao { get; set; }
+        public TipoItem? Tipo { get; set; }
+        public long? QuantidadeAlternativasId { get; set; }
         public string PalavrasChave { get; set; }
         public decimal? ParametroBTransformado { get; set; }
         public string MediaEhDesvio { get; set; }

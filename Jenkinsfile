@@ -3,11 +3,14 @@ pipeline {
       branchname =  env.BRANCH_NAME.toLowerCase()
       kubeconfig = getKubeconf(env.branchname)
       registryCredential = 'jenkins_registry'
+      namespace = "${env.branchname == 'develop' ? 'serap-itens-dev' : env.branchname == 'release' ? 'serap-itens-hom' : env.branchname == 'release-r2' ? 'serap-itens-hom2' : 'sme-serap-itens' }"
     }
   
-    agent {
-      node { label 'dotnet-5-rc' }
-    }
+    agent { kubernetes { 
+              label 'dotnet5-rc'
+              defaultContainer 'dotnet5-rc'
+            }
+          }
 
     options {
       buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '20'))
@@ -44,7 +47,13 @@ pipeline {
 
         stage('Docker Build') {
           when { anyOf { branch 'master'; branch 'main'; branch 'develop'; branch 'release'; branch 'release-r2'; } }
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
           steps {
+            checkout scm
             script {
               imagename1 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/serap-itens-api"
               dockerImage1 = docker.build(imagename1, "-f src/SME.SERAp.Prova.Item.Api/Dockerfile .")
@@ -58,7 +67,12 @@ pipeline {
         }
 	    
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'release';  } }        
+            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'release';  } }
+            agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }        
             steps {
                 script{
                     if ( env.branchname == 'main' ||  env.branchname == 'master' || env.branchname == 'homolog' || env.branchname == 'release' ) {
@@ -70,14 +84,14 @@ pipeline {
                             }
                         withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
                             sh('cp $config '+"$home"+'/.kube/config')
-                            sh 'kubectl rollout restart deployment/serap-itens-api -n sme-serap-itens'
+                            sh 'kubectl rollout restart deployment/serap-itens-api -n ${namespace}'
                             sh('rm -f '+"$home"+'/.kube/config')
                         }
                     }
                     else{
                         withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
                             sh('cp $config '+"$home"+'/.kube/config')
-                            sh 'kubectl rollout restart deployment/serap-itens-api -n sme-serap-itens'
+                            sh 'kubectl rollout restart deployment/serap-itens-api -n ${namespace}'
                             sh('rm -f '+"$home"+'/.kube/config')
                         }
                     }
@@ -87,7 +101,11 @@ pipeline {
 
         stage('Flyway') {
           when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'release';  } }
-          agent { label 'master' }
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
           steps{
             withCredentials([string(credentialsId: "flyway_serapitens_${branchname}", variable: 'url')]) {
             checkout scm
@@ -121,7 +139,7 @@ def sendTelegram(message) {
 def getKubeconf(branchName) {
     if("main".equals(branchName)) { return "config_prd"; }
     else if ("master".equals(branchName)) { return "config_prd"; }
-    else if ("homolog".equals(branchName)) { return "config_hom"; }
-    else if ("release".equals(branchName)) { return "config_hom"; }
-    else if ("develop".equals(branchName)) { return "config_dev"; }
+    else if ("homolog".equals(branchName)) { return "config_release"; }
+    else if ("release".equals(branchName)) { return "config_release"; }
+    else if ("develop".equals(branchName)) { return "config_release"; }
 }

@@ -32,9 +32,9 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public decimal? Dificuldade { get; set; }
         public long? AssuntoId { get; set; }
         public long? SubAssuntoId { get; set; }
-        public SituacaoItem Situacao { get; set; }
-        public TipoItem Tipo { get; set; }
-        public long QuantidadeAlternativasId { get; set; }
+        public SituacaoItem? Situacao { get; set; }
+        public TipoItem? Tipo { get; set; }
+        public long? QuantidadeAlternativasId { get; set; }
         public string[] PalavrasChave { get; set; }
         public decimal? ParametroBTransformado { get; set; }
         public string MediaEhDesvio { get; set; }

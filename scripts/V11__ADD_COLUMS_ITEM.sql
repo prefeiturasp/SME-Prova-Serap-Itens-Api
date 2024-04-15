@@ -2,10 +2,10 @@ ALTER table if exists  item ADD column IF NOT EXISTS  competencia_id  int8;
 ALTER table if exists  item ADD column IF NOT EXISTS  habilidade_id  int8; 
 ALTER table if exists  item ADD column IF NOT EXISTS  tipo_grade_id  int8; 
 ALTER table if exists  item ADD column IF NOT EXISTS  dificuldade_sugerida_id  int8 ;
+ALTER table if exists  item ADD column IF NOT EXISTS  matriz_id  int8 ;
 ALTER table if exists  item ADD column IF NOT EXISTS  discriminacao  decimal; 
 ALTER table if exists  item ADD column IF NOT EXISTS  acerto_casual  decimal; 
 ALTER table if exists  item ADD column IF NOT EXISTS  dificuldade  decimal; 
-
 
 create index if not exists item_codigo_idx ON public.item (codigo_item);
 
