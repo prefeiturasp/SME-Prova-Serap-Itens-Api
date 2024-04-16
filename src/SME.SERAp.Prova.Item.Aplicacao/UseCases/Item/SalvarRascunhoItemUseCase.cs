@@ -35,15 +35,21 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
             var itemId = await mediator.Send(new SalvarItemCommand(item));
 
-            foreach (var altDto in itemDto.AlternativasDto)
-            {
-                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao, altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
-                await mediator.Send(new SalvarAlternativaCommand(alternativa));
-            }
+            if (itemDto.AlternativasDto != null)
+                await TrataAlternativas(itemDto, itemId);
 
             return itemId;
 
 
+        }
+
+        private async Task TrataAlternativas(ItemRascunhoDto itemDto, long itemId)
+        {
+            foreach (var altDto in itemDto?.AlternativasDto)
+            {
+                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao, altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
+                await mediator.Send(new SalvarAlternativaCommand(alternativa));
+            }
         }
 
         private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina)

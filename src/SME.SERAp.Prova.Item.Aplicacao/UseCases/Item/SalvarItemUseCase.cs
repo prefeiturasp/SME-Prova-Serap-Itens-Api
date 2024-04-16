@@ -33,14 +33,21 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             Dominio.Entities.Item item = MapItemDto(itemDto, areaConhecimento, disciplina);
             var itemId =  await mediator.Send(new SalvarItemCommand(item));
 
-            foreach(var altDto in itemDto.AlternativasDto)
-            {
-                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao, altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
-                 await mediator.Send(new SalvarAlternativaCommand(alternativa));
-            }
+            if (itemDto.AlternativasDto != null)
+                await TrataAlternativas(itemDto, itemId);
 
             return itemId;
 
+
+        }
+
+        private async Task TrataAlternativas(ItemDto itemDto, long itemId)
+        {
+            foreach (var altDto in itemDto?.AlternativasDto)
+            {
+                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao, altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
+                await mediator.Send(new SalvarAlternativaCommand(alternativa));
+            }
         }
 
         private static Dominio.Entities.Item MapItemDto(ItemDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
