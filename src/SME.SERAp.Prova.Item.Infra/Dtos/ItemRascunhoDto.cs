@@ -1,6 +1,5 @@
 ﻿
 using SME.SERAp.Prova.Item.Dominio.Enums;
-using SME.SERAp.Prova.Item.Infra.Dtos.Alterantiva;
 using SME.SERAp.Prova.Item.Infra.Dtos.Alternativa;
 using System;
 using System.Collections.Generic;
