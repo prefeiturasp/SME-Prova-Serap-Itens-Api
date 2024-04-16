@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Attributes;
+using SME.SERAp.Prova.Item.Infra.Dtos.Alterantiva;
 
 namespace SME.SERAp.Prova.Item.Infra.Dtos
 {
