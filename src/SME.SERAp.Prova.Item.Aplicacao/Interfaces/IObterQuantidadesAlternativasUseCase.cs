@@ -9,6 +9,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Interfaces
 {
     public interface IObterQuantidadesAlternativasUseCase
     {
-        Task<IEnumerable<SelectDto>> Executar();
+        Task<IEnumerable<QuantidadeAlternativasDto>> Executar();
     }
 }

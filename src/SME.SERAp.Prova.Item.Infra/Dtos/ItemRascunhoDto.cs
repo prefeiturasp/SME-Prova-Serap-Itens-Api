@@ -41,6 +41,16 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         [MaxLength(100, ErrorMessage = "A observação pode ter no máximo 100 caracteres.")]
         public string Observacao { get; set; }
 
+        public string TextoBase { get; set; }
+        public string Fonte { get; set; }
+
+        public string Enunciado { get; set; }
+
+        public List<AltenativaDto> AlternativasDto { get; set; }
+
+        public long ArquivoItemId { get; set; }
+        public long ArquivoAudioId { get; set; }
+
 
 
     }
