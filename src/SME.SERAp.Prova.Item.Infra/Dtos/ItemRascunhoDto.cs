@@ -1,5 +1,6 @@
 ﻿
 using SME.SERAp.Prova.Item.Dominio.Enums;
+using SME.SERAp.Prova.Item.Infra.Dtos.Alternativa;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -46,7 +47,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
 
         public string Enunciado { get; set; }
 
-        public List<AltenativaDto> AlternativasDto { get; set; }
+        public List<AlternativaRascunhoDto> AlternativasDto { get; set; }
 
         public long ArquivoItemId { get; set; }
         public long ArquivoAudioId { get; set; }
