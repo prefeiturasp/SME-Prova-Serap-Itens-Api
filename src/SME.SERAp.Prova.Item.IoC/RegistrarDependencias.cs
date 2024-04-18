@@ -26,6 +26,7 @@ namespace SME.SERAp.Prova.Item.IoC
             RegistrarRepositorios(services);
             RegistrarCasosDeUso(services);
             RegistraMapeamentos();
+            services.RegistrarHttpClient();
         }
 
         private static void RegistrarServicos(IServiceCollection services)
@@ -76,10 +77,8 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterQuantidadesAlternativasUseCase, ObterQuantidadesAlternativasUseCase>();
             services.AddScoped<IObterTiposItemUseCase, ObterTiposItemUseCase>();
             services.AddScoped<IObterSituacoesItemUseCase, ObterSituacoesItemUseCase>();
-            
-                
 
-
+            services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
         }
 
         private static void RegistraMapeamentos()
