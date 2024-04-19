@@ -10,6 +10,7 @@ using SME.SERAp.Prova.Item.Dados.Cache;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dados.Mappings;
 using SME.SERAp.Prova.Item.Dados.Repositories;
+using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Services;
 using SME.SERAp.Prova.Item.IoC.Extensions;
@@ -26,6 +27,7 @@ namespace SME.SERAp.Prova.Item.IoC
             RegistrarRepositorios(services);
             RegistrarCasosDeUso(services);
             RegistraMapeamentos();
+            services.RegistrarHttpClient();
         }
 
         private static void RegistrarServicos(IServiceCollection services)
@@ -50,7 +52,9 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioSubAssunto, RepositorioSubAssunto>();
             services.AddScoped<IRepositorioQuantidadeAlternativas, RepositorioQuantidadeAlternativas>();
             services.AddScoped<IRepositorioAlternativa, RepositorioAlternativa>();
-
+            services.AddScoped<IRepositorioArquivo, RepositorioArquivo>();
+            services.AddScoped<IRepositorioItemAudio, RepositorioItemAudio>();
+            services.AddScoped<IRepositorioItemVideo, RepositorioItemVideo>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
@@ -70,16 +74,13 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterCompetenciasPorMatrizIdUseCase, ObterCompetenciasPorMatrizIdUseCase>();
             services.AddScoped<IObterHabilidadesPorCompetenciaIdUseCase, ObterHabilidadesPorCompetenciaIdUseCase>();
             services.AddScoped<IObterTiposGradePorMatrizIdUseCase, ObterTiposGradePorMatrizIdUseCase>();
-
             services.AddScoped<IObterAssuntosUseCase, ObterAssuntosUseCase>();
             services.AddScoped<IObterSubAssuntosPorAssuntoIdUseCase, ObterSubAssuntosPorAssuntoIdUseCase>();
             services.AddScoped<IObterQuantidadesAlternativasUseCase, ObterQuantidadesAlternativasUseCase>();
             services.AddScoped<IObterTiposItemUseCase, ObterTiposItemUseCase>();
             services.AddScoped<IObterSituacoesItemUseCase, ObterSituacoesItemUseCase>();
-            
-                
 
-
+            services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
         }
 
         private static void RegistraMapeamentos()
@@ -100,6 +101,9 @@ namespace SME.SERAp.Prova.Item.IoC
                 config.AddMap(new SubAssuntoMap());
                 config.AddMap(new QuantidadeAlternativaMap());
                 config.AddMap(new AlternativaMap());
+                config.AddMap(new ArquivoMap());
+                config.AddMap(new ItemVideoMap());
+                config.AddMap(new ItemAudioMap());
                 config.ForDommel();
             });
         }
