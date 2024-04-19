@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Elastic.Apm.Model;
+using MediatR;
+using SME.SERAp.Prova.Item.Aplicacao.Commands;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
@@ -34,11 +36,29 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             var itemId =  await mediator.Send(new SalvarItemCommand(item));
 
             if (itemDto.AlternativasDto != null)
-                await TrataAlternativas(itemDto, itemId);
+                await TrataAlternativas(itemDto, itemId); 
 
+            if(itemDto.ArquivoAudioId > 0)
+                await TrataArquivoAudio(itemDto, itemId);
+
+            if (itemDto.ArquivoItemId > 0)
+                await TrataArquivoVideo(itemDto, itemId);
+            
             return itemId;
 
 
+        }
+
+        private async Task TrataArquivoAudio(ItemDto itemDto, long itemId)
+        {
+            var itemAudio = new ItemAudio(itemDto.ArquivoAudioId, itemId, 1, DateTime.Now);
+            await mediator.Send(new SalvarItemAudioCommand(itemAudio));
+        }
+
+        private async Task TrataArquivoVideo(ItemDto itemDto, long itemId)
+        {
+            var itemAudio = new ItemVideo(itemDto.ArquivoAudioId, itemId, 1, DateTime.Now);
+            await mediator.Send(new SalvarItemVideoCommand(itemAudio));
         }
 
         private async Task TrataAlternativas(ItemDto itemDto, long itemId)
