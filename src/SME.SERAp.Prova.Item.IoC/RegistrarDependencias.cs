@@ -1,5 +1,6 @@
 ﻿using Dapper.FluentMap;
 using Dapper.FluentMap.Dommel;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SME.SERAp.Prova.Item.Aplicacao;
@@ -18,8 +19,9 @@ namespace SME.SERAp.Prova.Item.IoC
 {
     public static class RegistraDependencias
     {
-        public static void Registrar(IServiceCollection services)
+        public static void Registrar(IServiceCollection services, IConfiguration configuration)
         {
+            services.RegistrarEnvironmentVariables(configuration);
             services.AdicionarMediatr();
             services.AdicionarValidadoresFluentValidation();
             RegistrarServicos(services);
