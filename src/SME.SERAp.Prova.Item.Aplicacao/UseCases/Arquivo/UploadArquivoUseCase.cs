@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using SME.SERAp.Prova.Item.Aplicacao.Commands;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
-using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 
@@ -16,22 +13,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
         }
 
-        public async Task<RetornoUploadArquivoDto> ExecutarAsync(FormFile formFile, TipoArquivo tipoArquivo)
+        public async Task<RetornoUploadArquivoDto> ExecutarAsync(IFormFile formFile, TipoArquivo tipoArquivo)
         {
-            var arquivoUpload = new UploadArquivoDto();
-
-            arquivoUpload.InputStream = formFile.OpenReadStream().ToString();
-            arquivoUpload.ContentLength = Convert.ToInt32(formFile.Length);
-            arquivoUpload.ContentType = formFile.ContentType;
-            arquivoUpload.FileName = formFile.FileName;
-            arquivoUpload.FileType = tipoArquivo;
-
-
-            var updloadArquivoRet = await mediator.Send(new UploadArquivoCommand(arquivoUpload));
-
-            var arquivo = new Arquivo(updloadArquivoRet.IdFile, arquivoUpload.FileName, updloadArquivoRet.FileLink, arquivoUpload.ContentType, 1, DateTime.Now);
-            await mediator.Send(new SalvarArquivoCommand(arquivo));
-            return updloadArquivoRet;
+            return await mediator.Send(new UploadArquivoCommand(formFile, tipoArquivo));
         }
     }
 }

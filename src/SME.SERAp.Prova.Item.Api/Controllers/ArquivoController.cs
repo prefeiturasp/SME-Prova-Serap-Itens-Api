@@ -17,35 +17,10 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(RetornoBaseDto), StatusCodes.Status500InternalServerError)]
         [HttpPost("upload/{tipoArquivo}", Name = nameof(UploadAsync))]
-        public async Task<IActionResult> UploadAsync([FromQuery] TipoArquivo tipoArquivo, [FromBody] FormFile request,
-            [FromServices] IUploadArquivoUseCase useCase)
+        public async Task<IActionResult> UploadAsync([FromRoute] TipoArquivo tipoArquivo, 
+            [FromForm] IFormFile file, [FromServices] IUploadArquivoUseCase useCase)
         {
-            var ret = new RetornoUploadArquivoDto();
-            if (TipoArquivo.Audio == tipoArquivo)
-            {
-             
-                ret.FileLink = "https://serap.sme.prefeitura.sp.gov.br/Files/Audio/2023/11/977c57c6-56ca-4cde-8192-b2d006bed6f6.mp3";
-                ret.IdFile = 2;
-                ret.Success = true;
-              
-            }
-
-            else if (TipoArquivo.Video == tipoArquivo)
-            {
-                  
-                    ret.FileLink = "https://serap.sme.prefeitura.sp.gov.br/Files/Audio/2023/11/977c57c6-56ca-4cde-8192-b2d006bed6f6.mp3";
-                    ret.IdFile = 2;
-                    ret.Success = true;
-
-            }
-
-            else
-            {
-                return BadRequest("TipoDoArquivo não entontrado: " + tipoArquivo);
-            }
-            return Ok(ret);
-
-
+            return Ok(await useCase.ExecutarAsync(file, tipoArquivo));
         }
     }
 }
