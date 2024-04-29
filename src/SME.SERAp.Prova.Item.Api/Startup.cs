@@ -31,6 +31,7 @@ namespace SME.SERAp.Prova.Item.Api
         {
             services.AddControllers();
             services.AddHttpContextAccessor();
+            services.AddCors();
 
             ConfigEnvoiromentVariables(services);
 
