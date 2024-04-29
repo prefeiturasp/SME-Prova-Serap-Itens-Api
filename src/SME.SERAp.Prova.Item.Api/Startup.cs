@@ -34,7 +34,7 @@ namespace SME.SERAp.Prova.Item.Api
 
             ConfigEnvoiromentVariables(services);
 
-            RegistraDependencias.Registrar(services);
+            RegistraDependencias.Registrar(services, Configuration);
             RegistraAutenticacao.Registrar(services, Configuration);
             RegistraDocumentacaoSwagger.Registrar(services);
             RegistraMvc.Registrar(services);

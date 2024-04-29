@@ -7,6 +7,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Interfaces
 {
     public interface IUploadArquivoUseCase
     {
-        Task<RetornoUploadArquivoDto> ExecutarAsync(FormFile uploadArquivo, TipoArquivo tipoArquivo);
+        Task<RetornoUploadArquivoDto> ExecutarAsync(IFormFile uploadArquivo, TipoArquivo tipoArquivo);
     }
 }

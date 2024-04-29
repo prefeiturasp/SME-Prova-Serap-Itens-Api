@@ -8,6 +8,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Commands
         {
             ItemVideo = itemVideo;
         }
-        public Dominio.Entities.ItemVideo ItemVideo { get; set; }
+
+        public Dominio.Entities.ItemVideo ItemVideo { get; }
     }
 }

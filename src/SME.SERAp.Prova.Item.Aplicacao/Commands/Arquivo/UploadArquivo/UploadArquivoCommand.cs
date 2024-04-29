@@ -1,15 +1,19 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
+using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
     public class UploadArquivoCommand : IRequest<RetornoUploadArquivoDto>
     {
-        public UploadArquivoCommand(UploadArquivoDto uploadArquivo)
+        public UploadArquivoCommand(IFormFile arquivo, TipoArquivo tipo)
         {
-            UploadArquivo = uploadArquivo;
+            Arquivo = arquivo;
+            Tipo = tipo;
         }
 
-        public UploadArquivoDto UploadArquivo { get; }
+        public IFormFile Arquivo { get; }
+        public TipoArquivo Tipo { get; }
     }
 }
