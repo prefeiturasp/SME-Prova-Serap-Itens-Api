@@ -1,13 +1,7 @@
-﻿
-using SME.SERAp.Prova.Item.Dominio.Enums;
+﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos.Alternativa;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Infra.Dtos
 {
@@ -49,10 +43,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
 
         public List<AlternativaRascunhoDto> AlternativasDto { get; set; }
 
-        public long ArquivoItemId { get; set; }
+        public long ArquivoVideoId { get; set; }
         public long ArquivoAudioId { get; set; }
-
-
-
     }
 }

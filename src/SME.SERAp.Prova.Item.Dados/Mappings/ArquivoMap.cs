@@ -1,10 +1,4 @@
 ﻿using Dapper.FluentMap.Dommel.Mapping;
-using Nest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Mappings
 {
@@ -19,6 +13,7 @@ namespace SME.SERAp.Prova.Item.Dados.Mappings
             Map(c => c.Nome).ToColumn("nome");
             Map(c => c.Caminho).ToColumn("caminho");
             Map(c => c.ContentType).ToColumn("content_type");
+            Map(c => c.Situacao).ToColumn("situacao");
             Map(c => c.CriadoEm).ToColumn("criado_em");
             Map(c => c.AlteradoEm).ToColumn("alterado_em");
         }

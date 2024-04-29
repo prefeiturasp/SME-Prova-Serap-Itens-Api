@@ -1,9 +1,4 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Commands
 {
@@ -13,6 +8,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Commands
         {
             Arquivo = arquivo;
         }
-        public Dominio.Entities.Arquivo Arquivo { get; set; }
+
+        public Dominio.Entities.Arquivo Arquivo { get; }
     }
 }

@@ -38,7 +38,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             if(itemDto.ArquivoAudioId > 0)
                 await TrataArquivoAudio(itemDto, itemId);
 
-            if (itemDto.ArquivoItemId > 0)
+            if (itemDto.ArquivoVideoId > 0)
                 await TrataArquivoVideo(itemDto, itemId);
             
             return itemId;
@@ -52,7 +52,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         private async Task TrataArquivoVideo(ItemDto itemDto, long itemId)
         {
-            var itemVideo = new ItemVideo(itemDto.ArquivoItemId, itemId, 1, DateTime.Now);
+            var itemVideo = new ItemVideo(itemDto.ArquivoVideoId, itemId, 1, DateTime.Now);
             await mediator.Send(new SalvarItemVideoCommand(itemVideo));
         }
 
@@ -60,7 +60,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
             foreach (var altDto in itemDto?.AlternativasDto)
             {
-                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao, altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
+                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao,
+                    altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
                 await mediator.Send(new SalvarAlternativaCommand(alternativa));
             }
         }

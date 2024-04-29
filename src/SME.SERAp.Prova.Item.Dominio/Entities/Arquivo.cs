@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
     public class Arquivo : EntidadeBase
     {
-
         public Arquivo() { }
+
         public Arquivo(long legadoId, string nome, string caminho,
-            string contentType, int situacao, DateTime criadoEm)
+            string contentType, int situacao, DateTime criadoEm) : this()
         {
             if (Id == 0)
-            { AlteradoEm = null; }
+                AlteradoEm = null;
 
             LegadoId = legadoId;
             Nome = nome;
@@ -32,6 +27,5 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public int Situacao { get; set; }
         public DateTime CriadoEm { get; set; }
         public DateTime? AlteradoEm { get; set; }
-
     }
 }

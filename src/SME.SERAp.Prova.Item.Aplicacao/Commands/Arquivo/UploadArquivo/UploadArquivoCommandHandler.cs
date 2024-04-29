@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Newtonsoft.Json;
+using SME.SERAp.Prova.Item.Aplicacao.Commands;
 using SME.SERAp.Prova.Item.Dominio.Constantes;
+using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Exceptions;
@@ -16,10 +18,12 @@ namespace SME.SERAp.Prova.Item.Aplicacao
     public class UploadArquivoCommandHandler : IRequestHandler<UploadArquivoCommand, RetornoUploadArquivoDto>
     {
         private readonly IHttpClientFactory httpClientFactory;
+        private readonly IMediator mediator;
 
-        public UploadArquivoCommandHandler(IHttpClientFactory httpClientFactory)
+        public UploadArquivoCommandHandler(IHttpClientFactory httpClientFactory, IMediator mediator)
         {
             this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<RetornoUploadArquivoDto> Handle(UploadArquivoCommand request, CancellationToken cancellationToken)
@@ -98,15 +102,26 @@ namespace SME.SERAp.Prova.Item.Aplicacao
             {
                 resposta.EnsureSuccessStatusCode();
 
-                return JsonConvert.DeserializeObject<RetornoUploadArquivoDto>(
-                    await resposta.Content.ReadAsStringAsync(cancellationToken)) ?? new RetornoUploadArquivoDto
+                if (!resposta.IsSuccessStatusCode)
                 {
-                    FileLink = string.Empty,
-                    IdFile = 0,
-                    Message = "Falha ao realizar o upload do arquivo.",
-                    Success = false,
-                    Type = string.Empty
-                };
+                    return new RetornoUploadArquivoDto
+                    {
+                        FileLink = string.Empty,
+                        IdFile = 0,
+                        Message = "Falha ao realizar o upload do arquivo.",
+                        Success = false,
+                        Type = string.Empty
+                    };
+                }
+
+                var retornoUploadArquivo = JsonConvert.DeserializeObject<RetornoUploadArquivoDto>(
+                    await resposta.Content.ReadAsStringAsync(cancellationToken));
+
+                retornoUploadArquivo.IdFile = await mediator.Send(new SalvarArquivoCommand(new Arquivo(
+                    retornoUploadArquivo.IdFile, request.Arquivo.FileName, retornoUploadArquivo.FileLink,
+                    request.Arquivo.ContentType, 1, DateTime.Now)), cancellationToken);
+
+                return retornoUploadArquivo;
             }
             catch (Exception e)
             {
