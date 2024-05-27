@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class ObterListaQuantidadeAlternativasQuery : IRequest<IEnumerable<SelectDto>>
+    public class ObterListaQuantidadeAlternativasQuery : IRequest<IEnumerable<QuantidadeAlternativasDto>>
     {
         public ObterListaQuantidadeAlternativasQuery()
         {
