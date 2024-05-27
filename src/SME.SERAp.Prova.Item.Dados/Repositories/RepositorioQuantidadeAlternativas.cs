@@ -31,17 +31,17 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
-        public async Task<IEnumerable<SelectDto>> ObterListaQuantidadeAlternativas()
+        public async Task<IEnumerable<QuantidadeAlternativasDto>> ObterListaQuantidadeAlternativas()
         {
             using var conn = ObterConexao();
             try
             {
-                var query = @"select id valor, descricao  
+                var query = @"select id valor, descricao, qtde_alternativa quantidade 
                                 from quantidade_alternativa qa 
                                 where status = 1
                                 ORDER BY eh_padrao  DESC, descricao";
 
-                return await conn.QueryAsync<SelectDto>(query);
+                return await conn.QueryAsync<QuantidadeAlternativasDto>(query);
             }
             finally
             {

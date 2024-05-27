@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SME.SERAp.Prova.Item.Dominio.Enums;
-using SME.SERAp.Prova.Item.Infra.Attributes;
+using SME.SERAp.Prova.Item.Infra.Dtos.Alterantiva;
 
 namespace SME.SERAp.Prova.Item.Infra.Dtos
 {
@@ -52,5 +52,17 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public string MediaEhDesvio { get; set; }
         [MaxLength(100, ErrorMessage ="A observação pode ter no máximo 100 caracteres.")]
         public string Observacao { get; set; }
+
+        // ElaboracaoItem
+        public string TextoBase { get; set; }
+        public string Fonte { get; set; }
+
+        [Required(ErrorMessage = "É necessário informar o enunciado do Item")]
+        public string Enunciado { get; set; }
+
+        public List<AltenativaDto> AlternativasDto { get; set; }
+
+        public long ArquivoVideoId { get; set; }
+        public long ArquivoAudioId { get; set; }
     }
 }

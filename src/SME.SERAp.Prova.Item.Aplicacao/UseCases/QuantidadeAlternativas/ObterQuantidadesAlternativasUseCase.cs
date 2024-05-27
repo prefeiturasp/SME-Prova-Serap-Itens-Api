@@ -13,7 +13,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         }
 
-        public async Task<IEnumerable<SelectDto>> Executar()
+        public async Task<IEnumerable<QuantidadeAlternativasDto>> Executar()
         {
             return await mediator.Send(new ObterListaQuantidadeAlternativasQuery());
         }
