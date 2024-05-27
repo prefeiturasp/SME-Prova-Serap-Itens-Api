@@ -31,10 +31,11 @@ namespace SME.SERAp.Prova.Item.Api
         {
             services.AddControllers();
             services.AddHttpContextAccessor();
+            services.AddCors();
 
             ConfigEnvoiromentVariables(services);
 
-            RegistraDependencias.Registrar(services);
+            RegistraDependencias.Registrar(services, Configuration);
             RegistraAutenticacao.Registrar(services, Configuration);
             RegistraDocumentacaoSwagger.Registrar(services);
             RegistraMvc.Registrar(services);
