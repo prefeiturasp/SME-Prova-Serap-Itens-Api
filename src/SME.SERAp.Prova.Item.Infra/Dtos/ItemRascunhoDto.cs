@@ -1,12 +1,7 @@
-﻿
-using SME.SERAp.Prova.Item.Dominio.Enums;
-using System;
+﻿using SME.SERAp.Prova.Item.Dominio.Enums;
+using SME.SERAp.Prova.Item.Infra.Dtos.Alternativa;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Infra.Dtos
 {
@@ -41,7 +36,14 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         [MaxLength(100, ErrorMessage = "A observação pode ter no máximo 100 caracteres.")]
         public string Observacao { get; set; }
 
+        public string TextoBase { get; set; }
+        public string Fonte { get; set; }
 
+        public string Enunciado { get; set; }
 
+        public List<AlternativaRascunhoDto> AlternativasDto { get; set; }
+
+        public long ArquivoVideoId { get; set; }
+        public long ArquivoAudioId { get; set; }
     }
 }
