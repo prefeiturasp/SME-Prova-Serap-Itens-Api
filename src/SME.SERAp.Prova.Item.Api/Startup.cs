@@ -41,12 +41,27 @@ namespace SME.SERAp.Prova.Item.Api
             RegistraMvc.Registrar(services);
         }
 
-        private void ConfigEnvoiromentVariables(IServiceCollection services)
+        private void ConfigurarRabbitmqLog(IServiceCollection services)
         {
-            var conexaoDadosVariaveis = new ConnectionStringOptions();
-            Configuration.GetSection(ConnectionStringOptions.Secao).Bind(conexaoDadosVariaveis, c => c.BindNonPublicProperties = true);
-            services.AddSingleton(conexaoDadosVariaveis);
+            var rabbitLogOptions = new RabbitLogOptions();
+            Configuration.GetSection(RabbitLogOptions.Secao).Bind(rabbitLogOptions, c => c.BindNonPublicProperties = true);
+            services.AddSingleton(rabbitLogOptions);
 
+            var factoryLog = new ConnectionFactory
+            {
+                HostName = rabbitLogOptions.HostName,
+                UserName = rabbitLogOptions.UserName,
+                Password = rabbitLogOptions.Password,
+                VirtualHost = rabbitLogOptions.VirtualHost
+            };
+
+            var conexaoRabbitLog = factoryLog.CreateConnectionAsync().Result;
+            IChannel channelLog = conexaoRabbitLog.CreateChannelAsync().Result;
+        }
+
+
+        private void ConfigurarRabbitmq(IServiceCollection services)
+        {
             var rabbitOptions = new RabbitOptions();
             Configuration.GetSection(RabbitOptions.Secao).Bind(rabbitOptions, c => c.BindNonPublicProperties = true);
             services.AddSingleton(rabbitOptions);
@@ -61,24 +76,26 @@ namespace SME.SERAp.Prova.Item.Api
 
             services.AddSingleton(factory);
 
-            var conexaoRabbit = factory.CreateConnection();
-            IModel channel = conexaoRabbit.CreateModel();
-
-            var rabbitLogOptions = new RabbitLogOptions();
-            Configuration.GetSection(RabbitLogOptions.Secao).Bind(rabbitLogOptions, c => c.BindNonPublicProperties = true);
-            services.AddSingleton(rabbitLogOptions);
-
-            var factoryLog = new ConnectionFactory
+            services.AddSingleton<RabbitMQ.Client.IConnection>(provider =>
             {
-                HostName = rabbitOptions.HostName,
-                UserName = rabbitOptions.UserName,
-                Password = rabbitOptions.Password,
-                VirtualHost = rabbitOptions.VirtualHost
-            };
+                var factory = provider.GetRequiredService<ConnectionFactory>();
+                return factory.CreateConnectionAsync().Result;
+            });
 
-            var conexaoRabbitLog = factoryLog.CreateConnection();
-            IModel channelLog = conexaoRabbitLog.CreateModel();
+            services.AddSingleton<IChannel>(provider =>
+            {
+                var connection = provider.GetRequiredService<RabbitMQ.Client.IConnection>();
+                return connection.CreateChannelAsync().Result;
+            });
+        }
+        private void ConfigEnvoiromentVariables(IServiceCollection services)
+        {
+            var conexaoDadosVariaveis = new ConnectionStringOptions();
+            Configuration.GetSection(ConnectionStringOptions.Secao).Bind(conexaoDadosVariaveis, c => c.BindNonPublicProperties = true);
+            services.AddSingleton(conexaoDadosVariaveis);
 
+            ConfigurarRabbitmqLog(services);
+            ConfigurarRabbitmq(services);
             var redisOptions = new RedisOptions();
             Configuration.GetSection(RedisOptions.Secao).Bind(redisOptions, c => c.BindNonPublicProperties = true);
 
