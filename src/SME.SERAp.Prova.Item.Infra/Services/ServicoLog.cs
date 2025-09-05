@@ -6,6 +6,8 @@ using SME.SERAp.Prova.Item.Infra.Fila;
 using SME.SERAp.Prova.Item.Infra.Interfaces;
 using System;
 using System.Text;
+using System.Threading.Channels;
+using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Infra.Services
 {
@@ -57,7 +59,7 @@ namespace SME.SERAp.Prova.Item.Infra.Services
             Registrar(logMensagem);
         }
 
-        private void PublicarMensagem(byte[] body)
+        private async Task PublicarMensagem(byte[] body)
         {
             try
             {
@@ -69,11 +71,23 @@ namespace SME.SERAp.Prova.Item.Infra.Services
                     VirtualHost = rabbitLogOptions.VirtualHost
                 };
 
-                using var conexaoRabbit = factory.CreateConnection();
-                using IModel _channel = conexaoRabbit.CreateModel();
-                var props = _channel.CreateBasicProperties();
-                props.Persistent = true;
-                _channel.BasicPublish(ExchangeRabbit.Log, RotaRabbit.Log, props, body);
+                using var conexaoRabbit = await factory.CreateConnectionAsync();
+                using var channel = await conexaoRabbit.CreateChannelAsync();
+
+                var props = new BasicProperties
+                {
+                    Persistent = true
+                };
+
+
+                await channel.BasicPublishAsync(
+                    ExchangeRabbit.Log,
+                    RotaRabbit.Log,
+                    true,
+                    props,
+                    body
+                );
+
             }
             catch (Exception ex)
             {
