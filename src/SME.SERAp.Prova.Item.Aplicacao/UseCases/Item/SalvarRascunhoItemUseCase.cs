@@ -86,7 +86,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 itemRascunhoDto.SubAssuntoId, itemRascunhoDto.Situacao, itemRascunhoDto.Tipo,
                 itemRascunhoDto.QuantidadeAlternativasId, palavrasChave,
                 itemRascunhoDto.ParametroBTransformado, itemRascunhoDto.MediaEhDesvio,
-                itemRascunhoDto.Observacao, DateTime.Now, itemRascunhoDto.TextoBase, itemRascunhoDto.Fonte, itemRascunhoDto.Enunciado);
+                itemRascunhoDto.Observacao, itemRascunhoDto.SentencaDescritora, itemRascunhoDto.NivelItem, DateTime.Now, 
+                itemRascunhoDto.TextoBase, itemRascunhoDto.Fonte, itemRascunhoDto.Enunciado);
         }
     }
 }
