@@ -11,7 +11,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
             SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave, 
-            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora, NivelItem nivelItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
+            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora, decimal? nivelItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
         {
             if (id > 0 && id != null)
             {
@@ -69,7 +69,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public string MediaEhDesvio { get; set; }
         public string Observacao { get; set; }
         public string SentencaDescritora { get; set; }
-        public NivelItem NivelItem { get; set; }
+        public decimal? NivelItem { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime DataAlteracao { get; set; }
         public string TextoBase { get; set; }
