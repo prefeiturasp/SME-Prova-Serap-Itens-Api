@@ -31,6 +31,8 @@ namespace SME.SERAp.Prova.Item.Dados.Mappings
             Map(c => c.ParametroBTransformado).ToColumn("parametro_b_transformado");
             Map(c => c.MediaEhDesvio).ToColumn("media_eh_desvio");
             Map(c => c.Observacao).ToColumn("observacao");
+            Map(c => c.SentencaDescritora).ToColumn("sentencadescritora");
+            Map(c => c.NivelItem).ToColumn("nivelitem_id");
             Map(c => c.DataCriacao).ToColumn("criado_em");
             Map(c => c.DataAlteracao).ToColumn("alterado_em");
             Map(c => c.TextoBase).ToColumn("texto_base");

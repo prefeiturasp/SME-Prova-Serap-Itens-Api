@@ -57,6 +57,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IRepositorioArquivo, RepositorioArquivo>();
             services.AddScoped<IRepositorioItemAudio, RepositorioItemAudio>();
             services.AddScoped<IRepositorioItemVideo, RepositorioItemVideo>();
+            services.AddScoped<IRepositorioNivelItem, RepositorioNivelItem>();
         }
 
         private static void RegistrarCasosDeUso(IServiceCollection services)
@@ -81,6 +82,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterQuantidadesAlternativasUseCase, ObterQuantidadesAlternativasUseCase>();
             services.AddScoped<IObterTiposItemUseCase, ObterTiposItemUseCase>();
             services.AddScoped<IObterSituacoesItemUseCase, ObterSituacoesItemUseCase>();
+            services.AddScoped<IObterNivelItemUseCase, ObterNivelItemUseCase>();
 
             services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
         }

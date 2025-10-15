@@ -57,5 +57,13 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         {
             return Ok(await obterTiposItem.Executar());
         }
+
+        [HttpGet("NivelItem")]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterNivelItem([FromServices] IObterNivelItemUseCase obternivelitem)
+        {
+            return Ok(await obternivelitem.Executar());
+        }
     }
 }
