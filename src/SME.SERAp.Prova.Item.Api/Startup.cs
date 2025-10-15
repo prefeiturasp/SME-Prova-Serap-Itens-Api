@@ -112,6 +112,11 @@ namespace SME.SERAp.Prova.Item.Api
             Configuration.GetSection(TelemetriaOptions.Secao).Bind(telemetriaOptions, c => c.BindNonPublicProperties = true);
             services.AddSingleton(telemetriaOptions);
 
+            if (telemetriaOptions.Apm == true)
+            {
+                services.AddElasticApm(new HttpDiagnosticsSubscriber(), new SqlClientDiagnosticSubscriber());
+            }
+
             var servicoTelemetria = new ServicoTelemetria(telemetriaOptions);
             services.AddSingleton<IServicoTelemetria>(servicoTelemetria);
             DapperExtensionMethods.Init(servicoTelemetria);
@@ -119,17 +124,14 @@ namespace SME.SERAp.Prova.Item.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseElasticApm(Configuration,
-              new SqlClientDiagnosticSubscriber(),
-              new HttpDiagnosticsSubscriber());
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SME.SERAp.Prova.Item.Api v1"));
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
