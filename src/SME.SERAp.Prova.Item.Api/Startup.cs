@@ -114,7 +114,7 @@ namespace SME.SERAp.Prova.Item.Api
 
             if (telemetriaOptions.Apm == true)
             {
-                services.AddElasticApm(new HttpDiagnosticsSubscriber(), new SqlClientDiagnosticSubscriber());
+                services.AddElasticApm(new HttpDiagnosticsSubscriber());
             }
 
             var servicoTelemetria = new ServicoTelemetria(telemetriaOptions);

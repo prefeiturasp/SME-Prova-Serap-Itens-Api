@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
+using SME.SERAp.Prova.Item.Infra.Dtos.Arquivo;
+using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Api.Controllers
 {
@@ -18,9 +19,9 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [ProducesResponseType(typeof(RetornoBaseDto), StatusCodes.Status500InternalServerError)]
         [HttpPost("upload/{tipoArquivo}", Name = nameof(UploadAsync))]
         public async Task<IActionResult> UploadAsync([FromRoute] TipoArquivo tipoArquivo, 
-            [FromForm] IFormFile file, [FromServices] IUploadArquivoUseCase useCase)
+            [FromForm] ArquivoDto arquivoDto, [FromServices] IUploadArquivoUseCase useCase)
         {
-            return Ok(await useCase.ExecutarAsync(file, tipoArquivo));
+            return Ok(await useCase.ExecutarAsync(arquivoDto, tipoArquivo));
         }
     }
 }
