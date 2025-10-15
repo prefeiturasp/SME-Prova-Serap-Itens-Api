@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
-using SME.SERAp.Prova.Item.Dominio.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -17,9 +16,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Queries.NivelItem.ObterIdNivelItemOrdem
             this.repositorioNivelItem = repositorioNivelItem ?? throw new ArgumentNullException(nameof(repositorioNivelItem));
         }
 
-        public Task<IEnumerable<Dominio.Entities.NivelItem>> Handle(ObterNivelItemQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Dominio.Entities.NivelItem>> Handle(ObterNivelItemQuery request, CancellationToken cancellationToken)
         {
-            return repositorioNivelItem.Obter();
+            return await repositorioNivelItem.Obter();
         }
     }
 }
