@@ -77,17 +77,35 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 palavrasChave = string.Join(";", itemRascunhoDto.PalavrasChave);
 
             return new Dominio.Entities.Item(
-                itemRascunhoDto.Id, itemRascunhoDto.CodigoItem,
-                areaConhecimento.Id, disciplina.Id,
-                itemRascunhoDto.MatrizId, itemRascunhoDto.CompetenciaId,
-                itemRascunhoDto.HabilidadeId, itemRascunhoDto.AnoMatrizId,
-                itemRascunhoDto.DificuldadeSugeridaId, itemRascunhoDto.Discriminacao,
-                itemRascunhoDto.AcertoCasual, itemRascunhoDto.Dificuldade, itemRascunhoDto.AssuntoId,
-                itemRascunhoDto.SubAssuntoId, itemRascunhoDto.Situacao, itemRascunhoDto.Tipo,
-                itemRascunhoDto.QuantidadeAlternativasId, palavrasChave,
-                itemRascunhoDto.ParametroBTransformado, itemRascunhoDto.MediaEhDesvio,
-                itemRascunhoDto.Observacao, itemRascunhoDto.SentencaDescritora, itemRascunhoDto.NivelItem, DateTime.Now, 
-                itemRascunhoDto.TextoBase, itemRascunhoDto.Fonte, itemRascunhoDto.Enunciado);
+                itemRascunhoDto.Id, 
+                itemRascunhoDto.CodigoItem,
+                areaConhecimento.Id, 
+                disciplina.Id,
+                itemRascunhoDto.MatrizId, 
+                itemRascunhoDto.CompetenciaId,
+                itemRascunhoDto.HabilidadeId, 
+                itemRascunhoDto.AnoMatrizId,
+                itemRascunhoDto.DificuldadeSugeridaId, 
+                itemRascunhoDto.Discriminacao,
+                itemRascunhoDto.AcertoCasual, 
+                itemRascunhoDto.Dificuldade, 
+                itemRascunhoDto.AssuntoId,
+                itemRascunhoDto.SubAssuntoId, 
+                itemRascunhoDto.Situacao, 
+                itemRascunhoDto.Tipo,
+                itemRascunhoDto.QuantidadeAlternativasId, 
+                palavrasChave,
+                itemRascunhoDto.ParametroBTransformado, 
+                itemRascunhoDto.MediaEhDesvio,
+                itemRascunhoDto.Observacao, 
+                itemRascunhoDto.SentencaDescritora, 
+                itemRascunhoDto.NivelItem, 
+                1,
+                DateTime.Now, 
+                itemRascunhoDto.TextoBase, 
+                itemRascunhoDto.Fonte, 
+                itemRascunhoDto.Enunciado
+            );
         }
     }
 }
