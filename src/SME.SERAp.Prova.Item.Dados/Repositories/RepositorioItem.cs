@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
+using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,33 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                               
 
                 return await conn.QueryFirstOrDefaultAsync<long?>(query, new { areaConhecimentoLegadoId , disciplinaLegadoId });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        public async Task<IEnumerable<CodigoItemDto>> ListaCodigosItens(long? codigoItem)
+        {
+            using var conn = ObterConexao();
+            try
+            {
+                var query = new StringBuilder(@" SELECT ID,
+	                                                    Codigo_Item as CodigoItem
+    	                                           FROM ITEM");
+
+
+               if(codigoItem is not null)
+                    query.Append($@" WHERE  CAST(codigo_item AS TEXT) LIKE '%{codigoItem}%';");
+
+
+                return await conn.QueryAsync<CodigoItemDto>(query.ToString(), new { codigoItem });
             }
             catch (Exception ex)
             {

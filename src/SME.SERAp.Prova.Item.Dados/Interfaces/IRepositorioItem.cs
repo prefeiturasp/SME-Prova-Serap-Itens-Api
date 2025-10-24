@@ -1,4 +1,5 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Entities;
+using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
         Task<long?> ObterMaiorValorId();
 
         Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId);
+
+        Task<IEnumerable<CodigoItemDto>> ListaCodigosItens(long? codigoItem);
+
 
 
     }

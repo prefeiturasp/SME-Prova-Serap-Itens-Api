@@ -65,5 +65,27 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         {
             return Ok(await obternivelitem.Executar());
         }
+
+        [HttpGet("Codigos")]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+    
+        public async Task<IActionResult> ObterListaCodigoItens(long? codigoItem, [FromServices] IObterListaCodigoItensUseCase obterListaCodigoItensUseCase)
+        {
+            return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
+        }
+
+
+        [HttpGet("Itens")]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+
+        public async Task<IActionResult> ObterListaItens([FromQuery] long areaConhecimentoId,  , [FromServices] IObterListaCodigoItensUseCase obterListaCodigoItensUseCase)
+        {
+            return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
+        }
+
+
+
     }
 }
