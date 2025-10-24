@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class GeraCodigoItemQueryHandler : IRequestHandler<GeraCodigoItemQuery, long>
+    public class GeraCodigoItemQueryHandler : IRequestHandler<GeraCodigoItemQuery, string>
     {
         private readonly IRepositoSequencialItem RepositoSequencialItem;
         private readonly IMediator mediator;
@@ -21,7 +21,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator)) ;
         }
 
-        public async Task<long> Handle(GeraCodigoItemQuery request, CancellationToken cancellationToken)
+        public async Task<string> Handle(GeraCodigoItemQuery request, CancellationToken cancellationToken)
         {
             var sequencialItem = await mediator.Send(new ObterSequencialItemPorAreaEDisciplinaQuery(request.AreaConhecimento.Codigo , request.Disciplina.Codigo));
             
@@ -33,10 +33,10 @@ namespace SME.SERAp.Prova.Item.Aplicacao
             return codigoItem;
         }
 
-        private async Task<long> GeraCodigoItem(long codigoAreaConhecimento, long codigoDisciplina, long ultimoSequencial)
+        private async Task<string> GeraCodigoItem(long codigoAreaConhecimento, long codigoDisciplina, long ultimoSequencial)
         {
             var codigoItem = $"{codigoAreaConhecimento}{codigoDisciplina}{ultimoSequencial}";
-            return long.Parse(codigoItem);
+            return codigoItem;
         }
     }
 }
