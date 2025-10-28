@@ -8,12 +8,11 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
 
     {
         public Alternativa() { }
-        public Alternativa( string descricao, string justificativa, string numeracao,
+        public Alternativa(long? Id, string descricao, string justificativa, string numeracao,
             bool correta, int ordem, DateTime criadoEm , long itemId)
         {
             if(Id == 0)
-            { AlteradoEm = null; }
-
+            { AlteradoEm = null; }            
             Descricao = descricao;
             Justificativa = justificativa;
             Numeracao = numeracao;
@@ -23,7 +22,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             CriadoEm = criadoEm;
             ItemId = itemId;
         }
-
+        
         public string Descricao { get; set; }
         public string Justificativa { get; set; }
         public string Numeracao { get; set; }

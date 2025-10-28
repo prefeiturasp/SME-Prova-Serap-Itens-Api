@@ -40,6 +40,14 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
             return Ok(await obterItemPorIdUseCase.Executar(itemId));
         }
 
+        [HttpGet("{itemId}/comAlternativas")]
+        [ProducesResponseType(typeof(ItemConsulta), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterItemComAlternativasPorId(long itemId, [FromServices] IObterItemComAlternativaPorIdUseCase obterItemComAlternativaPorIdUseCase)
+        {
+            return Ok(await obterItemComAlternativaPorIdUseCase.Executar(itemId));
+        }
+
 
         [HttpGet("Situacoes")]
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]

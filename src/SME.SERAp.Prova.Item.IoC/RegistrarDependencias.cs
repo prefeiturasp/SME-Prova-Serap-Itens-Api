@@ -73,6 +73,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterDisciplinaCompletaPorIdUseCase, ObterDisciplinaCompletaPorIdUseCase>();
             services.AddScoped<IObterMatrizPorIdUseCase, ObterMatrizPorIdUseCase>();
             services.AddScoped<IObterItemPorIdUseCase, ObterItemPorIdUseCase>();
+            services.AddScoped<IObterItemComAlternativaPorIdUseCase, ObterItemComAlternativaPorIdUseCase>();
             services.AddScoped<IObterDificuldadesUseCase, ObterDificuldadesUseCase>();
             services.AddScoped<IObterCompetenciasPorMatrizIdUseCase, ObterCompetenciasPorMatrizIdUseCase>();
             services.AddScoped<IObterHabilidadesPorCompetenciaIdUseCase, ObterHabilidadesPorCompetenciaIdUseCase>();

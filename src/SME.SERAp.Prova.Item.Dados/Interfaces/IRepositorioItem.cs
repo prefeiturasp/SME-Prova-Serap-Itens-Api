@@ -13,6 +13,7 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
 
         Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId);
 
+        Task<Dominio.Entities.Item> ObterComAlternativaPorIdAsync(long id);
 
     }
 }

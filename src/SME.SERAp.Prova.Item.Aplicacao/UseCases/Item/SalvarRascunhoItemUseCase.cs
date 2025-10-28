@@ -46,7 +46,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
             return itemId;
 
-            }
+            
            
         }
         
@@ -66,7 +66,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
             foreach (var altDto in itemRascunhoDto.AlternativasDto)
             {
-                var alternativa = new Alternativa(altDto.Descricao, altDto.Justificativa, altDto.Numeracao,
+                var alternativa = new Alternativa(altDto.Id, altDto.Descricao, altDto.Justificativa, altDto.Numeracao,
                     altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
 
                 await mediator.Send(new SalvarAlternativaCommand(alternativa));
