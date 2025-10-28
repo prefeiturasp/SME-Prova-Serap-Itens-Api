@@ -72,6 +72,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             if (itemDto.PalavrasChave?.Length > 0)
                 palavrasChave = string.Join(";", itemDto.PalavrasChave);
 
+            long versaoItem = 1;
+
             return new Dominio.Entities.Item(
                 itemDto?.Id, itemDto.CodigoItem,
                 areaConhecimento.Id, disciplina.Id,
@@ -82,7 +84,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 itemDto.SubAssuntoId, itemDto.Situacao, itemDto.Tipo,
                 itemDto.QuantidadeAlternativasId, palavrasChave,
                 itemDto.ParametroBTransformado, itemDto.MediaEhDesvio,
-                itemDto.Observacao, itemDto.SentencaDescritora, itemDto.NivelItem, DateTime.Now, itemDto.TextoBase, itemDto.Fonte, itemDto.Enunciado);
+                itemDto.Observacao, itemDto.SentencaDescritora, itemDto.NivelItem, versaoItem, DateTime.Now, itemDto.TextoBase, itemDto.Fonte, itemDto.Enunciado);
         }
     }
 }

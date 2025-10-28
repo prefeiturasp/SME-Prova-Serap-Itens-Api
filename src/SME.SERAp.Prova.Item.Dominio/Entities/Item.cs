@@ -7,11 +7,11 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
     public class Item : EntidadeBase
     {
         public Item() { }
-        public Item(long? id, long codigoItem, long areaconhecimentoId, long disciplinaId,
+        public Item(long? id, string codigoItem, long areaconhecimentoId, long disciplinaId,
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
             SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave, 
-            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora, decimal? nivelItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
+            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora, decimal? nivelItem, long versaoItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
         {
             if (id > 0 && id != null)
             {
@@ -42,13 +42,15 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             Observacao = observacao;
             SentencaDescritora = sentencaDescritora;
             NivelItem = nivelItem;
-            DataCriacao= dataCriacao;
+            VersaoItem = versaoItem;
+            DataCriacao = dataCriacao;
             Fonte = fonte;
             Enunciado = enunciado;
             TextoBase= textoBase;
         }
 
-        public long CodigoItem { get; set; }
+        public long VersaoItem { get; set; }
+        public string CodigoItem { get; set; }
         public long AreaconhecimentoId { get; set; }
         public long DisciplinaId { get; set; }
         public long? MatrizId { get; set; }
