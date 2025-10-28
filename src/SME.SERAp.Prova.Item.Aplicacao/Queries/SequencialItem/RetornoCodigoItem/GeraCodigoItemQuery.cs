@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao
 {
-    public class GeraCodigoItemQuery : IRequest<long>
+    public class GeraCodigoItemQuery : IRequest<string>
     {
         public GeraCodigoItemQuery(AreaConhecimento areaConhecimento, Disciplina disciplina)
         {

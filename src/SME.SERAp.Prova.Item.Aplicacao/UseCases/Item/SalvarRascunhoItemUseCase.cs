@@ -17,6 +17,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         public async Task<long> Executar(ItemRascunhoDto itemRascunhoDto)
         {
+      
             var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemRascunhoDto.AreaConhecimentoId));
             if (areaConhecimento == null)
                 throw new Exception($"A area de conhecimento com o id: {itemRascunhoDto.AreaConhecimentoId} não foi encontrada.");
@@ -28,7 +29,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             if (itemRascunhoDto.Id == null || itemRascunhoDto.Id <= 0)
                 itemRascunhoDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
 
-            if ((itemRascunhoDto.Id != null || itemRascunhoDto.Id <= 0) && itemRascunhoDto.CodigoItem == 0)
+            if ((itemRascunhoDto.Id != null || itemRascunhoDto.Id <= 0) && (itemRascunhoDto.CodigoItem == "0"))
                 throw new Exception($"O codigo do item não pode ser zero, pois o item já existe na base de dados");
 
             var item = MapItemDto(itemRascunhoDto, areaConhecimento, disciplina);
@@ -44,6 +45,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 await TrataArquivoVideo(itemRascunhoDto, itemId);            
 
             return itemId;
+
+            }
+           
         }
         
         private async Task TrataArquivoAudio(ItemRascunhoDto itemRascunhoDto, long itemId)
@@ -69,43 +73,53 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             }
         }
 
-        private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemRascunhoDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
-        {
-            // CRIAR QUERY PARA ISSO 
-            var palavrasChave = string.Empty;
-            if (itemRascunhoDto.PalavrasChave?.Length > 0)
-                palavrasChave = string.Join(";", itemRascunhoDto.PalavrasChave);
+            private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemRascunhoDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
+            {
+                // CRIAR QUERY PARA ISSO 
+                var palavrasChave = string.Empty;
+                if (itemRascunhoDto.PalavrasChave?.Length > 0)
+                    palavrasChave = string.Join(";", itemRascunhoDto.PalavrasChave);
+
+
+            long? competenciaId = itemRascunhoDto.CompetenciaId > 0 ? itemRascunhoDto.CompetenciaId : null;
+            long? habilidadeId = itemRascunhoDto.HabilidadeId > 0 ? itemRascunhoDto.HabilidadeId : null;
+            long? anoMatrizId = itemRascunhoDto.AnoMatrizId > 0 ? itemRascunhoDto.AnoMatrizId : null;
+            long? dificuldadeSugeridaId = itemRascunhoDto.DificuldadeSugeridaId > 0 ? itemRascunhoDto.DificuldadeSugeridaId : null;
+            long? assuntoId = itemRascunhoDto.AssuntoId > 0 ? itemRascunhoDto.AssuntoId : null;
+            long? subAssuntoId = itemRascunhoDto.SubAssuntoId > 0 ? itemRascunhoDto.SubAssuntoId : null;
+            long? quantidadeAlternativaId = itemRascunhoDto.QuantidadeAlternativasId > 0 ? itemRascunhoDto.QuantidadeAlternativasId : null;
+           
 
             return new Dominio.Entities.Item(
-                itemRascunhoDto.Id, 
-                itemRascunhoDto.CodigoItem,
-                areaConhecimento.Id, 
-                disciplina.Id,
-                itemRascunhoDto.MatrizId, 
-                itemRascunhoDto.CompetenciaId,
-                itemRascunhoDto.HabilidadeId, 
-                itemRascunhoDto.AnoMatrizId,
-                itemRascunhoDto.DificuldadeSugeridaId, 
-                itemRascunhoDto.Discriminacao,
-                itemRascunhoDto.AcertoCasual, 
-                itemRascunhoDto.Dificuldade, 
-                itemRascunhoDto.AssuntoId,
-                itemRascunhoDto.SubAssuntoId, 
-                itemRascunhoDto.Situacao, 
-                itemRascunhoDto.Tipo,
-                itemRascunhoDto.QuantidadeAlternativasId, 
-                palavrasChave,
-                itemRascunhoDto.ParametroBTransformado, 
-                itemRascunhoDto.MediaEhDesvio,
-                itemRascunhoDto.Observacao, 
-                itemRascunhoDto.SentencaDescritora, 
-                itemRascunhoDto.NivelItem, 
-                1,
-                DateTime.Now, 
-                itemRascunhoDto.TextoBase, 
-                itemRascunhoDto.Fonte, 
-                itemRascunhoDto.Enunciado
-            );
+                    itemRascunhoDto.Id, 
+                    itemRascunhoDto.CodigoItem,
+                    areaConhecimento.Id, 
+                    disciplina.Id,
+                    itemRascunhoDto.MatrizId,
+                    competenciaId,
+                    habilidadeId,
+                    anoMatrizId,
+                    dificuldadeSugeridaId, 
+                    itemRascunhoDto.Discriminacao,
+                    itemRascunhoDto.AcertoCasual, 
+                    itemRascunhoDto.Dificuldade,
+                    assuntoId,
+                    subAssuntoId, 
+                    itemRascunhoDto.Situacao, 
+                    itemRascunhoDto.Tipo,
+                    itemRascunhoDto.QuantidadeAlternativasId, 
+                    palavrasChave,
+                    itemRascunhoDto.ParametroBTransformado, 
+                    itemRascunhoDto.MediaEhDesvio,
+                    itemRascunhoDto.Observacao, 
+                    itemRascunhoDto.SentencaDescritora, 
+                    itemRascunhoDto.NivelItem, 
+                    1,
+                    DateTime.Now, 
+                    itemRascunhoDto.TextoBase, 
+                    itemRascunhoDto.Fonte, 
+                    itemRascunhoDto.Enunciado
+                );
+            }
         }
-    }
 }
