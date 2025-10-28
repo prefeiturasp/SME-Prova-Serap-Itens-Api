@@ -27,10 +27,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 return await conn.QueryFirstOrDefaultAsync<long?>(query);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+       
             finally
             {
                 conn.Close();
@@ -53,10 +50,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 return await conn.QueryFirstOrDefaultAsync<long?>(query, new { areaConhecimentoLegadoId , disciplinaLegadoId });
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+         
             finally
             {
                 conn.Close();
@@ -132,10 +126,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 return await conn.QueryAsync<ItemListaDto>(query.ToString());
             }
 
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+       
 
             finally
             {
