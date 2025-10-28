@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 {
-    public class ObterListaCodigoItensUseCase : AbstractUseCase, IObterListaCodigoItensUseCase
+    public class ObterCodigosItensUseCase : AbstractUseCase, IObterCodigosItensUseCase
     {
-        public ObterListaCodigoItensUseCase(IMediator mediator) : base(mediator)
+        public ObterCodigosItensUseCase(IMediator mediator) : base(mediator)
         {
         }
 

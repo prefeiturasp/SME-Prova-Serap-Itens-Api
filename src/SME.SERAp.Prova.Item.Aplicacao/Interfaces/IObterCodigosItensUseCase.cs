@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Interfaces
 {
-    public interface IObterListaCodigoItensUseCase
+    public interface IObterCodigosItensUseCase
     {
         Task<IEnumerable<SelectDto>> Executar(long? codigoItem);
     }

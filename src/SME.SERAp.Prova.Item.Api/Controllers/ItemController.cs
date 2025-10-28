@@ -3,6 +3,7 @@ using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
+using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItemConsulta = SME.SERAp.Prova.Item.Dominio.Entities.Item;
@@ -70,19 +71,19 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
     
-        public async Task<IActionResult> ObterListaCodigoItens(long? codigoItem, [FromServices] IObterListaCodigoItensUseCase obterListaCodigoItensUseCase)
+        public async Task<IActionResult> ObterListaCodigoItens(long? codigoItem, [FromServices] IObterCodigosItensUseCase obterListaCodigoItensUseCase)
         {
             return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
         }
 
 
-        [HttpGet("Itens")]
-        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
+        [HttpGet("ObterListaItens")]
+        [ProducesResponseType(typeof(IEnumerable<ItemListaDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
 
-        public async Task<IActionResult> ObterListaItens([FromQuery] long areaConhecimentoId,  , [FromServices] IObterListaCodigoItensUseCase obterListaCodigoItensUseCase)
+        public async Task<IActionResult> ObterListaItens([FromQuery] FiltroItemsDto filtroDto, [FromServices] IObterListaItemsUseCase obterListaItemsUseCase)
         {
-            return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
+            return Ok(await obterListaItemsUseCase.Executar(filtroDto));
         }
 
 

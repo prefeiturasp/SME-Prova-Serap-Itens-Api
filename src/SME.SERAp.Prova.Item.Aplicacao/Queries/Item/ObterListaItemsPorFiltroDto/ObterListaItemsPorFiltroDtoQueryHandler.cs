@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Queries
 {
-    internal class ObterListaCodigoItensQueryHandler : IRequestHandler<ObterListaCodigoItensQuery, IEnumerable<CodigoItemDto>>
+    public class ObterListaItemsPorFiltroDtoQueryHandler : IRequestHandler<ObterListaItemsPorFiltroDtoQuery, IEnumerable<ItemListaDto>>
     {
         private readonly IRepositorioItem repositorioItem;
 
-        public ObterListaCodigoItensQueryHandler(IRepositorioItem repositorioItem)
+        public ObterListaItemsPorFiltroDtoQueryHandler(IRepositorioItem repositorioItem)
         {
             this.repositorioItem = repositorioItem ?? throw new ArgumentNullException(nameof(repositorioItem));
         }
 
-        public async Task<IEnumerable<CodigoItemDto>> Handle(ObterListaCodigoItensQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ItemListaDto>> Handle(ObterListaItemsPorFiltroDtoQuery request, CancellationToken cancellationToken)
         {
-            return await repositorioItem.ObterListaCodigosItens(request.CodigoItem);
+            return await repositorioItem.ObterListaItensPorFiltro(request.FiltroItemsDto);
         }
     }
 }

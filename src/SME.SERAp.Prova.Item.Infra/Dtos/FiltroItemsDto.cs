@@ -1,13 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace SME.SERAp.Prova.Item.Infra.Dtos
 {
     public class FiltroItemsDto
     {
+        public long? AreaConhecimentoId { get; set; }
 
+        public string CodigoItem { get; set; }
+
+        public long? DisciplinaId { get; set; }
+
+        public long? MatrizId { get; set; }
+
+        public long? CompetenciaId { get; set; }
+
+        public long? DificuldadeSugeridaId { get; set; }
+
+        public long? Situacao { get; set; }
+
+        public long? HabilidadeId { get; set; }
     }
 }
