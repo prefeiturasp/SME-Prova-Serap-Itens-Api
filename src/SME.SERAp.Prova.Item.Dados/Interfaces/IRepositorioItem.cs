@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Interfaces
 {
-    public interface IRepositorioItem : IRepositorioBase<Dominio.Entities.Item>
+    public interface IRepositorioItem : IRepositorioBase<SME.SERAp.Prova.Item.Dominio.Entities.Item>
     {
         Task<long?> ObterMaiorValorId();
 
         Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId);
 
-
+        Task<Dominio.Entities.Item> ObterPorId(long itemId);
+        Task<SME.SERAp.Prova.Item.Dominio.Entities.Item> ObterUltimaVersaoItemPorId(long itemId);
+        Task<IEnumerable<Alternativa>> ObterAlternativasPorItemId(long itemId);
+        Task<IEnumerable<SME.SERAp.Prova.Item.Dominio.Entities.Item>> ObterTodasVersoesPorCodigoItem(long codigoItem);
     }
 }

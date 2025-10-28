@@ -65,5 +65,21 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         {
             return Ok(await obternivelitem.Executar());
         }
+
+        [HttpGet("resumo/{itemId}")]
+        [ProducesResponseType(typeof(ItemResumoDto), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 404)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterItemResumoPorId(long itemId, [FromServices] IObterItemResumoPorIdUseCase obterItemResumoPorIdUseCase)
+        {
+            var resumo = await obterItemResumoPorIdUseCase.Executar(itemId);
+
+            if (resumo == null)
+            {
+                return NotFound(new RetornoBaseDto("Item não encontrado ou sem a última versão disponível."));
+            }
+
+            return Ok(resumo);
+        }
     }
 }
