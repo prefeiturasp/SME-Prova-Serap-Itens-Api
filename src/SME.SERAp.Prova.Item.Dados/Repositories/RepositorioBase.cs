@@ -18,13 +18,13 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             this.connectionStrings = connectionStrings ?? throw new ArgumentNullException(nameof(connectionStrings));
         }
 
-        protected IDbConnection ObterConexao()
+        protected virtual IDbConnection ObterConexao()
         {
             var conexao = new NpgsqlConnection(connectionStrings.ApiSerapItem);
             conexao.Open();
             return conexao;
         }
-        protected IDbConnection ObterConexaoLeitura()
+        protected virtual IDbConnection ObterConexaoLeitura()
         {
             var conexao = new NpgsqlConnection(connectionStrings.ApiSerapItemLeitura);
             conexao.Open();

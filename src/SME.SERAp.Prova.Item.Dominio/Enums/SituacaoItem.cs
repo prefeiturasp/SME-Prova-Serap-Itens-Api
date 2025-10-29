@@ -8,11 +8,9 @@ namespace SME.SERAp.Prova.Item.Dominio.Enums
 {
     public enum SituacaoItem
     {
-
         Inativo = 0,
         Ativo = 1,
         Pendente = 2,
         Rascunho = 3
-
     }
 }

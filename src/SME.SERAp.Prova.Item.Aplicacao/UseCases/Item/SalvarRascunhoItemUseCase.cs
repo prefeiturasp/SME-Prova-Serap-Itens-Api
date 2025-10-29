@@ -45,9 +45,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 await TrataArquivoVideo(itemRascunhoDto, itemId);            
 
             return itemId;
-
-            }
-           
         }
         
         private async Task TrataArquivoAudio(ItemRascunhoDto itemRascunhoDto, long itemId)
