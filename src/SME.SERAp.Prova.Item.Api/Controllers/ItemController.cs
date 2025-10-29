@@ -78,7 +78,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ItemListaDto>), 200)]
+        [ProducesResponseType(typeof(PaginacaoDto<ItemListaDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
 
         public async Task<IActionResult> ObterListaItens([FromQuery] FiltroItemsDto filtroDto, [FromServices] IObterListaItemsUseCase obterListaItemsUseCase)
