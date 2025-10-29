@@ -7,6 +7,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Interfaces
 {
     public interface IObterListaItemsUseCase
     {
-        Task<IEnumerable<ItemListaDto>> Executar(FiltroItemsDto filtroItem);
+        Task<PaginacaoDto<ItemListaDto>> Executar(FiltroItemsDto filtroItem);
     }
 }

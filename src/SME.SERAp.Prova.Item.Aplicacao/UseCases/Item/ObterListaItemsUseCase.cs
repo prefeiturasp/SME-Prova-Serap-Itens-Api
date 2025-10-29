@@ -19,16 +19,16 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
         }
 
-        public async Task<IEnumerable<ItemListaDto>> Executar(FiltroItemsDto filtroItem)
+        public async Task<PaginacaoDto<ItemListaDto>> Executar(FiltroItemsDto filtroItem)
         {
             var listaItemsDto = await mediator.Send(new ObterListaItemsPorFiltroDtoQuery(filtroItem));
-            if (listaItemsDto != null && listaItemsDto.Any())
+            if (listaItemsDto != null && listaItemsDto.Itens.Any())
             {
-                foreach (var item in listaItemsDto)
+                foreach (var item in listaItemsDto.Itens)
                     if(item.Situacao is not null)
                      item.SituacaoDesc = EnumExtensions.Descricao((SituacaoItem)item.Situacao);
 
-              return  listaItemsDto.OrderBy(x => x.CodigoItem);
+                return listaItemsDto;
             }
 
             return default;

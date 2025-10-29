@@ -7,12 +7,12 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Queries
 {
     public class ObterListaCodigoItensQuery : IRequest<IEnumerable<CodigoItemDto>>
     {
-        public ObterListaCodigoItensQuery(long? codigoItem)
+        public ObterListaCodigoItensQuery(string codigoItem)
         {
             CodigoItem = codigoItem;
         }
 
-        public long? CodigoItem { get; set; }
+        public string CodigoItem { get; set; }
 
     }
 }

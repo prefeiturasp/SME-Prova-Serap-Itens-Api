@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Nest;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
@@ -58,7 +59,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
-        public async Task<IEnumerable<CodigoItemDto>> ObterListaCodigosItens(long? codigoItem)
+        public async Task<IEnumerable<CodigoItemDto>> ObterListaCodigosItens(string codigoItem)
         {
             using var conn = ObterConexao();
             try
@@ -83,51 +84,71 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
         }
 
 
-
-        public async Task<IEnumerable<ItemListaDto>> ObterListaItensPorFiltro(FiltroItemsDto filtroDto)
+        public async Task<PaginacaoDto<ItemListaDto>> ObterListaItensPorFiltro(FiltroItemsDto filtroDto)
         {
             using var conn = ObterConexao();
             try
             {
-                var query = new StringBuilder(@" SELECT I.Id, 
-                                                        I.codigo_item as CodigoItem, 
-                                                        I.Enunciado,
-                                                        D2.Descricao  as Disciplina,  
-                                                        D.Descricao as Dificuldade , 
-                                                        I.Situacao, 
-                                                        I.Criado_em as DataCriacao
-                                                 FROM  ITEM I  
-                                                 LEFT JOIN DIFICULDADE D  on D.Id  = I.dificuldade_sugerida_id  
-                                                 LEFT JOIN DISCIPLINA  D2  on D2.Id = i.disciplina_id
-                                                 WHERE 1 = 1");
-
+                var queryBase = new StringBuilder(@"
+            FROM ITEM I  
+            LEFT JOIN DIFICULDADE D ON D.Id = I.dificuldade_sugerida_id  
+            LEFT JOIN DISCIPLINA D2 ON D2.Id = I.disciplina_id
+            WHERE 1 = 1
+        ");
 
                 if (filtroDto.CodigoItem is not null)
-                    query.Append($@" AND  I.codigo_item  = '{filtroDto.CodigoItem}' ");
+                    queryBase.Append($@" AND I.codigo_item = '{filtroDto.CodigoItem}' ");
 
                 if (filtroDto.AreaConhecimentoId is not null)
-                    query.Append($@" AND  I.area_conhecimento_id  = {filtroDto.AreaConhecimentoId} ");
+                    queryBase.Append($@" AND I.area_conhecimento_id = {filtroDto.AreaConhecimentoId} ");
 
                 if (filtroDto.CompetenciaId is not null)
-                    query.Append($@" AND  I.competencia_id  = {filtroDto.CompetenciaId} ");
+                    queryBase.Append($@" AND I.competencia_id = {filtroDto.CompetenciaId} ");
+
                 if (filtroDto.HabilidadeId is not null)
-                    query.Append($@" AND  I.habilidade_id  = {filtroDto.HabilidadeId} ");
+                    queryBase.Append($@" AND I.habilidade_id = {filtroDto.HabilidadeId} ");
+
                 if (filtroDto.DisciplinaId is not null)
-                    query.Append($@" AND  I.disciplina_id  = {filtroDto.DisciplinaId} ");
+                    queryBase.Append($@" AND I.disciplina_id = {filtroDto.DisciplinaId} ");
 
                 if (filtroDto.DificuldadeSugeridaId is not null)
-                    query.Append($@" AND  I.dificuldade_sugerida_id  = {filtroDto.DificuldadeSugeridaId} ");
+                    queryBase.Append($@" AND I.dificuldade_sugerida_id = {filtroDto.DificuldadeSugeridaId} ");
+
                 if (filtroDto.MatrizId is not null)
-                    query.Append($@" AND  I.matriz_id  = {filtroDto.MatrizId} ");
+                    queryBase.Append($@" AND I.matriz_id = {filtroDto.MatrizId} ");
 
                 if (filtroDto.Situacao is not null)
-                    query.Append($@" AND  I.situacao  = {filtroDto.Situacao} ");
+                    queryBase.Append($@" AND I.situacao = {filtroDto.Situacao} ");
 
-                return await conn.QueryAsync<ItemListaDto>(query.ToString());
+
+                var countQuery = $"SELECT COUNT(*) {queryBase}";
+                var totalRegistros = await conn.ExecuteScalarAsync<int>(countQuery);
+
+                var querySelect = new StringBuilder(@"
+            SELECT 
+                I.Id, 
+                I.codigo_item AS CodigoItem, 
+                I.Enunciado,
+                D2.Descricao AS Disciplina,  
+                D.Descricao AS Dificuldade, 
+                I.Situacao, 
+                I.Criado_em AS DataCriacao
+        ");
+
+                querySelect.Append(queryBase);
+
+                querySelect.Append(" ORDER BY I.codigo_item DESC ");
+
+                int pagina = filtroDto.Pagina ?? 1;
+                int tamanhoPagina = filtroDto.TamanhoPagina ?? 10;
+                int offset = (pagina - 1) * tamanhoPagina;
+
+                querySelect.Append($" LIMIT {tamanhoPagina} OFFSET {offset} ");
+
+                var itens = await conn.QueryAsync<ItemListaDto>(querySelect.ToString());
+
+                return new PaginacaoDto<ItemListaDto>(itens, pagina, tamanhoPagina, totalRegistros);
             }
-
-       
-
             finally
             {
                 conn.Close();

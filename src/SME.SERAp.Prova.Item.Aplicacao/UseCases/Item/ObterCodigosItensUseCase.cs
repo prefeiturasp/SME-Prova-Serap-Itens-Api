@@ -14,7 +14,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
         }
 
-        public async Task<IEnumerable<SelectDto>> Executar(long? codigoItem)
+        public async Task<IEnumerable<SelectDto>> Executar(string codigoItem)
         {
             var listaCodigoItem = await mediator.Send(new ObterListaCodigoItensQuery(codigoItem));
             if (listaCodigoItem != null && listaCodigoItem.Any())

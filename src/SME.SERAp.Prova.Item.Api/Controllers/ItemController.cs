@@ -71,13 +71,13 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
     
-        public async Task<IActionResult> ObterListaCodigoItens(long? codigoItem, [FromServices] IObterCodigosItensUseCase obterListaCodigoItensUseCase)
+        public async Task<IActionResult> ObterListaCodigoItens([FromQuery] string codigoItem, [FromServices] IObterCodigosItensUseCase obterListaCodigoItensUseCase)
         {
             return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
         }
 
 
-        [HttpGet("ObterListaItens")]
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ItemListaDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
 

@@ -19,5 +19,10 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public long? Situacao { get; set; }
 
         public long? HabilidadeId { get; set; }
+
+        public int? Pagina { get; set; }
+
+        public int? TamanhoPagina { get; set; }
+
     }
 }

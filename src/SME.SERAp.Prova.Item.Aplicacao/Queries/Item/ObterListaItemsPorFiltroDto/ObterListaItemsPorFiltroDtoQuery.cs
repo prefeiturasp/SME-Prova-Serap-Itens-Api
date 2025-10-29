@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Queries
 {
-    public class ObterListaItemsPorFiltroDtoQuery : IRequest<IEnumerable<ItemListaDto>>
+    public class ObterListaItemsPorFiltroDtoQuery : IRequest<PaginacaoDto<ItemListaDto>>
     {
         public ObterListaItemsPorFiltroDtoQuery(FiltroItemsDto filtroItems)
         {

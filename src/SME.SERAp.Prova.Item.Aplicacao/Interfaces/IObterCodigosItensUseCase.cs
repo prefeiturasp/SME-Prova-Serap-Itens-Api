@@ -9,6 +9,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Interfaces
 {
     public interface IObterCodigosItensUseCase
     {
-        Task<IEnumerable<SelectDto>> Executar(long? codigoItem);
+        Task<IEnumerable<SelectDto>> Executar(string codigoItem);
     }
 }

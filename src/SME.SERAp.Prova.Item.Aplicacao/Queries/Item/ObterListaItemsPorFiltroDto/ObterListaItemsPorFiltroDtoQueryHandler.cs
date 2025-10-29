@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
+using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Queries
 {
-    public class ObterListaItemsPorFiltroDtoQueryHandler : IRequestHandler<ObterListaItemsPorFiltroDtoQuery, IEnumerable<ItemListaDto>>
+    public class ObterListaItemsPorFiltroDtoQueryHandler : IRequestHandler<ObterListaItemsPorFiltroDtoQuery, PaginacaoDto<ItemListaDto>>
     {
         private readonly IRepositorioItem repositorioItem;
 
@@ -19,7 +20,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Queries
             this.repositorioItem = repositorioItem ?? throw new ArgumentNullException(nameof(repositorioItem));
         }
 
-        public async Task<IEnumerable<ItemListaDto>> Handle(ObterListaItemsPorFiltroDtoQuery request, CancellationToken cancellationToken)
+        public async Task<PaginacaoDto<ItemListaDto>> Handle(ObterListaItemsPorFiltroDtoQuery request, CancellationToken cancellationToken)
         {
             return await repositorioItem.ObterListaItensPorFiltro(request.FiltroItemsDto);
         }
