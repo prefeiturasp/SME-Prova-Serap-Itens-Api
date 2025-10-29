@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Constraints\" />
-    <Folder Include="Entidades\" />
     <Folder Include="Enumerados\" />
   </ItemGroup>
 

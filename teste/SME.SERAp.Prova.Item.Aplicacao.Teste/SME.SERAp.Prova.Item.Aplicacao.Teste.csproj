@@ -32,9 +32,4 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCase\" />
-    <Folder Include="Queries\" />
-  </ItemGroup>
-
 </Project>

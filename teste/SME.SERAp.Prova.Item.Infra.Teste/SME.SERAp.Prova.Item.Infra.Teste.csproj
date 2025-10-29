@@ -36,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="Cache\" />
-    <Folder Include="Dtos\" />
     <Folder Include="EnvironmentVariables\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />

@@ -10,7 +10,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
     {
         public ItemResumoDto() { }
 
-        public ItemResumoDto(long id, long codigoItem, string textoBase, string enunciado, string fonte, long versaoItem, long quantidadeVersoes)
+        public ItemResumoDto(long id, string codigoItem, string textoBase, string enunciado, string fonte, long versaoItem, long quantidadeVersoes)
         {
             Id = id;
             CodigoItem = codigoItem;
@@ -24,7 +24,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         }
 
         public long Id { get; set; }
-        public long CodigoItem { get; set; }
+        public string CodigoItem { get; set; }
         public string TextoBase { get; set; }
         public string Enunciado { get; set; }
         public string Fonte { get; set; }

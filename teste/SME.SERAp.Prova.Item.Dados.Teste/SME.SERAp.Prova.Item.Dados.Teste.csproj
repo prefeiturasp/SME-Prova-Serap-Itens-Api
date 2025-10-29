@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Mapeamentos\" />
-    <Folder Include="Repositorios\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterAlternativasBrutasPorItemId;
+using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterItemBasePorId;
 using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterTodasVersoesPorCodigoItem;
-using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System;
 using System.Collections.Generic;
@@ -14,16 +14,14 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases.Item
 {
     public class ObterItemResumoPorIdUseCase : AbstractUseCase, IObterItemResumoPorIdUseCase
     {
-        private readonly IRepositorioItem repositorioItem;
-
-        public ObterItemResumoPorIdUseCase(IMediator mediator, IRepositorioItem repositorioItem) : base(mediator)
+        public ObterItemResumoPorIdUseCase(IMediator mediator) : base(mediator)
         {
-            this.repositorioItem = repositorioItem;
+            
         }
 
         public async Task<ItemResumoDto> Executar(long itemId)
         {
-            var item = await repositorioItem.ObterUltimaVersaoItemPorId(itemId);
+            var item = await mediator.Send(new ObterItemBasePorIdQuery(itemId));
 
             if (item == null)
             {
@@ -31,6 +29,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases.Item
             }
 
             var alternativas = await mediator.Send(new ObterAlternativasBrutasPorItemIdQuery(item.Id));
+
             var versoesItens = (await mediator.Send(new ObterTodasVersoesPorCodigoItemQuery(item.CodigoItem))).ToList();
 
             var listaVersoesDto = versoesItens

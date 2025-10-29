@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Nest;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;
@@ -48,9 +49,10 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                inner join disciplina d  on d.legado_id  = i.disciplina_legado_id 
                                where  are_conhecimento_legado_id = @areaConhecimentoLegadoId
                                  and disciplina_legado_id  = @disciplinaLegadoId";
-                              
 
-                return await conn.QueryFirstOrDefaultAsync<long?>(query, new { areaConhecimentoLegadoId , disciplinaLegadoId });
+
+                var resultado = await conn.QueryAsync<long?>(query, new { areaConhecimentoLegadoId, disciplinaLegadoId });
+                return resultado?.FirstOrDefault() ?? 0;
             }
             catch (Exception ex)
             {
@@ -81,52 +83,28 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
-        public async Task<DominioItem> ObterUltimaVersaoItemPorId(long itemId)
+        public async Task<DominioItem> ObterUltimaVersaoItemPorCodigo(string codigoItem)
         {
+            const string queryUltimaVersao = @"
+                                                SELECT *
+                                                FROM item i
+                                                WHERE i.codigo_item = @codigoItem
+                                                ORDER BY i.versao_item DESC
+                                                LIMIT 1;";
+
+            using var conn = ObterConexao();
             try
             {
-                const string queryItem = @"SELECT * FROM item WHERE id = @itemId;";
-
-                DominioItem itemOriginal;
-                using (var conn = ObterConexao())
-                {
-                    itemOriginal = await conn.QueryFirstOrDefaultAsync<DominioItem>(queryItem, new { itemId });
-                }
-
-                if (itemOriginal == null)
-                {
-                    return null;
-                }
-
-                const string queryUltimaVersao = @"
-                                                    SELECT *
-                                                    FROM item i
-                                                    WHERE i.codigo_item = @codigoItemString -- Sem o cast::bigint
-                                                    ORDER BY i.versao_item DESC
-                                                    LIMIT 1;";
-
-                using (var conn = ObterConexao())
-                {
-                    try
-                    {
-                        return await conn.QueryFirstOrDefaultAsync<DominioItem>(queryUltimaVersao, new
-                        {
-                            codigoItemString = itemOriginal.CodigoItem.ToString()
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        throw;
-                    }
-                    finally
-                    {
-                       
-                    }
-                }
+                return await conn.QueryFirstOrDefaultAsync<DominioItem>(queryUltimaVersao, new { codigoItem });
             }
             catch (Exception ex)
             {
-                throw new Exception($"Erro ao obter a última versão do item com ID {itemId}. Causa: {ex.Message}", ex);
+                throw new Exception($"Erro ao obter a última versão do item pelo Código {codigoItem}.", ex);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
             }
         }
 
@@ -155,7 +133,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
-        public async Task<IEnumerable<DominioItem>> ObterTodasVersoesPorCodigoItem(long codigoItem)
+        public async Task<IEnumerable<DominioItem>> ObterTodasVersoesPorCodigoItem(string codigoItem)
         {
             const string query = @"
                                     SELECT 
@@ -164,16 +142,13 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                         versao_item VersaoItem,
                                         criado_em DataCriacao
                                     FROM item
-                                    WHERE codigo_item = @codigoItemString
+                                    WHERE codigo_item = @codigoItem
                                     ORDER BY versao_item;";
 
             using var conn = ObterConexao();
             try
             {
-                return await conn.QueryAsync<DominioItem>(query, new
-                {
-                    codigoItemString = codigoItem.ToString()
-                });
+                return await conn.QueryAsync<DominioItem>(query, new { codigoItem });
             }
             finally
             {

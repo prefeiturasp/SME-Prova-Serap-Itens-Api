@@ -9,11 +9,11 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterTodasVersoesPorCodigo
 {
     public class ObterTodasVersoesPorCodigoItemQuery : IRequest<IEnumerable<Dominio.Entities.Item>>
     {
-        public ObterTodasVersoesPorCodigoItemQuery(long codigoItem)
+        public ObterTodasVersoesPorCodigoItemQuery(string codigoItem)
         {
             CodigoItem = codigoItem;
         }
 
-        public long CodigoItem { get; set; }
+        public string CodigoItem { get; set; }
     }
 }

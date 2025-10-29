@@ -14,8 +14,8 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
         Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId);
 
         Task<Dominio.Entities.Item> ObterPorId(long itemId);
-        Task<SME.SERAp.Prova.Item.Dominio.Entities.Item> ObterUltimaVersaoItemPorId(long itemId);
+        Task<Dominio.Entities.Item> ObterUltimaVersaoItemPorCodigo(string codigoItem);
         Task<IEnumerable<Alternativa>> ObterAlternativasPorItemId(long itemId);
-        Task<IEnumerable<SME.SERAp.Prova.Item.Dominio.Entities.Item>> ObterTodasVersoesPorCodigoItem(long codigoItem);
+        Task<IEnumerable<SME.SERAp.Prova.Item.Dominio.Entities.Item>> ObterTodasVersoesPorCodigoItem(string codigoItem);
     }
 }
