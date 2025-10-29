@@ -83,8 +83,13 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterTiposItemUseCase, ObterTiposItemUseCase>();
             services.AddScoped<IObterSituacoesItemUseCase, ObterSituacoesItemUseCase>();
             services.AddScoped<IObterNivelItemUseCase, ObterNivelItemUseCase>();
-
             services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
+            services.AddScoped<IObterCodigosItensUseCase, ObterCodigosItensUseCase>();
+            services.AddScoped<IObterListaItemsUseCase, ObterListaItemsUseCase>();
+            
+
+
+
         }
 
         private static void RegistraMapeamentos()
