@@ -17,6 +17,5 @@ namespace SME.SERAp.Prova.Item.Dominio.Enums
         Pendente = 2,
         [Description("Rascunho")]
         Rascunho = 3
-
     }
 }

@@ -19,7 +19,6 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
                 DataAlteracao = DateTime.Now;
             }
 
-
             CodigoItem = codigoItem;
             AreaconhecimentoId = areaconhecimentoId;
             MatrizId = matrizId;
@@ -77,7 +76,5 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public string TextoBase { get; set; }
         public string Fonte { get; set; }
         public string Enunciado { get; set; }
-
-
     }
 }

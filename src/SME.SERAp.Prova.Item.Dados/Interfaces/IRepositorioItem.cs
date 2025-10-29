@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Interfaces
 {
-    public interface IRepositorioItem : IRepositorioBase<Dominio.Entities.Item>
+    public interface IRepositorioItem : IRepositorioBase<SME.SERAp.Prova.Item.Dominio.Entities.Item>
     {
         Task<long?> ObterMaiorValorId();
 
@@ -21,5 +21,9 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
 
 
 
+        Task<Dominio.Entities.Item> ObterPorId(long itemId);
+        Task<Dominio.Entities.Item> ObterUltimaVersaoItemPorCodigo(string codigoItem);
+        Task<IEnumerable<Alternativa>> ObterAlternativasPorItemId(long itemId);
+        Task<IEnumerable<SME.SERAp.Prova.Item.Dominio.Entities.Item>> ObterTodasVersoesPorCodigoItem(string codigoItem);
     }
 }
