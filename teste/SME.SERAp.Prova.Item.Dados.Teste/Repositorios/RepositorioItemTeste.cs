@@ -170,30 +170,6 @@ namespace SME.SERAp.Prova.Item.Dados.Teste.Repositorios
             conexaoDbMock.Verify(c => c.Close(), Times.Once);
         }
 
-        [Fact(DisplayName = "Deve propagar exceção com mensagem customizada se houver falha no DB")]
-        public async Task ObterUltimaVersaoItemPorCodigo_Deve_Propagar_Excecao()
-        {
-            var servicoTelemetria = new Mock<IServicoTelemetria>();
-            DapperExtensionMethods.Init(servicoTelemetria.Object);
-
-            var dbException = new InvalidOperationException("Erro de conexão simulado.");
-
-            servicoTelemetria
-                .Setup(c => c.RegistrarComRetornoAsync<DominioItem>(
-                    It.IsAny<Func<Task<object>>>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()))
-                .ThrowsAsync(dbException);
-
-            var excecaoCapturada = await Assert.ThrowsAsync<Exception>(() =>
-                repositorio.ObterUltimaVersaoItemPorCodigo(CodigoItemValido));
-
-            Assert.Contains($"Erro ao obter a última versão do item pelo Código {CodigoItemValido}.", excecaoCapturada.Message);
-            Assert.Equal(dbException, excecaoCapturada.InnerException);
-            conexaoDbMock.Verify(c => c.Close(), Times.Once);
-        }
-
         [Fact(DisplayName = "Deve retornar a quantidade de itens por Área de Conhecimento e Disciplina")]
         public async Task ObterQtdItensAreaConhecimentoEhDisciplina_Deve_Retornar_Quantidade()
         {

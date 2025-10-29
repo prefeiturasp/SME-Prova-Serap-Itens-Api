@@ -135,11 +135,11 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             try
             {
                 var queryBase = new StringBuilder(@"
-            FROM ITEM I  
-            LEFT JOIN DIFICULDADE D ON D.Id = I.dificuldade_sugerida_id  
-            LEFT JOIN DISCIPLINA D2 ON D2.Id = I.disciplina_id
-            WHERE 1 = 1
-        ");
+                                                        FROM ITEM I  
+                                                        LEFT JOIN DIFICULDADE D ON D.Id = I.dificuldade_sugerida_id  
+                                                        LEFT JOIN DISCIPLINA D2 ON D2.Id = I.disciplina_id
+                                                        WHERE 1 = 1
+                                                    ");
 
                 if (filtroDto.CodigoItem is not null)
                     queryBase.Append($@" AND I.codigo_item = '{filtroDto.CodigoItem}' ");
@@ -170,15 +170,15 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 var totalRegistros = await conn.ExecuteScalarAsync<int>(countQuery);
 
                 var querySelect = new StringBuilder(@"
-            SELECT 
-                I.Id, 
-                I.codigo_item AS CodigoItem, 
-                I.Enunciado,
-                D2.Descricao AS Disciplina,  
-                D.Descricao AS Dificuldade, 
-                I.Situacao, 
-                I.Criado_em AS DataCriacao
-        ");
+                                                        SELECT 
+                                                            I.Id, 
+                                                            I.codigo_item AS CodigoItem, 
+                                                            I.Enunciado,
+                                                            D2.Descricao AS Disciplina,  
+                                                            D.Descricao AS Dificuldade, 
+                                                            I.Situacao, 
+                                                            I.Criado_em AS DataCriacao
+                                                    ");
 
                 querySelect.Append(queryBase);
 
@@ -193,7 +193,6 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 var itens = await conn.QueryAsync<ItemListaDto>(querySelect.ToString());
 
                 return new PaginacaoDto<ItemListaDto>(itens, pagina, tamanhoPagina, totalRegistros);
-                throw new Exception($"Erro ao obter a última versão do item pelo Código {codigoItem}.", ex);
             }
             finally
             {
