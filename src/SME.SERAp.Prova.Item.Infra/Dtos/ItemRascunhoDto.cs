@@ -8,7 +8,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
     public class ItemRascunhoDto
     {
         public long? Id { get; set; }
-        public long CodigoItem { get; set; }
+        public string CodigoItem { get; set; }
 
         [Required(ErrorMessage = "É necessário informar o id da area de conhecimento")]
         [Range(1, long.MaxValue, ErrorMessage = "Area de conhecimento tem que ser maior que zero ")]

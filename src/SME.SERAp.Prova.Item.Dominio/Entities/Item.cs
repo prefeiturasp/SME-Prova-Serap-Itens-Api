@@ -7,7 +7,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
     public class Item : EntidadeBase
     {
         public Item() { }
-        public Item(long? id, long codigoItem, long areaconhecimentoId, long disciplinaId,
+        public Item(long? id, string codigoItem, long areaconhecimentoId, long disciplinaId,
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
             SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave, 
@@ -50,7 +50,7 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         }
 
         public long VersaoItem { get; set; }
-        public long CodigoItem { get; set; }
+        public string CodigoItem { get; set; }
         public long AreaconhecimentoId { get; set; }
         public long DisciplinaId { get; set; }
         public long? MatrizId { get; set; }
