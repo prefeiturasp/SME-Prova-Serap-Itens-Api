@@ -10,6 +10,6 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos.Itens
     {
 
         public long Id { get; set; }
-        public long? CodigoItem { get; set; }
+        public string CodigoItem { get; set; }
     }
 }
