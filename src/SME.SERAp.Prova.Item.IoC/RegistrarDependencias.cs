@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Aplicacao.UseCases;
+using SME.SERAp.Prova.Item.Aplicacao.UseCases.Item;
 using SME.SERAp.Prova.Item.Dados;
 using SME.SERAp.Prova.Item.Dados.Cache;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
@@ -84,8 +85,13 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IObterTiposItemUseCase, ObterTiposItemUseCase>();
             services.AddScoped<IObterSituacoesItemUseCase, ObterSituacoesItemUseCase>();
             services.AddScoped<IObterNivelItemUseCase, ObterNivelItemUseCase>();
+            services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
+            services.AddScoped<IObterCodigosItensUseCase, ObterCodigosItensUseCase>();
+            services.AddScoped<IObterListaItemsUseCase, ObterListaItemsUseCase>();
+            
 
             services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
+            services.AddScoped<IObterItemResumoPorIdUseCase, ObterItemResumoPorIdUseCase>();
         }
 
         private static void RegistraMapeamentos()

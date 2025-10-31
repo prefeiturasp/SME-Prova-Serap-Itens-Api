@@ -17,7 +17,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         public async Task<long> Executar(ItemRascunhoDto itemRascunhoDto)
         {
-      
+
             var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemRascunhoDto.AreaConhecimentoId));
             if (areaConhecimento == null)
                 throw new Exception($"A area de conhecimento com o id: {itemRascunhoDto.AreaConhecimentoId} não foi encontrada.");
@@ -37,19 +37,21 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
             if (itemRascunhoDto.AlternativasDto != null)
                 await TrataAlternativas(itemRascunhoDto, itemId);
-            
-            if(itemRascunhoDto.ArquivoAudioId > 0)
+
+            if (itemRascunhoDto.ArquivoAudioId > 0)
                 await TrataArquivoAudio(itemRascunhoDto, itemId);
 
             if (itemRascunhoDto.ArquivoVideoId > 0)
-                await TrataArquivoVideo(itemRascunhoDto, itemId);            
+                await TrataArquivoVideo(itemRascunhoDto, itemId);
 
             return itemId;
 
             
            
         }
-        
+
+
+
         private async Task TrataArquivoAudio(ItemRascunhoDto itemRascunhoDto, long itemId)
         {
             var itemAudio = new ItemAudio(itemRascunhoDto.ArquivoAudioId, itemId, 1, DateTime.Now);
@@ -60,7 +62,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
             var itemVideo = new ItemVideo(itemRascunhoDto.ArquivoVideoId, itemId, 1, DateTime.Now);
             await mediator.Send(new SalvarItemVideoCommand(itemVideo));
-        }        
+        }
 
         private async Task TrataAlternativas(ItemRascunhoDto itemRascunhoDto, long itemId)
         {
@@ -73,12 +75,12 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             }
         }
 
-            private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemRascunhoDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
-            {
-                // CRIAR QUERY PARA ISSO 
-                var palavrasChave = string.Empty;
-                if (itemRascunhoDto.PalavrasChave?.Length > 0)
-                    palavrasChave = string.Join(";", itemRascunhoDto.PalavrasChave);
+        private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemRascunhoDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
+        {
+            // CRIAR QUERY PARA ISSO 
+            var palavrasChave = string.Empty;
+            if (itemRascunhoDto.PalavrasChave?.Length > 0)
+                palavrasChave = string.Join(";", itemRascunhoDto.PalavrasChave);
 
 
             long? competenciaId = itemRascunhoDto.CompetenciaId > 0 ? itemRascunhoDto.CompetenciaId : null;
@@ -88,38 +90,38 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             long? assuntoId = itemRascunhoDto.AssuntoId > 0 ? itemRascunhoDto.AssuntoId : null;
             long? subAssuntoId = itemRascunhoDto.SubAssuntoId > 0 ? itemRascunhoDto.SubAssuntoId : null;
             long? quantidadeAlternativaId = itemRascunhoDto.QuantidadeAlternativasId > 0 ? itemRascunhoDto.QuantidadeAlternativasId : null;
-           
+
 
             return new Dominio.Entities.Item(
-                    itemRascunhoDto.Id, 
+                    itemRascunhoDto.Id,
                     itemRascunhoDto.CodigoItem,
-                    areaConhecimento.Id, 
+                    areaConhecimento.Id,
                     disciplina.Id,
                     itemRascunhoDto.MatrizId,
                     competenciaId,
                     habilidadeId,
                     anoMatrizId,
-                    dificuldadeSugeridaId, 
+                    dificuldadeSugeridaId,
                     itemRascunhoDto.Discriminacao,
-                    itemRascunhoDto.AcertoCasual, 
+                    itemRascunhoDto.AcertoCasual,
                     itemRascunhoDto.Dificuldade,
                     assuntoId,
-                    subAssuntoId, 
-                    itemRascunhoDto.Situacao, 
+                    subAssuntoId,
+                    itemRascunhoDto.Situacao,
                     itemRascunhoDto.Tipo,
-                    itemRascunhoDto.QuantidadeAlternativasId, 
+                    itemRascunhoDto.QuantidadeAlternativasId,
                     palavrasChave,
-                    itemRascunhoDto.ParametroBTransformado, 
+                    itemRascunhoDto.ParametroBTransformado,
                     itemRascunhoDto.MediaEhDesvio,
-                    itemRascunhoDto.Observacao, 
-                    itemRascunhoDto.SentencaDescritora, 
-                    itemRascunhoDto.NivelItem, 
+                    itemRascunhoDto.Observacao,
+                    itemRascunhoDto.SentencaDescritora,
+                    itemRascunhoDto.NivelItem,
                     1,
-                    DateTime.Now, 
-                    itemRascunhoDto.TextoBase, 
-                    itemRascunhoDto.Fonte, 
+                    DateTime.Now,
+                    itemRascunhoDto.TextoBase,
+                    itemRascunhoDto.Fonte,
                     itemRascunhoDto.Enunciado
                 );
-            }
         }
+    }
 }

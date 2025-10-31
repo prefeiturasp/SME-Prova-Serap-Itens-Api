@@ -3,6 +3,7 @@ using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
+using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItemConsulta = SME.SERAp.Prova.Item.Dominio.Entities.Item;
@@ -72,6 +73,44 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         public async Task<IActionResult> ObterNivelItem([FromServices] IObterNivelItemUseCase obternivelitem)
         {
             return Ok(await obternivelitem.Executar());
+        }
+
+        [HttpGet("Codigos")]
+        [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+    
+        public async Task<IActionResult> ObterListaCodigoItens([FromQuery] string codigoItem, [FromServices] IObterCodigosItensUseCase obterListaCodigoItensUseCase)
+        {
+            return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
+        }
+
+
+        [HttpGet]
+        [ProducesResponseType(typeof(PaginacaoDto<ItemListaDto>), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+
+        public async Task<IActionResult> ObterListaItens([FromQuery] FiltroItemsDto filtroDto, [FromServices] IObterListaItemsUseCase obterListaItemsUseCase)
+        {
+            return Ok(await obterListaItemsUseCase.Executar(filtroDto));
+        }
+
+
+
+
+        [HttpGet("resumo/{itemId}")]
+        [ProducesResponseType(typeof(ItemResumoDto), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 404)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> ObterItemResumoPorId(long itemId, [FromServices] IObterItemResumoPorIdUseCase obterItemResumoPorIdUseCase)
+        {
+            var resumo = await obterItemResumoPorIdUseCase.Executar(itemId);
+
+            if (resumo == null)
+            {
+                return NotFound(new RetornoBaseDto("Item não encontrado ou sem a última versão disponível."));
+            }
+
+            return Ok(resumo);
         }
     }
 }

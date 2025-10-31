@@ -20,7 +20,6 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
                 DataAlteracao = DateTime.Now;
             }
 
-
             CodigoItem = codigoItem;
             AreaconhecimentoId = areaconhecimentoId;
             MatrizId = matrizId;
