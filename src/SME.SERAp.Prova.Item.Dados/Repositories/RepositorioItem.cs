@@ -82,6 +82,24 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
+        public async Task<Dominio.Entities.Item> ObterComAlternativaPorIdAsync(long itemId)
+        {
+            using var conn = ObterConexao();
+            try
+            {
+                var query = @"SELECT * FROM Item WHERE Id = @itemId;
+                              SELECT * FROM Alternativa WHERE item_id = @itemId;";
+                using var multi = await conn.QueryMultipleAsync(query, new { itemId });
+                var item = await multi.ReadFirstOrDefaultAsync<Dominio.Entities.Item>();
+                if (item != null)
+                    item.Alternativas = (await multi.ReadAsync<Alternativa>()).ToList();
+                return item;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public async Task<DominioItem> ObterUltimaVersaoItemPorCodigo(string codigoItem)
         {
             const string queryUltimaVersao = @"

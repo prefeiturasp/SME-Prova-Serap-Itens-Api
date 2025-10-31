@@ -15,6 +15,7 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
 
         Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId);
 
+        Task<Dominio.Entities.Item> ObterComAlternativaPorIdAsync(long id);
         Task<IEnumerable<CodigoItemDto>> ObterListaCodigosItens(string codigoItem);
 
         Task<PaginacaoDto<ItemListaDto>> ObterListaItensPorFiltro(FiltroItemsDto filtroDto);

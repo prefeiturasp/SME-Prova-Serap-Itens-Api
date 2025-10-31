@@ -1,5 +1,6 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
@@ -76,5 +77,9 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         public string TextoBase { get; set; }
         public string Fonte { get; set; }
         public string Enunciado { get; set; }
+
+        public List<Alternativa> Alternativas { get; set; }
+
+
     }
 }

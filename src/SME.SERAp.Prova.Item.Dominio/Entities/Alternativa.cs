@@ -8,22 +8,41 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
 
     {
         public Alternativa() { }
-        public Alternativa( string descricao, string justificativa, string numeracao,
-            bool correta, int ordem, DateTime criadoEm , long itemId)
-        {
-            if(Id == 0)
-            { AlteradoEm = null; }
 
+        public Alternativa(string descricao, string justificativa, string numeracao,
+            bool correta, int ordem, DateTime criadoEm, long itemId)
+        {            
+            this.AlteradoEm = null;            
             Descricao = descricao;
             Justificativa = justificativa;
             Numeracao = numeracao;
-            Ordem= ordem;
             Correta = correta;
             Ordem = ordem;
             CriadoEm = criadoEm;
             ItemId = itemId;
         }
 
+        public Alternativa(long? id, string descricao, string justificativa, string numeracao,
+            bool correta, int ordem, DateTime criadoEm , long itemId)
+        {
+            if (id.HasValue && id.Value > 0)
+            {
+                this.Id = id.Value;
+                this.AlteradoEm = DateTime.Now;
+            }
+            else
+            {
+                this.AlteradoEm = null;
+            }
+            Descricao = descricao;
+            Justificativa = justificativa;
+            Numeracao = numeracao;            
+            Correta = correta;
+            Ordem = ordem;
+            CriadoEm = criadoEm;
+            ItemId = itemId;
+        }
+        
         public string Descricao { get; set; }
         public string Justificativa { get; set; }
         public string Numeracao { get; set; }
