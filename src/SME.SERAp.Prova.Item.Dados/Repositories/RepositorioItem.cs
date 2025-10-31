@@ -98,6 +98,8 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
         public async Task<DominioItem> ObterUltimaVersaoItemPorCodigo(string codigoItem)
         {
             const string queryUltimaVersao = @"

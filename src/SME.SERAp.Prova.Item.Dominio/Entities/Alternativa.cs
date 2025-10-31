@@ -8,6 +8,20 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
 
     {
         public Alternativa() { }
+
+        public Alternativa(string descricao, string justificativa, string numeracao,
+            bool correta, int ordem, DateTime criadoEm, long itemId)
+        {            
+            this.AlteradoEm = null;            
+            Descricao = descricao;
+            Justificativa = justificativa;
+            Numeracao = numeracao;
+            Correta = correta;
+            Ordem = ordem;
+            CriadoEm = criadoEm;
+            ItemId = itemId;
+        }
+
         public Alternativa(long? id, string descricao, string justificativa, string numeracao,
             bool correta, int ordem, DateTime criadoEm , long itemId)
         {
