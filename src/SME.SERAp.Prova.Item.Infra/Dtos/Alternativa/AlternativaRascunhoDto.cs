@@ -19,5 +19,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos.Alternativa
         public bool Correta { get; set; }
 
         public int Ordem { get; set; }
+
+        public long itemId { get; set; }
     }
 }
