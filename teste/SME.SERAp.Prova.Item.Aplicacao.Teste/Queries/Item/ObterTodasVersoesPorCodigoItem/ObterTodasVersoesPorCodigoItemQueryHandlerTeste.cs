@@ -9,9 +9,9 @@ using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterTodasVersoesPorCodigoItem;
 
-namespace SME.SERAp.Prova.Item.Aplicacao.Teste.Queries.ObterTodasVersoesPorCodigoItem
+namespace SME.SERAp.Prova.Item.Aplicacao.Teste.Queries.Item
 {
-    using DominioItem = SME.SERAp.Prova.Item.Dominio.Entities.Item;
+    using DominioItem = Dominio.Entities.Item;
     public class ObterTodasVersoesPorCodigoItemQueryHandlerTeste
     {
         private readonly Mock<IRepositorioItem> repositorioItemMock;
