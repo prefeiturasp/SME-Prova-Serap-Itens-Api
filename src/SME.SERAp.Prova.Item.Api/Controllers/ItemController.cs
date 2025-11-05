@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
@@ -12,6 +13,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 {
     [ApiController]
     [Route("/api/v1/Item")]
+    [Authorize]
     public class ItemController : ControllerBase
     {
         [HttpPost("salvar-rascunho")]
