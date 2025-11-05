@@ -12,7 +12,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
     public class AutenticacaoController : Controller
     {
         [HttpPost]
-        [ChaveAutenticacaoApi]
+        //[ChaveAutenticacaoApi]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
