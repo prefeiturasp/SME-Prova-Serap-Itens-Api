@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
@@ -11,6 +12,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 {
     [ApiController]
     [Route("/api/v1/Arquivo")]
+    [Authorize]
     public class ArquivoController : ControllerBase
     {
         [ValidaDto]
