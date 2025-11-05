@@ -4,5 +4,6 @@
     {
         public string Login { get; set; }
         public string Perfil { get; set; }
+        public string ChaveApi { get; set; }
     }
 }

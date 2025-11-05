@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Api.Controllers
 {
     [ApiController]
-    [Route("/api/v1/TipoGrade")]    
+    [Route("/api/v1/TipoGrade")]
+    [Authorize]
     public class TipoGradeController : ControllerBase
     {
         [HttpGet("Matriz/{idMatriz}")]

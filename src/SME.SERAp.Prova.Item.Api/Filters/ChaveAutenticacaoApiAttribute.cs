@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SME.SERAp.Prova.Item.Api.Attributes
+namespace SME.SERAp.Prova.Item.Api.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class ChaveAutenticacaoApiAttribute : Attribute, IAsyncActionFilter

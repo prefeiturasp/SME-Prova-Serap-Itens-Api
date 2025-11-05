@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SME.SERAp.Prova.Item.Api.Attributes;
+using SME.SERAp.Prova.Item.Api.Filters;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Autenticacao;
