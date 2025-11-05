@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Aplicacao;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
@@ -11,6 +12,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 
     [ApiController]
     [Route("/api/v1/Matriz")]
+    [Authorize]
     public class MatrizController : ControllerBase
     {
 

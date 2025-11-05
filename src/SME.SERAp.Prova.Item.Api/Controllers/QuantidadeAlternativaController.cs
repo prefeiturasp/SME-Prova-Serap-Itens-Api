@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 {
     [ApiController]
     [Route("/api/v1/QuantidadeAlternativa")]
+    [Authorize]
     public class QuantidadeAlternativaController : ControllerBase
     {
         [HttpGet]
