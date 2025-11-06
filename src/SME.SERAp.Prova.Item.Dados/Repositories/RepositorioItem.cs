@@ -183,6 +183,17 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 if (filtroDto.Situacao is not null)
                     queryBase.Append($@" AND I.situacao = {filtroDto.Situacao} ");
 
+                if(filtroDto.AnoMatrizId is not null)
+                    queryBase.Append($@" AND I.tipo_grade_id = {filtroDto.AnoMatrizId} ");
+
+                if (filtroDto.PalavrasChave != null && filtroDto.PalavrasChave.Any())
+                    queryBase.Append($@" AND I.PALAVRAS_CHAVE LIKE '%{filtroDto.PalavrasChave}%'");
+
+                if (filtroDto.InformacoesEstatisticas == true)
+                    queryBase.Append($"AND ( I.discriminacao IS NOT NULL  AND I.acerto_casual IS NOT NULL AND I.Dificuldade is not NULL )");
+              
+                if (filtroDto.InformacoesEstatisticas == false)
+                    queryBase.Append($"AND ( I.discriminacao IS  NULL  OR I.acerto_casual IS  NULL OR I.Dificuldade is  NULL )");
 
                 var countQuery = $"SELECT COUNT(*) {queryBase}";
                 var totalRegistros = await conn.ExecuteScalarAsync<int>(countQuery);
@@ -212,6 +223,8 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 return new PaginacaoDto<ItemListaDto>(itens, pagina, tamanhoPagina, totalRegistros);
             }
+
+          
             finally
             {
                 conn.Close();
