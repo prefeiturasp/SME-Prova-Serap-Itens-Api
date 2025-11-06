@@ -10,6 +10,8 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
 
         public long? DisciplinaId { get; set; }
 
+        public long? AnoMatrizId { get; set; }
+
         public long? MatrizId { get; set; }
 
         public long? CompetenciaId { get; set; }
@@ -19,6 +21,10 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public long? Situacao { get; set; }
 
         public long? HabilidadeId { get; set; }
+
+        public string[] PalavrasChave { get; set; }
+
+        public bool? InformacoesEstatisticas { get; set; }
 
         public int? Pagina { get; set; }
 

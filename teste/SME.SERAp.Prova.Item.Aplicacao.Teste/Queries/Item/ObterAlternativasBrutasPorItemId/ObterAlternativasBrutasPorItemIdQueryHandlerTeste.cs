@@ -9,7 +9,7 @@ using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterAlternativasBrutasPorItemId;
 
-namespace SME.SERAp.Prova.Item.Aplicacao.Teste.Queries.ObterAlternativasBrutasPorItemId
+namespace SME.SERAp.Prova.Item.Aplicacao.Teste.Queries.Item
 {
     public class ObterAlternativasBrutasPorItemIdQueryHandlerTeste
     {
