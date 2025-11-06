@@ -13,7 +13,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 {
     [ApiController]
     [Route("/api/v1/Item")]
-    [Authorize]
+    //[Authorize]
     public class ItemController : ControllerBase
     {
         [HttpPost("salvar-rascunho")]
