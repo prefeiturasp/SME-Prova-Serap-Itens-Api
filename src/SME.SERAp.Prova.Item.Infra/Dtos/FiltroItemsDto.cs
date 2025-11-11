@@ -30,5 +30,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
 
         public int? TamanhoPagina { get; set; }
 
+        public long? CategoriaId { get; set; }
+
     }
 }

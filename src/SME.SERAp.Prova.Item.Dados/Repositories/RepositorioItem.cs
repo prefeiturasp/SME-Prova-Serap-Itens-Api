@@ -152,6 +152,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             using var conn = ObterConexao();
             try
             {
+                var parameters = new DynamicParameters();
                 var queryBase = new StringBuilder(@"
                                                         FROM ITEM I  
                                                         LEFT JOIN DIFICULDADE D ON D.Id = I.dificuldade_sugerida_id  
@@ -160,34 +161,70 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                                     ");
 
                 if (filtroDto.CodigoItem is not null)
-                    queryBase.Append($@" AND I.codigo_item = '{filtroDto.CodigoItem}' ");
+                {
+                    queryBase.Append($@" AND I.codigo_item = @codigoItem ");
+                    parameters.Add("codigoItem", filtroDto.CodigoItem);
+                }
 
                 if (filtroDto.AreaConhecimentoId is not null)
-                    queryBase.Append($@" AND I.area_conhecimento_id = {filtroDto.AreaConhecimentoId} ");
+                {
+                    queryBase.Append($@" AND I.area_conhecimento_id = @areaConhecimentoId ");
+                    parameters.Add("areaConhecimentoId", filtroDto.AreaConhecimentoId);
+                }
 
                 if (filtroDto.CompetenciaId is not null)
-                    queryBase.Append($@" AND I.competencia_id = {filtroDto.CompetenciaId} ");
+                {
+                    queryBase.Append($@" AND I.competencia_id = @competenciaId ");
+                    parameters.Add("competenciaId", filtroDto.CompetenciaId);
+                }
 
                 if (filtroDto.HabilidadeId is not null)
-                    queryBase.Append($@" AND I.habilidade_id = {filtroDto.HabilidadeId} ");
-
+                {
+                    queryBase.Append($@" AND I.habilidade_id = @habilidadeId ");
+                    parameters.Add("habilidadeId", filtroDto.HabilidadeId);
+                }
+                    
                 if (filtroDto.DisciplinaId is not null)
-                    queryBase.Append($@" AND I.disciplina_id = {filtroDto.DisciplinaId} ");
+                {
+                    queryBase.Append($@" AND I.disciplina_id = @disciplinaId ");
+                    parameters.Add("disciplinaId", filtroDto.DisciplinaId);
+                }
 
                 if (filtroDto.DificuldadeSugeridaId is not null)
-                    queryBase.Append($@" AND I.dificuldade_sugerida_id = {filtroDto.DificuldadeSugeridaId} ");
+                {
+                    queryBase.Append($@" AND I.dificuldade_sugerida_id = @dificuldadeSugeridaId ");
+                    parameters.Add("dificuldadeSugeridaId", filtroDto.DificuldadeSugeridaId);
+                }
 
                 if (filtroDto.MatrizId is not null)
-                    queryBase.Append($@" AND I.matriz_id = {filtroDto.MatrizId} ");
+                {
+                    queryBase.Append($@" AND I.matriz_id = @matrizId ");
+                    parameters.Add("matrizId", filtroDto.MatrizId);
+                }
 
                 if (filtroDto.Situacao is not null)
-                    queryBase.Append($@" AND I.situacao = {filtroDto.Situacao} ");
+                {
+                    queryBase.Append($@" AND I.situacao = @situacao ");
+                    parameters.Add("situacao", filtroDto.Situacao);
+                }
 
                 if(filtroDto.AnoMatrizId is not null)
-                    queryBase.Append($@" AND I.tipo_grade_id = {filtroDto.AnoMatrizId} ");
+                {
+                    queryBase.Append($@" AND I.tipo_grade_id = @anoMatrizId ");
+                    parameters.Add("anoMatrizId", filtroDto.AnoMatrizId);
+                }
 
-                if (filtroDto.PalavrasChave != null && filtroDto.PalavrasChave.Any())
-                    queryBase.Append($@" AND I.PALAVRAS_CHAVE LIKE '%{filtroDto.PalavrasChave}%'");
+                if (filtroDto.CategoriaId is not null)
+                {
+                    queryBase.Append($@" AND I.quantidade_alternativa_id = @categoriaId ");
+                    parameters.Add("categoriaId", filtroDto.CategoriaId);
+                }
+
+                if (filtroDto?.PalavrasChave?.Any() ?? false)
+                {
+                    queryBase.Append($@" AND EXISTS (SELECT 1 FROM unnest(string_to_array(I.palavras_chave, ';')) AS palavras WHERE palavras ILIKE ANY (@palavrasChave))");
+                    parameters.Add("palavrasChave", filtroDto.PalavrasChave.Select(p => $"%{p}%").ToArray());
+                }
 
                 if (filtroDto.InformacoesEstatisticas == true)
                     queryBase.Append($"AND ( I.discriminacao IS NOT NULL  AND I.acerto_casual IS NOT NULL AND I.Dificuldade is not NULL )");
@@ -196,7 +233,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                     queryBase.Append($"AND ( I.discriminacao IS  NULL  OR I.acerto_casual IS  NULL OR I.Dificuldade is  NULL )");
 
                 var countQuery = $"SELECT COUNT(*) {queryBase}";
-                var totalRegistros = await conn.ExecuteScalarAsync<int>(countQuery);
+                var totalRegistros = await conn.ExecuteScalarAsync<int>(countQuery, parameters);
 
                 var querySelect = new StringBuilder(@"
                                                         SELECT 
@@ -217,14 +254,14 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 int tamanhoPagina = filtroDto.TamanhoPagina ?? 10;
                 int offset = (pagina - 1) * tamanhoPagina;
 
-                querySelect.Append($" LIMIT {tamanhoPagina} OFFSET {offset} ");
+                querySelect.Append($" LIMIT @tamanhoPagina OFFSET @offset ");
+                parameters.Add("tamanhoPagina", tamanhoPagina);
+                parameters.Add("offset", offset);
 
-                var itens = await conn.QueryAsync<ItemListaDto>(querySelect.ToString());
+                var itens = await conn.QueryAsync<ItemListaDto>(querySelect.ToString(), parameters);
 
                 return new PaginacaoDto<ItemListaDto>(itens, pagina, tamanhoPagina, totalRegistros);
             }
-
-          
             finally
             {
                 conn.Close();
