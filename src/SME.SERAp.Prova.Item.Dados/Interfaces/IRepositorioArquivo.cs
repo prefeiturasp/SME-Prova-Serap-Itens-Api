@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SME.SERAp.Prova.Item.Infra.Dtos.Arquivo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
 {
     public interface IRepositorioArquivo : IRepositorioBase<Dominio.Entities.Arquivo>
     {
+        Task<ArquivosItemDto> ObterArquivosAudioVideoPorItemId(long itemId);
     }
 }
