@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Queries
 {
-    internal class ObterListaCodigoItensQueryHandler : IRequestHandler<ObterListaCodigoItensQuery, IEnumerable<CodigoItemDto>>
+    public class ObterListaCodigoItensQueryHandler : IRequestHandler<ObterListaCodigoItensQuery, IEnumerable<CodigoItemDto>>
     {
         private readonly IRepositorioItem repositorioItem;
 
