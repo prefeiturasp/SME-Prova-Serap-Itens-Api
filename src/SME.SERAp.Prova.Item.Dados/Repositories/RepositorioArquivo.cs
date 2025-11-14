@@ -24,21 +24,44 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             {
                 var query = new StringBuilder(@"
 
-                                                SELECT arquivoAudio.nome as audioNome , 
-                                                        arquivoAudio.caminho  as audioCaminho,
-                                                       arquivoVideo.nome  as videoNome, 
-                                                       arquivoVideo.caminho as videoCaminho,
-                                                       ia.id as idAudio,
-                                                       iv.id as idVideo
-                                                FROM ITEM  i
-                                                LEFT JOIN item_audio ia on  i.id = ia.item_id 
-                                                LEFT JOIN item_video iv on  i.id = iv.item_id 
-                                                LEFT JOIN arquivo  arquivoVideo on arquivoVideo.id = iv.arquivo_id
-                                                LEFT JOIN arquivo  arquivoAudio on arquivoAudio.id = ia.arquivo_id
+                                                 SELECT 
+                                                    arquivoAudio.nome AS audioNome,
+                                                    arquivoAudio.caminho AS audioCaminho,
+                                                    arquivoVideo.nome AS videoNome,
+                                                    arquivoVideo.caminho AS videoCaminho,
+                                                    ia.id AS idAudio,
+                                                    iv.id AS idVideo
+                                                FROM ITEM i
+                                                
+                                                LEFT JOIN item_audio ia 
+                                                    ON ia.item_id = i.id 
+                                                    AND ia.arquivo_id = (
+                                                        SELECT MAX(a.id)
+                                                        FROM item_audio ia2
+                                                        JOIN arquivo a ON a.id = ia2.arquivo_id
+                                                        WHERE ia2.item_id = i.id
+                                                    )
+                                                
+                                                LEFT JOIN arquivo arquivoAudio 
+                                                    ON arquivoAudio.id = ia.arquivo_id
+                                                
+                                                LEFT JOIN item_video iv 
+                                                    ON iv.item_id = i.id 
+                                                    AND iv.arquivo_id = (
+                                                        SELECT MAX(a.id)
+                                                        FROM item_video iv2
+                                                        JOIN arquivo a ON a.id = iv2.arquivo_id
+                                                        WHERE iv2.item_id = i.id
+                                                    )
+                                                
+                                                LEFT JOIN arquivo arquivoVideo 
+                                                    ON arquivoVideo.id = iv.arquivo_id
                                                  
                                                 ");
                 if (itemId > 0)
                     query.Append($@" WHERE  i.id = @itemId;");
+              
+                
                 return await conn.QueryFirstOrDefaultAsync<ArquivosItemDto>(query.ToString(), new { itemId });
             }
 
