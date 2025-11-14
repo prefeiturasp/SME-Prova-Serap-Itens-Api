@@ -1,10 +1,10 @@
-﻿using ItemConsulta = SME.SERAp.Prova.Item.Dominio.Entities.Item;
+﻿using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.Interfaces
 {
     public interface IObterItemComAlternativaPorIdUseCase
     {
-        Task<ItemConsulta> Executar(long itemId);
+        Task<ItemComAlternativasDto> Executar(long itemId);
     }
 }
