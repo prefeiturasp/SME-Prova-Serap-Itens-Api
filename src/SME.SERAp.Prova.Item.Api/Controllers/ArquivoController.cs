@@ -13,7 +13,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
 {
     [ApiController]
     [Route("/api/v1/Arquivo")]
-    //[Authorize]
+    [Authorize]
     public class ArquivoController : ControllerBase
     {
         [ValidaDto]

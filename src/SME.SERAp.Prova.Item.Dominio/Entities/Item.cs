@@ -1,18 +1,21 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
+    [Table("item")]
     public class Item : EntidadeBase
     {
         public Item() { }
+
         public Item(long? id, string codigoItem, long areaconhecimentoId, long disciplinaId,
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
-            SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave, 
-            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora, decimal? nivelItem, long versaoItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
+            SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave,
+            decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora,
+            decimal? nivelItem, long versaoItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
         {
             if (id > 0 && id != null)
             {
@@ -46,40 +49,96 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             DataCriacao = dataCriacao;
             Fonte = fonte;
             Enunciado = enunciado;
-            TextoBase= textoBase;
+            TextoBase = textoBase;
         }
 
+        [Column("versao_item")]
         public long VersaoItem { get; set; }
+
+        [Column("codigo_item")]
         public string CodigoItem { get; set; }
+
+        // Exceção: propriedade "AreaconhecimentoId" → coluna "area_conhecimento_id"
+        [Column("area_conhecimento_id")]
         public long AreaconhecimentoId { get; set; }
+
+        [Column("disciplina_id")]
         public long DisciplinaId { get; set; }
+
+        [Column("matriz_id")]
         public long? MatrizId { get; set; }
+
+        [Column("competencia_id")]
         public long? CompetenciaId { get; set; }
+
+        [Column("habilidade_id")]
         public long? HabilidadeId { get; set; }
+
+        // Exceção: propriedade "AnoMatrizId" → coluna "tipo_grade_id"
+        [Column("tipo_grade_id")]
         public long? AnoMatrizId { get; set; }
+
+        [Column("dificuldade_sugerida_id")]
         public long? DificuldadeSugeridaId { get; set; }
+
+        [Column("discriminacao")]
         public decimal? Discriminacao { get; set; }
+
+        [Column("acerto_casual")]
         public decimal? AcertoCasual { get; set; }
+
+        [Column("dificuldade")]
         public decimal? Dificuldade { get; set; }
+
+        [Column("assunto_id")]
         public long? AssuntoId { get; set; }
+
+        [Column("subassunto_id")]
         public long? SubAssuntoId { get; set; }
+
+        [Column("situacao")]
         public SituacaoItem? Situacao { get; set; }
+
+        [Column("tipo")]
         public TipoItem? Tipo { get; set; }
+
+        [Column("quantidade_alternativa_id")]
         public long? QuantidadeAlternativasId { get; set; }
+
+        [Column("palavras_chave")]
         public string PalavrasChave { get; set; }
+
+        [Column("parametro_b_transformado")]
         public decimal? ParametroBTransformado { get; set; }
+
+        [Column("media_eh_desvio")]
         public string MediaEhDesvio { get; set; }
+
+        [Column("observacao")]
         public string Observacao { get; set; }
+
+        [Column("sentencadescritora")]
         public string SentencaDescritora { get; set; }
+
+        [Column("nivelitem_id")]
         public decimal? NivelItem { get; set; }
+
+        [Column("criado_em")]
         public DateTime DataCriacao { get; set; }
+
+        [Column("alterado_em")]
         public DateTime DataAlteracao { get; set; }
+
+        [Column("texto_base")]
         public string TextoBase { get; set; }
+
+        [Column("fonte")]
         public string Fonte { get; set; }
+
+        [Column("enunciado")]
         public string Enunciado { get; set; }
 
+        [NotMapped]
         public List<Alternativa> Alternativas { get; set; }
-
-
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
+    [Table("arquivo")]
     public class Arquivo : EntidadeBase
     {
         public Arquivo() { }
@@ -20,12 +22,25 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             CriadoEm = criadoEm;
         }
 
+        [Column("legado_id")]
         public long LegadoId { get; set; }
+
+        [Column("nome")]
         public string Nome { get; set; }
+
+        [Column("caminho")]
         public string Caminho { get; set; }
+
+        [Column("content_type")]
         public string ContentType { get; set; }
+
+        [Column("situacao")]
         public int Situacao { get; set; }
+
+        [Column("criado_em")]
         public DateTime CriadoEm { get; set; }
+
+        [Column("alterado_em")]
         public DateTime? AlteradoEm { get; set; }
     }
 }

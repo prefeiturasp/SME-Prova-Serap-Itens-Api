@@ -1,11 +1,12 @@
 # Etapa base (runtime)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+ENV ASPNETCORE_URLS=http://+:80
 
 # Etapa build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["src/SME.SERAp.Prova.Item.Api/SME.SERAp.Prova.Item.Api.csproj", "SME.SERAp.Prova.Item.Api/"]
 COPY ["src/SME.SERAp.Prova.Item.Aplicacao/SME.SERAp.Prova.Item.Aplicacao.csproj", "SME.SERAp.Prova.Item.Aplicacao/"]
@@ -18,11 +19,11 @@ RUN dotnet restore "SME.SERAp.Prova.Item.Api/SME.SERAp.Prova.Item.Api.csproj"
 
 COPY . .
 WORKDIR "/src/src/SME.SERAp.Prova.Item.Api"
-RUN dotnet build "SME.SERAp.Prova.Item.Api.csproj" -c Release -o /app/build
+RUN dotnet build "SME.SERAp.Prova.Item.Api.csproj" -c Release -o /app/build --no-restore
 
 # Etapa publish
 FROM build AS publish
-RUN dotnet publish "SME.SERAp.Prova.Item.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "SME.SERAp.Prova.Item.Api.csproj" -c Release -o /app/publish --no-build
 
 # Etapa final (runtime pronto)
 FROM base AS final
