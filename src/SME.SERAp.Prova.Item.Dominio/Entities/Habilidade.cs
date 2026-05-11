@@ -1,10 +1,14 @@
-﻿using System;
-using SME.SERAp.Prova.Item.Dominio.Enums;
+﻿using SME.SERAp.Prova.Item.Dominio.Enums;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
+    [Table("habilidade")]
     public class Habilidade : EntidadeBase
     {
+        public Habilidade() { }
+
         public Habilidade(long? id, string codigo, long legadoId, long competenciaId, string descricao, StatusGeral status)
         {
             if (id == null)
@@ -17,8 +21,8 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             {
                 Id = (long)id;
                 AlteradoEm = DateTime.Now;
-            }            
-            
+            }
+
             Codigo = codigo;
             LegadoId = legadoId;
             CompetenciaId = competenciaId;
@@ -26,12 +30,25 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             Status = (int)status;
         }
 
+        [Column("codigo")]
         public string Codigo { get; set; }
+
+        [Column("legado_id")]
         public long LegadoId { get; set; }
+
+        [Column("competencia_id")]
         public long CompetenciaId { get; set; }
+
+        [Column("descricao")]
         public string Descricao { get; set; }
+
+        [Column("criado_em")]
         public DateTime CriadoEm { get; set; }
-        public DateTime AlteradoEm { get; set; }        
-        public int Status { get; set; }        
+
+        [Column("alterado_em")]
+        public DateTime AlteradoEm { get; set; }
+
+        [Column("status")]
+        public int Status { get; set; }
     }
 }

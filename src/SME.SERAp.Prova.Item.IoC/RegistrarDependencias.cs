@@ -1,6 +1,4 @@
-﻿using Dapper.FluentMap;
-using Dapper.FluentMap.Dommel;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SME.SERAp.Prova.Item.Aplicacao;
@@ -11,9 +9,7 @@ using SME.SERAp.Prova.Item.Aplicacao.UseCases.Item;
 using SME.SERAp.Prova.Item.Dados;
 using SME.SERAp.Prova.Item.Dados.Cache;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
-using SME.SERAp.Prova.Item.Dados.Mappings;
 using SME.SERAp.Prova.Item.Dados.Repositories;
-using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Interfaces;
 using SME.SERAp.Prova.Item.Infra.Services;
 using SME.SERAp.Prova.Item.IoC.Extensions;
@@ -30,7 +26,7 @@ namespace SME.SERAp.Prova.Item.IoC
             RegistrarServicos(services);
             RegistrarRepositorios(services);
             RegistrarCasosDeUso(services);
-            RegistraMapeamentos();
+            DapperConfig.RegistrarMapeamentos();
             services.RegistrarHttpClient();
         }
 
@@ -93,32 +89,6 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
             services.AddScoped<IObterItemResumoPorIdUseCase, ObterItemResumoPorIdUseCase>();
             services.AddScoped<IUploadArquivoAudioVideo, UploadArquivoAudioVideo>();
-            
-        }
-
-        private static void RegistraMapeamentos()
-        {
-            FluentMapper.Initialize(config =>
-            {
-                config.AddMap(new AreaConhecimentoMap());
-                config.AddMap(new DisciplinaMap());
-                config.AddMap(new MatrizMap());
-                config.AddMap(new UsuarioMap());
-                config.AddMap(new ItemMap());
-                config.AddMap(new SequencialMap());
-                config.AddMap(new DificuldadeMap());
-                config.AddMap(new CompetenciaMap());
-                config.AddMap(new HabilidadeMap());
-                config.AddMap(new TipoGradeMap());
-                config.AddMap(new AssuntoMap());
-                config.AddMap(new SubAssuntoMap());
-                config.AddMap(new QuantidadeAlternativaMap());
-                config.AddMap(new AlternativaMap());
-                config.AddMap(new ArquivoMap());
-                config.AddMap(new ItemVideoMap());
-                config.AddMap(new ItemAudioMap());
-                config.ForDommel();
-            });
         }
     }
 }

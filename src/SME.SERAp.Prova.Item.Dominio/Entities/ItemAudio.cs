@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
+    [Table("item_audio")]
     public class ItemAudio : EntidadeBase
     {
         public ItemAudio() { }
@@ -17,10 +19,19 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             CriadoEm = criadoEm;
         }
 
+        [Column("arquivo_id")]
         public long ArquivoId { get; set; }
+
+        [Column("item_id")]
         public long ItemId { get; set; }
+
+        [Column("situacao")]
         public int Situacao { get; set; }
+
+        [Column("criado_em")]
         public DateTime CriadoEm { get; set; }
+
+        [Column("alterado_em")]
         public DateTime? AlteradoEm { get; set; }
     }
 }

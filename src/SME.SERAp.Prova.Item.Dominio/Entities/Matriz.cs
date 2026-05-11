@@ -1,15 +1,13 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SME.SERAp.Prova.Item.Dominio.Entities
 {
+    [Table("matriz")]
     public class Matriz : EntidadeBase
     {
-
-        public Matriz()
-        {
-
-        }
+        public Matriz() { }
 
         public Matriz(long? id, long legadoId, long disciplinaId, string descricao, string modelo, StatusGeral status)
         {
@@ -17,7 +15,6 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             {
                 CriadoEm = AlteradoEm = DateTime.Now;
                 Status = (int)StatusGeral.Ativo;
-
             }
             else
             {
@@ -32,13 +29,25 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             Status = (int)status;
         }
 
+        [Column("legado_id")]
         public long LegadoId { get; set; }
-        public string Descricao { get; set; }
-        public string Modelo { get; set; }
-        public DateTime CriadoEm { get; set; }
-        public DateTime AlteradoEm { get; set; }
-        public long DisciplinaId { get; set; }
-        public int Status { get; set; }
 
+        [Column("descricao")]
+        public string Descricao { get; set; }
+
+        [Column("modelo")]
+        public string Modelo { get; set; }
+
+        [Column("criado_em")]
+        public DateTime CriadoEm { get; set; }
+
+        [Column("alterado_em")]
+        public DateTime AlteradoEm { get; set; }
+
+        [Column("disciplina_id")]
+        public long DisciplinaId { get; set; }
+
+        [Column("status")]
+        public int Status { get; set; }
     }
 }
