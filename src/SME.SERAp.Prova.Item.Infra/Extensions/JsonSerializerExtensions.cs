@@ -4,13 +4,24 @@ namespace SME.SERAp.Prova.Item.Infra.Extensions
 {
     public static class JsonSerializerExtensions
     {
-        public static T ConverterObjectStringPraObjeto<T>(this string objectString)
+        private static JsonSerializerOptions ObterConfigSerializer()
         {
-            var jsonSerializerOptions = new JsonSerializerOptions
+            return new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            return JsonSerializer.Deserialize<T>(objectString, jsonSerializerOptions);
+        }
+
+        public static T ConverterObjectStringPraObjeto<T>(this string objectString)
+        {
+            return string.IsNullOrEmpty(objectString)
+                ? default
+                : JsonSerializer.Deserialize<T>(objectString, ObterConfigSerializer());
+        }
+
+        public static string ConverterObjectParaJson(this object obj)
+        {
+            return obj == null ? string.Empty : JsonSerializer.Serialize(obj, ObterConfigSerializer());
         }
     }
 }
