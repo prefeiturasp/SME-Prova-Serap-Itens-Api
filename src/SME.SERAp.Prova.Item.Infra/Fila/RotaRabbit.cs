@@ -4,5 +4,6 @@
     {
         public static string Log => "ApplicationLog";
         public const string Teste = "serap.estudante.acomp.teste";
+        public const string ItemSalvarLegado = "serap.estudante.item.salvar.legado";
     }
 }

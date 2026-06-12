@@ -5,5 +5,6 @@
         public static string Log => "EnterpriseApplicationLog";
         public static string SerapEstudanteAcompanhamento => "serap.estudante.acomp.workers";
         public static string SerapEstudanteAcompanhamentoDeadLetter => "serap.estudante.acomp.workers.deadletter";
+        public static string SerapEstudanteItem => "serap.estudante.item.workers";
     }
 }

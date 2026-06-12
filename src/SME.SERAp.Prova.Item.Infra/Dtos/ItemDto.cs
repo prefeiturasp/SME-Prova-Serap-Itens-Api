@@ -38,10 +38,10 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public decimal? AcertoCasual { get; set; }
         public decimal? Dificuldade { get; set; }
         public long? AssuntoId { get; set; }
-        public long? SubAssuntoId { get; set; }
-  
+        public long? SubAssuntoId { get; set; }  
         public SituacaoItem Situacao { get; set; }
-
+        public long VersaoItem { get; set; }
+        public int? ItemCodeVersion { get; set; }
         public TipoItem Tipo { get; set; }
         [Required(ErrorMessage = "É necessário informar o Id da Quantidade Alternativas")]
         [Range(1, long.MaxValue, ErrorMessage = "a QuantidadeAlternativasId tem que ser maior que zero ")]
@@ -54,8 +54,7 @@ namespace SME.SERAp.Prova.Item.Infra.Dtos
         public string Observacao { get; set; }
 
         [MaxLength(100, ErrorMessage = "A Sentença Descritora pode ter no máximo 100 caracteres.")]
-        public string SentencaDescritora { get; set; }
-        
+        public string SentencaDescritora { get; set; }      
         public decimal? NivelItem { get; set; }
 
         // ElaboracaoItem
