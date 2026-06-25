@@ -3,6 +3,7 @@ using SME.SERAp.Prova.Item.Aplicacao.Commands;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.PublicarFilaRabbit;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
+using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterUltimaVersaoItemPorCodigo;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Fila;
@@ -27,11 +28,29 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             if (disciplina == null)
                 throw new Exception($"A disciplina com o id: {itemDto.DisciplinaId} não foi encontrada.");
 
-            if (itemDto.Id == null || itemDto.Id <= 0)
-                itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
+            if (!string.IsNullOrEmpty(itemDto.CodigoItem))
+            {
+                var ultimaVersao = await mediator.Send(
+                    new ObterUltimaVersaoItemPorCodigoQuery(itemDto.CodigoItem));
 
-            if (itemDto.VersaoItem <= 0)
+                if (ultimaVersao != null)
+                {
+                    itemDto.Id = null;
+                    itemDto.CodigoItem = ultimaVersao.CodigoItem;
+                    itemDto.VersaoItem = ultimaVersao.VersaoItem + 1;
+                }
+                else
+                {
+                    itemDto.Id = null;
+                    itemDto.VersaoItem = 1;
+                }
+            }
+            else
+            {
+                itemDto.CodigoItem = await mediator.Send(
+                    new GeraCodigoItemQuery(areaConhecimento, disciplina));
                 itemDto.VersaoItem = 1;
+            }
 
             var item = MapItemDto(itemDto, areaConhecimento, disciplina);
             var itemId = await mediator.Send(new SalvarItemCommand(item));
