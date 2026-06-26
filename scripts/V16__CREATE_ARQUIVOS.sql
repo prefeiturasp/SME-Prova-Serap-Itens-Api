@@ -1,6 +1,6 @@
 -- ARQUIVO
   
-  CREATE table if not exists public.arquivo (
+CREATE table if not exists public.arquivo (
 	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	legado_id int8  null,
 	nome varchar(500) NOT NULL,
@@ -24,7 +24,9 @@ CREATE table if not exists public.item_video (
 	constraint video_pk PRIMARY KEY (id)
 );
 
+ALTER TABLE public.item_video DROP CONSTRAINT IF EXISTS video_item;
 ALTER TABLE public.item_video ADD CONSTRAINT video_item FOREIGN KEY (item_id) REFERENCES public.item(id);
+ALTER TABLE public.item_video DROP CONSTRAINT IF EXISTS arquivo_item;
 ALTER TABLE public.item_video ADD CONSTRAINT arquivo_item FOREIGN KEY (arquivo_id) REFERENCES public.arquivo(id);
 
 -- ITEM_AUDIO
@@ -39,5 +41,7 @@ CREATE table if not exists public.item_audio (
 	constraint audio_pk PRIMARY KEY (id)
 );
 
+ALTER TABLE public.item_audio DROP CONSTRAINT IF EXISTS audio_item;
 ALTER TABLE public.item_audio ADD CONSTRAINT audio_item FOREIGN KEY (item_id) REFERENCES public.item(id);
+ALTER TABLE public.item_audio DROP CONSTRAINT IF EXISTS arquivo_audio_item;
 ALTER TABLE public.item_audio ADD CONSTRAINT arquivo_audio_item FOREIGN KEY (arquivo_id) REFERENCES public.arquivo(id);
