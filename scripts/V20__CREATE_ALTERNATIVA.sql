@@ -1,4 +1,4 @@
-CREATE TABLE public.alternativa (
+CREATE TABLE IF NOT EXISTS public.alternativa (
 	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	descricao varchar NULL,
 	ordem int4 NOT NULL,
@@ -11,5 +11,5 @@ CREATE TABLE public.alternativa (
 	CONSTRAINT alternativa_pk PRIMARY KEY (id)
 );
 
-
+ALTER TABLE public.alternativa DROP CONSTRAINT IF EXISTS alternativa_item;
 ALTER TABLE public.alternativa ADD CONSTRAINT alternativa_item FOREIGN KEY (item_id) REFERENCES public.item (id);
