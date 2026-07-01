@@ -51,7 +51,6 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
             return Ok(await obterItemComAlternativaPorIdUseCase.Executar(itemId));
         }
 
-
         [HttpGet("Situacoes")]
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
@@ -59,7 +58,6 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         {
             return Ok(await obterSituacoesItem.Executar());
         }
-
 
         [HttpGet("Tipos")]
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
@@ -86,7 +84,6 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
             return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
         }
 
-
         [HttpGet]
         [ProducesResponseType(typeof(PaginacaoDto<ItemListaDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
@@ -95,9 +92,6 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         {
             return Ok(await obterListaItemsUseCase.Executar(filtroDto));
         }
-
-
-
 
         [HttpGet("resumo/{itemId}")]
         [ProducesResponseType(typeof(ItemResumoDto), 200)]

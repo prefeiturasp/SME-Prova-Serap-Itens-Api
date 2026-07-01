@@ -10,19 +10,13 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
     {
         public Item() { }
 
-        public Item(long? id, string codigoItem, long areaconhecimentoId, long disciplinaId,
+        public Item(string codigoItem, long areaconhecimentoId, long disciplinaId,
             long? matrizId, long? competenciaId, long? habilidadeId, long? anoMatrizId, long? dificuldadeSugeridaId,
             decimal? discriminacao, decimal? acertoCasual, decimal? dificuldade, long? assuntoId, long? subassuntoId,
             SituacaoItem? situacao, TipoItem? tipo, long? quantidadeAlternativaId, string palavrasChave,
             decimal? parametroBTransformado, string mediaEhDesvio, string observacao, string sentencaDescritora,
-            decimal? nivelItem, long versaoItem, DateTime dataCriacao, string textoBase, string fonte, string enunciado)
+            decimal? nivelItem, long versaoItem, string textoBase, string fonte, string enunciado)
         {
-            if (id > 0 && id != null)
-            {
-                Id = (long)id;
-                DataAlteracao = DateTime.Now;
-            }
-
             CodigoItem = codigoItem;
             AreaconhecimentoId = areaconhecimentoId;
             MatrizId = matrizId;
@@ -46,10 +40,9 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
             SentencaDescritora = sentencaDescritora;
             NivelItem = nivelItem;
             VersaoItem = versaoItem;
-            DataCriacao = dataCriacao;
+            TextoBase = textoBase;
             Fonte = fonte;
             Enunciado = enunciado;
-            TextoBase = textoBase;
         }
 
         [Column("versao_item")]
@@ -58,7 +51,6 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         [Column("codigo_item")]
         public string CodigoItem { get; set; }
 
-        // Exceção: propriedade "AreaconhecimentoId" → coluna "area_conhecimento_id"
         [Column("area_conhecimento_id")]
         public long AreaconhecimentoId { get; set; }
 
@@ -74,7 +66,6 @@ namespace SME.SERAp.Prova.Item.Dominio.Entities
         [Column("habilidade_id")]
         public long? HabilidadeId { get; set; }
 
-        // Exceção: propriedade "AnoMatrizId" → coluna "tipo_grade_id"
         [Column("tipo_grade_id")]
         public long? AnoMatrizId { get; set; }
 

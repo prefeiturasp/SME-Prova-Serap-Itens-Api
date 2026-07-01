@@ -94,15 +94,21 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
 
         private DominioItem ObterUltimaVersaoItemMock(long versaoItem = 1)
         {
-            return new DominioItem(
-                ItemIdValido, CodigoItemExistente,
+            var item = new DominioItem(
+                CodigoItemExistente,
                 AreaConhecimentoIdValido, DisciplinaIdValido,
                 30, 40, 50, 60, 70,
                 null, null, null, null, null,
                 SituacaoItem.Ativo, TipoItem.Dicotômico,
                 4, "algebra;equação",
                 null, null, null, null, null,
-                versaoItem, DateTime.Now, null, null, "Resolva a equação");
+                versaoItem, null, null, "Resolva a equação");
+
+            item.Id = ItemIdValido;
+            item.DataCriacao = DateTime.Now;
+            item.DataAlteracao = DateTime.Now;
+
+            return item;
         }
 
         private List<AltenativaDto> ObterAlternativasDtoMock()
@@ -147,7 +153,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
 
             Assert.Equal(ItemIdValido, resultado);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 1 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -221,7 +227,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             Assert.Null(itemDto.Id);
             Assert.Equal(CodigoItemExistente, itemDto.CodigoItem);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 2 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -279,7 +285,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             Assert.Null(itemDto.Id);
             Assert.Equal(codigoInexistente, itemDto.CodigoItem);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 1 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -499,7 +505,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             mediatorMock.Verify(m => m.Send(It.IsAny<ObterAreaConhecimentoPorIdQuery>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<ObterDisciplinaPorIdQuery>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 1 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -535,7 +541,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             Assert.Null(itemDto.Id);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
             mediatorMock.Verify(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 3 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()), Times.Once);
