@@ -84,12 +84,14 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         private async Task TrataArquivoAudio(ItemDto itemDto, long itemId)
         {
             var itemAudio = new ItemAudio(itemDto.ArquivoAudioId, itemId, 1, DateTime.Now);
+            itemAudio.Id = 0;
             await mediator.Send(new SalvarItemAudioCommand(itemAudio));
         }
 
         private async Task TrataArquivoVideo(ItemDto itemDto, long itemId)
         {
             var itemVideo = new ItemVideo(itemDto.ArquivoVideoId, itemId, 1, DateTime.Now);
+            itemVideo.Id = 0;
             await mediator.Send(new SalvarItemVideoCommand(itemVideo));
         }
 
@@ -97,8 +99,15 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
         {
             foreach (var altDto in itemDto?.AlternativasDto)
             {
-                var alternativa = new Alternativa(altDto.Id, altDto.Descricao, altDto.Justificativa, altDto.Numeracao,
-                    altDto.Correta, altDto.Ordem, DateTime.Now, itemId);
+                var alternativa = new Alternativa(
+                    null,
+                    altDto.Descricao,
+                    altDto.Justificativa,
+                    altDto.Numeracao,
+                    altDto.Correta,
+                    altDto.Ordem,
+                    DateTime.Now,
+                    itemId);
                 await mediator.Send(new SalvarAlternativaCommand(alternativa));
             }
         }
