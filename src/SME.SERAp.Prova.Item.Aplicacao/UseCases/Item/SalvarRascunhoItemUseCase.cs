@@ -1,11 +1,11 @@
 ﻿using MediatR;
+using SME.SERAp.Prova.Item.Aplicacao.Commands;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using System;
 using System.Threading.Tasks;
-using SME.SERAp.Prova.Item.Aplicacao.Commands;
 
 namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 {
@@ -17,7 +17,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         public async Task<long> Executar(ItemRascunhoDto itemRascunhoDto)
         {
-
             var areaConhecimento = await mediator.Send(new ObterAreaConhecimentoPorIdQuery(itemRascunhoDto.AreaConhecimentoId));
             if (areaConhecimento == null)
                 throw new Exception($"A area de conhecimento com o id: {itemRascunhoDto.AreaConhecimentoId} não foi encontrada.");
@@ -27,12 +26,28 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 throw new Exception($"A disciplina com o id: {itemRascunhoDto.DisciplinaId} não foi encontrada.");
 
             if (itemRascunhoDto.Id == null || itemRascunhoDto.Id <= 0)
+            {
                 itemRascunhoDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
-
-            if ((itemRascunhoDto.Id != null || itemRascunhoDto.Id <= 0) && (itemRascunhoDto.CodigoItem == "0"))
+            }
+            else if (itemRascunhoDto.CodigoItem == "0")
+            {
                 throw new Exception($"O codigo do item não pode ser zero, pois o item já existe na base de dados");
+            }
 
             var item = MapItemDto(itemRascunhoDto, areaConhecimento, disciplina);
+
+            if (itemRascunhoDto.Id == null || itemRascunhoDto.Id <= 0)
+            {
+                item.DataCriacao = DateTime.Now;
+                item.DataAlteracao = DateTime.Now;
+                item.Id = 0;
+            }
+            else
+            {
+                item.DataAlteracao = DateTime.Now;
+                item.Id = itemRascunhoDto.Id.Value;
+            }
+
             var itemId = await mediator.Send(new SalvarItemCommand(item));
 
             if (itemRascunhoDto.AlternativasDto != null)
@@ -45,12 +60,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 await TrataArquivoVideo(itemRascunhoDto, itemId);
 
             return itemId;
-
-            
-           
         }
-
-
 
         private async Task TrataArquivoAudio(ItemRascunhoDto itemRascunhoDto, long itemId)
         {
@@ -77,11 +87,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
         private static Dominio.Entities.Item MapItemDto(ItemRascunhoDto itemRascunhoDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
         {
-            // CRIAR QUERY PARA ISSO 
             var palavrasChave = string.Empty;
             if (itemRascunhoDto.PalavrasChave?.Length > 0)
                 palavrasChave = string.Join(";", itemRascunhoDto.PalavrasChave);
-
 
             long? competenciaId = itemRascunhoDto.CompetenciaId > 0 ? itemRascunhoDto.CompetenciaId : null;
             long? habilidadeId = itemRascunhoDto.HabilidadeId > 0 ? itemRascunhoDto.HabilidadeId : null;
@@ -91,9 +99,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             long? subAssuntoId = itemRascunhoDto.SubAssuntoId > 0 ? itemRascunhoDto.SubAssuntoId : null;
             long? quantidadeAlternativaId = itemRascunhoDto.QuantidadeAlternativasId > 0 ? itemRascunhoDto.QuantidadeAlternativasId : null;
 
-
             return new Dominio.Entities.Item(
-                    itemRascunhoDto.Id,
                     itemRascunhoDto.CodigoItem,
                     areaConhecimento.Id,
                     disciplina.Id,
@@ -109,7 +115,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                     subAssuntoId,
                     itemRascunhoDto.Situacao,
                     itemRascunhoDto.Tipo,
-                    itemRascunhoDto.QuantidadeAlternativasId,
+                    quantidadeAlternativaId,
                     palavrasChave,
                     itemRascunhoDto.ParametroBTransformado,
                     itemRascunhoDto.MediaEhDesvio,
@@ -117,11 +123,10 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                     itemRascunhoDto.SentencaDescritora,
                     itemRascunhoDto.NivelItem,
                     1,
-                    DateTime.Now,
                     itemRascunhoDto.TextoBase,
                     itemRascunhoDto.Fonte,
                     itemRascunhoDto.Enunciado
-                );
+            );
         }
     }
 }

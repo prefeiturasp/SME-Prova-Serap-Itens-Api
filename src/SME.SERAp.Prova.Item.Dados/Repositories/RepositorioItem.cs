@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Nest;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Infra.Dtos;
@@ -48,7 +47,6 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                inner join disciplina d  on d.legado_id  = i.disciplina_legado_id 
                                where  are_conhecimento_legado_id = @areaConhecimentoLegadoId
                                  and disciplina_legado_id  = @disciplinaLegadoId";
-
 
                 var resultado = await conn.QueryAsync<long?>(query, new { areaConhecimentoLegadoId, disciplinaLegadoId });
                 return resultado?.FirstOrDefault() ?? 0;
@@ -146,7 +144,6 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
-
         public async Task<PaginacaoDto<ItemListaDto>> ObterListaItensPorFiltro(FiltroItemsDto filtroDto)
         {
             using var conn = ObterConexao();
@@ -154,11 +151,15 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             {
                 var parameters = new DynamicParameters();
                 var queryBase = new StringBuilder(@"
-                                                        FROM ITEM I  
-                                                        LEFT JOIN DIFICULDADE D ON D.Id = I.dificuldade_sugerida_id  
-                                                        LEFT JOIN DISCIPLINA D2 ON D2.Id = I.disciplina_id
-                                                        WHERE 1 = 1
-                                                    ");
+                                                    FROM (
+                                                        SELECT DISTINCT ON (I.codigo_item) I.*
+                                                        FROM ITEM I
+                                                        ORDER BY I.codigo_item, I.versao_item DESC
+                                                    ) I
+                                                    LEFT JOIN DIFICULDADE D ON D.Id = I.dificuldade_sugerida_id  
+                                                    LEFT JOIN DISCIPLINA D2 ON D2.Id = I.disciplina_id
+                                                    WHERE 1 = 1
+                                                ");
 
                 if (filtroDto.CodigoItem is not null)
                 {
@@ -248,7 +249,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 querySelect.Append(queryBase);
 
-                querySelect.Append(" ORDER BY I.codigo_item DESC ");
+                querySelect.Append(" ORDER BY I.Id DESC ");
 
                 int pagina = filtroDto.Pagina ?? 1;
                 int tamanhoPagina = filtroDto.TamanhoPagina ?? 10;

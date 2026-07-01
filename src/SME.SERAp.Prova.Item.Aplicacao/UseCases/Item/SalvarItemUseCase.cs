@@ -28,6 +28,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             if (disciplina == null)
                 throw new Exception($"A disciplina com o id: {itemDto.DisciplinaId} não foi encontrada.");
 
+            itemDto.Id = null;
+
             if (!string.IsNullOrEmpty(itemDto.CodigoItem))
             {
                 var ultimaVersao = await mediator.Send(
@@ -35,13 +37,11 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
                 if (ultimaVersao != null)
                 {
-                    itemDto.Id = null;
-                    itemDto.CodigoItem = ultimaVersao.CodigoItem;
                     itemDto.VersaoItem = ultimaVersao.VersaoItem + 1;
+                    itemDto.CodigoItem = ultimaVersao.CodigoItem;
                 }
                 else
                 {
-                    itemDto.Id = null;
                     itemDto.VersaoItem = 1;
                 }
             }
@@ -53,6 +53,12 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
             }
 
             var item = MapItemDto(itemDto, areaConhecimento, disciplina);
+
+            item.DataCriacao = DateTime.Now;
+            item.DataAlteracao = DateTime.Now;
+
+            item.Id = 0;
+
             var itemId = await mediator.Send(new SalvarItemCommand(item));
 
             if (itemDto.AlternativasDto != null)
@@ -104,7 +110,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 palavrasChave = string.Join(";", itemDto.PalavrasChave);
 
             return new Dominio.Entities.Item(
-                itemDto?.Id,
                 itemDto.CodigoItem,
                 areaConhecimento.Id,
                 disciplina.Id,
@@ -127,8 +132,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
                 itemDto.Observacao,
                 itemDto.SentencaDescritora,
                 itemDto.NivelItem,
-                itemDto.VersaoItem > 0 ? itemDto.VersaoItem : 1,
-                DateTime.Now,
+                itemDto.VersaoItem,
                 itemDto.TextoBase,
                 itemDto.Fonte,
                 itemDto.Enunciado);
