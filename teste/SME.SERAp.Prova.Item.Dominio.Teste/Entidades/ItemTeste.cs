@@ -1,8 +1,4 @@
-﻿using System;
-using Xunit;
-using SME.SERAp.Prova.Item.Dominio.Entities;
-using SME.SERAp.Prova.Item.Dominio.Enums;
-using System.Linq;
+﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 
 namespace SME.SERAp.Prova.Item.Dominio.Teste.Entidades
 {
@@ -13,15 +9,15 @@ namespace SME.SERAp.Prova.Item.Dominio.Teste.Entidades
         private readonly long AreaConhecimentoIdValida = 10;
         private readonly long DisciplinaIdValida = 20;
         private readonly long VersaoItemValida = 2;
-        private readonly DateTime DataCriacaoValida = new DateTime(2025, 10, 27, 10, 0, 0);
+        private readonly DateTime DataCriacaoSimulada = new DateTime(2025, 10, 27, 10, 0, 0);
+        private readonly DateTime DataAlteracaoSimulada = new DateTime(2025, 10, 27, 10, 0, 0);
         private readonly string TextoBaseValido = "Texto de apoio para o item.";
         private readonly string FonteValida = "MEC/INEP";
         private readonly string EnunciadoValido = "Qual a capital do Brasil?";
 
-        private DominioItem CriarItemComParametros(long? id)
+        private DominioItem CriarItemComParametros()
         {
             return new DominioItem(
-                id: id,
                 codigoItem: CodigoItemValido,
                 areaconhecimentoId: AreaConhecimentoIdValida,
                 disciplinaId: DisciplinaIdValida,
@@ -45,35 +41,26 @@ namespace SME.SERAp.Prova.Item.Dominio.Teste.Entidades
                 sentencaDescritora: "Item de nível fácil.",
                 nivelItem: 3.5M,
                 versaoItem: VersaoItemValida,
-                dataCriacao: DataCriacaoValida,
                 textoBase: TextoBaseValido,
                 fonte: FonteValida,
                 enunciado: EnunciadoValido
             );
         }
 
-        private void AssertarPropriedadesComuns(DominioItem item, long idEsperado, long? idEntrada, bool deveSetarDataAlteracao)
+        private void AssertarPropriedadesComuns(DominioItem item, long idEsperado, DateTime dataCriacaoEsperada, DateTime dataAlteracaoEsperada)
         {
             Assert.Equal(idEsperado, item.Id);
             Assert.Equal(CodigoItemValido, item.CodigoItem);
             Assert.Equal(AreaConhecimentoIdValida, item.AreaconhecimentoId);
             Assert.Equal(DisciplinaIdValida, item.DisciplinaId);
             Assert.Equal(VersaoItemValida, item.VersaoItem);
-            Assert.Equal(DataCriacaoValida, item.DataCriacao);
+            Assert.Equal(dataCriacaoEsperada, item.DataCriacao);
+            Assert.Equal(dataAlteracaoEsperada, item.DataAlteracao);
             Assert.Equal(TextoBaseValido, item.TextoBase);
             Assert.Equal(FonteValida, item.Fonte);
             Assert.Equal(EnunciadoValido, item.Enunciado);
             Assert.Equal(SituacaoItem.Ativo, item.Situacao);
             Assert.Equal(TipoItem.Dicotômico, item.Tipo);
-
-            if (deveSetarDataAlteracao)
-            {
-                Assert.NotEqual(default(DateTime), item.DataAlteracao);
-            }
-            else
-            {
-                Assert.Equal(default(DateTime), item.DataAlteracao);
-            }
         }
 
         [Fact]
@@ -86,14 +73,16 @@ namespace SME.SERAp.Prova.Item.Dominio.Teste.Entidades
                 Id = idSimulado,
                 CodigoItem = CodigoItemValido,
                 VersaoItem = VersaoItemValida,
-                DataCriacao = DataCriacaoValida,
+                DataCriacao = DataCriacaoSimulada,
+                DataAlteracao = DataAlteracaoSimulada,
                 Enunciado = EnunciadoValido
             };
 
             Assert.Equal(idSimulado, item.Id);
             Assert.Equal(CodigoItemValido, item.CodigoItem);
             Assert.Equal(VersaoItemValida, item.VersaoItem);
-            Assert.Equal(DataCriacaoValida, item.DataCriacao);
+            Assert.Equal(DataCriacaoSimulada, item.DataCriacao);
+            Assert.Equal(DataAlteracaoSimulada, item.DataAlteracao);
             Assert.Equal(EnunciadoValido, item.Enunciado);
 
             Assert.Equal(0, item.AreaconhecimentoId);
@@ -101,34 +90,24 @@ namespace SME.SERAp.Prova.Item.Dominio.Teste.Entidades
         }
 
         [Fact]
-        public void Deve_Criar_Novo_Item_Com_Construtor_Parametros_E_ID_Null()
+        public void Deve_Criar_Novo_Item_Com_Construtor_Parametros_E_ID_Zero_E_Datas_Padrao()
         {
-            var item = CriarItemComParametros(id: null);
+            var item = CriarItemComParametros();
 
-            AssertarPropriedadesComuns(item, idEsperado: 0, idEntrada: null, deveSetarDataAlteracao: false);
+            AssertarPropriedadesComuns(item, idEsperado: 0, dataCriacaoEsperada: default(DateTime), dataAlteracaoEsperada: default(DateTime));
         }
 
         [Fact]
-        public void Deve_Criar_Novo_Item_Com_Construtor_Parametros_E_ID_Zero()
+        public void Deve_Criar_Item_E_Atribuir_ID_E_Datas_Posteriormente()
         {
-            var item = CriarItemComParametros(id: 0);
+            long idSimulado = 123;
+            var item = CriarItemComParametros();
 
-            AssertarPropriedadesComuns(item, idEsperado: 0, idEntrada: 0, deveSetarDataAlteracao: false);
-        }
+            item.Id = idSimulado;
+            item.DataCriacao = DataCriacaoSimulada;
+            item.DataAlteracao = DataAlteracaoSimulada;
 
-        [Fact]
-        public void Deve_Criar_Item_Existente_Com_Construtor_Parametros_E_ID_Valido()
-        {
-            long idExistente = 123;
-            var tempoAntesDaChamada = DateTime.Now;
-
-            var item = CriarItemComParametros(id: idExistente);
-
-            AssertarPropriedadesComuns(item, idEsperado: idExistente, idEntrada: idExistente, deveSetarDataAlteracao: true);
-
-            Assert.Equal(idExistente, item.Id);
-            Assert.True(item.DataAlteracao >= tempoAntesDaChamada, "DataAlteracao deve ser maior ou igual ao tempo de criação do objeto.");
-            Assert.NotEqual(default(DateTime), item.DataAlteracao);
+            AssertarPropriedadesComuns(item, idEsperado: idSimulado, dataCriacaoEsperada: DataCriacaoSimulada, dataAlteracaoEsperada: DataAlteracaoSimulada);
         }
     }
 }
