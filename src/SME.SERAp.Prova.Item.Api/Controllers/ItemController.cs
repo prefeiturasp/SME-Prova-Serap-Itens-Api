@@ -16,16 +16,6 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
     [Authorize]
     public class ItemController : ControllerBase
     {
-        [HttpPost("salvar-rascunho")]
-        [ProducesResponseType(typeof(bool), 200)]
-        [ProducesResponseType(typeof(RetornoBaseDto), 400)]
-        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
-        [ValidaDto]
-        public async Task<IActionResult> SalvarRascunho(ItemRascunhoDto itemDto, [FromServices] ISalvarRascunhoItemUseCase inserirRascunhoUseCase)
-        {
-            return Ok(await inserirRascunhoUseCase.Executar(itemDto));
-        }
-
         [HttpPost("salvar")]
         [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
