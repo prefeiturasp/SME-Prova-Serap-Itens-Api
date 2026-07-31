@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using SME.SERAp.Prova.Item.Dados.Interfaces;
 using SME.SERAp.Prova.Item.Dominio.Entities;
+using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
 using SME.SERAp.Prova.Item.Infra.EnvironmentVariables;
@@ -104,15 +105,19 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                                 SELECT *
                                                 FROM item i
                                                 WHERE i.codigo_item = @codigoItem
+                                                  AND i.situacao != @situacaoRascunho
                                                 ORDER BY i.versao_item DESC
                                                 LIMIT 1;";
 
             using var conn = ObterConexao();
             try
             {
-                return await conn.QueryFirstOrDefaultAsync<DominioItem>(queryUltimaVersao, new { codigoItem });
+                return await conn.QueryFirstOrDefaultAsync<DominioItem>(queryUltimaVersao, new
+                {
+                    codigoItem,
+                    situacaoRascunho = (int)SituacaoItem.Rascunho
+                });
             }
-         
             finally
             {
                 conn.Close();
@@ -311,6 +316,67 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             try
             {
                 return await conn.QueryAsync<DominioItem>(query, new { codigoItem });
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        public async Task<bool> InativarVersoesAnterioresAsync(string codigoItem, long versaoAtual)
+        {
+            const string query = @"
+                                    UPDATE item
+                                    SET situacao = @situacaoInativo,
+                                        alterado_em = @agora
+                                    WHERE codigo_item = @codigoItem
+                                      AND versao_item < @versaoAtual
+                                      AND situacao != @situacaoInativo
+                                      AND situacao != @situacaoRascunho";
+
+            using var conn = ObterConexao();
+            try
+            {
+                var linhasAfetadas = await conn.ExecuteAsync(query, new
+                {
+                    codigoItem,
+                    versaoAtual,
+                    situacaoInativo = (int)SituacaoItem.Inativo,
+                    situacaoRascunho = (int)SituacaoItem.Rascunho,
+                    agora = DateTime.Now
+                });
+
+                return linhasAfetadas > 0;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        public async Task<bool> InativarRascunhoPorCodigoItemAsync(string codigoItem)
+        {
+            const string query = @"
+                                    UPDATE item
+                                    SET situacao = @situacaoInativo,
+                                        alterado_em = @agora
+                                    WHERE codigo_item = @codigoItem
+                                      AND situacao = @situacaoRascunho";
+
+            using var conn = ObterConexao();
+            try
+            {
+                var linhasAfetadas = await conn.ExecuteAsync(query, new
+                {
+                    codigoItem,
+                    situacaoInativo = (int)SituacaoItem.Inativo,
+                    situacaoRascunho = (int)SituacaoItem.Rascunho,
+                    agora = DateTime.Now
+                });
+
+                return linhasAfetadas > 0;
             }
             finally
             {

@@ -8,5 +8,6 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
 {
     public interface IRepositorioAlternativa : IRepositorioBase<Dominio.Entities.Alternativa>
     {
+        Task<bool> RemoverAlternativasAusentesAsync(long itemId, IEnumerable<long> idsManter);
     }
 }

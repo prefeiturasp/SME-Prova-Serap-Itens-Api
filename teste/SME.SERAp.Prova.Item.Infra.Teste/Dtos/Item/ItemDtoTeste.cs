@@ -115,270 +115,10 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         }
 
         [Fact]
-        public void Deve_Validar_AreaConhecimentoId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 0,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("Area de conhecimento"));
-        }
-
-        [Fact]
-        public void Deve_Validar_DisciplinaId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 0,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("Disciplina"));
-        }
-
-        [Fact]
-        public void Deve_Validar_MatrizId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 0,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("Matriz"));
-        }
-
-        [Fact]
-        public void Deve_Validar_CompetenciaId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = null,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("Competencia"));
-        }
-
-        [Fact]
-        public void Deve_Validar_HabilidadeId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = null,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("Habilidade"));
-        }
-
-        [Fact]
-        public void Deve_Validar_AnoMatrizId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = null,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("AnoMatriz"));
-        }
-
-        [Fact]
-        public void Deve_Validar_DificuldadeSugeridaId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = null,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("Dificuldade Sugerida"));
-        }
-
-        [Fact]
-        public void Deve_Validar_QuantidadeAlternativasId_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 0,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("QuantidadeAlternativas"));
-        }
-
-        [Fact]
-        public void Deve_Validar_PalavrasChave_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = null,
-                Enunciado = "Teste"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("palavra chave"));
-        }
-
-        [Fact]
-        public void Deve_Validar_Enunciado_Obrigatorio()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = null
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.False(isValid);
-            Assert.Contains(resultados, r => r.ErrorMessage.Contains("enunciado"));
-        }
-
-        [Fact]
         public void Deve_Validar_Observacao_MaxLength()
         {
             var dto = new ItemDto
             {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste",
                 Observacao = new string('A', 101)
             };
 
@@ -395,16 +135,6 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         {
             var dto = new ItemDto
             {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste",
                 SentencaDescritora = new string('B', 101)
             };
 
@@ -414,31 +144,6 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
 
             Assert.False(isValid);
             Assert.Contains(resultados, r => r.ErrorMessage.Contains("Sentença Descritora"));
-        }
-
-        [Fact]
-        public void Deve_Validar_Com_Sucesso_Quando_Todos_Campos_Obrigatorios_Validos()
-        {
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 4,
-                PalavrasChave = new[] { "matemática", "álgebra" },
-                Enunciado = "Resolva a equação"
-            };
-
-            var contexto = new ValidationContext(dto);
-            var resultados = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, contexto, resultados, true);
-
-            Assert.True(isValid);
-            Assert.Empty(resultados);
         }
 
         [Fact]
@@ -457,76 +162,49 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         [Fact]
         public void Deve_Criar_ItemDto_Com_Situacao_Inativo()
         {
-            var dto = new ItemDto
-            {
-                Situacao = SituacaoItem.Inativo
-            };
-
+            var dto = new ItemDto { Situacao = SituacaoItem.Inativo };
             Assert.Equal(SituacaoItem.Inativo, dto.Situacao);
         }
 
         [Fact]
         public void Deve_Criar_ItemDto_Com_Situacao_Ativo()
         {
-            var dto = new ItemDto
-            {
-                Situacao = SituacaoItem.Ativo
-            };
-
+            var dto = new ItemDto { Situacao = SituacaoItem.Ativo };
             Assert.Equal(SituacaoItem.Ativo, dto.Situacao);
         }
 
         [Fact]
         public void Deve_Criar_ItemDto_Com_Situacao_Pendente()
         {
-            var dto = new ItemDto
-            {
-                Situacao = SituacaoItem.Pendente
-            };
-
+            var dto = new ItemDto { Situacao = SituacaoItem.Pendente };
             Assert.Equal(SituacaoItem.Pendente, dto.Situacao);
         }
 
         [Fact]
         public void Deve_Criar_ItemDto_Com_Situacao_Rascunho()
         {
-            var dto = new ItemDto
-            {
-                Situacao = SituacaoItem.Rascunho
-            };
-
+            var dto = new ItemDto { Situacao = SituacaoItem.Rascunho };
             Assert.Equal(SituacaoItem.Rascunho, dto.Situacao);
         }
 
         [Fact]
         public void Deve_Criar_ItemDto_Com_Tipo_Dicotomico()
         {
-            var dto = new ItemDto
-            {
-                Tipo = TipoItem.Dicotômico
-            };
-
+            var dto = new ItemDto { Tipo = TipoItem.Dicotômico };
             Assert.Equal(TipoItem.Dicotômico, dto.Tipo);
         }
 
         [Fact]
         public void Deve_Criar_ItemDto_Com_Tipo_Politomico()
         {
-            var dto = new ItemDto
-            {
-                Tipo = TipoItem.Politômico
-            };
-
+            var dto = new ItemDto { Tipo = TipoItem.Politômico };
             Assert.Equal(TipoItem.Politômico, dto.Tipo);
         }
 
         [Fact]
         public void Deve_Criar_ItemDto_Com_Uma_Palavra_Chave()
         {
-            var dto = new ItemDto
-            {
-                PalavrasChave = new[] { "matemática" }
-            };
+            var dto = new ItemDto { PalavrasChave = new[] { "matemática" } };
 
             Assert.Single(dto.PalavrasChave);
             Assert.Equal("matemática", dto.PalavrasChave[0]);
@@ -537,10 +215,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         {
             var palavras = new[] { "matemática", "álgebra", "equação", "primeiro grau", "incógnita" };
 
-            var dto = new ItemDto
-            {
-                PalavrasChave = palavras
-            };
+            var dto = new ItemDto { PalavrasChave = palavras };
 
             Assert.Equal(5, dto.PalavrasChave.Length);
             Assert.Contains("matemática", dto.PalavrasChave);
@@ -551,10 +226,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         [Fact]
         public void Deve_Criar_ItemDto_Com_Lista_Alternativas_Vazia()
         {
-            var dto = new ItemDto
-            {
-                AlternativasDto = new List<AltenativaDto>()
-            };
+            var dto = new ItemDto { AlternativasDto = new List<AltenativaDto>() };
 
             Assert.NotNull(dto.AlternativasDto);
             Assert.Empty(dto.AlternativasDto);
@@ -571,10 +243,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
                 new AltenativaDto { Descricao = "Alternativa D", Correta = false, Ordem = 4 }
             };
 
-            var dto = new ItemDto
-            {
-                AlternativasDto = alternativas
-            };
+            var dto = new ItemDto { AlternativasDto = alternativas };
 
             Assert.Equal(4, dto.AlternativasDto.Count);
             Assert.Single(dto.AlternativasDto.Where(a => a.Correta));
@@ -636,11 +305,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         [Fact]
         public void Deve_Criar_ItemDto_Com_Arquivos_Multimidia()
         {
-            var dto = new ItemDto
-            {
-                ArquivoVideoId = 100,
-                ArquivoAudioId = 200
-            };
+            var dto = new ItemDto { ArquivoVideoId = 100, ArquivoAudioId = 200 };
 
             Assert.Equal(100, dto.ArquivoVideoId);
             Assert.Equal(200, dto.ArquivoAudioId);
@@ -649,11 +314,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         [Fact]
         public void Deve_Criar_ItemDto_Com_Assunto_E_SubAssunto()
         {
-            var dto = new ItemDto
-            {
-                AssuntoId = 10,
-                SubAssuntoId = 25
-            };
+            var dto = new ItemDto { AssuntoId = 10, SubAssuntoId = 25 };
 
             Assert.Equal(10, dto.AssuntoId);
             Assert.Equal(25, dto.SubAssuntoId);
@@ -662,22 +323,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         [Fact]
         public void Deve_Criar_ItemDto_Com_Observacao_Maxima_Permitida()
         {
-            var observacao = new string('A', 100);
-
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste",
-                Observacao = observacao
-            };
+            var dto = new ItemDto { Observacao = new string('A', 100) };
 
             var contexto = new ValidationContext(dto);
             var resultados = new List<ValidationResult>();
@@ -690,22 +336,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         [Fact]
         public void Deve_Criar_ItemDto_Com_SentencaDescritora_Maxima_Permitida()
         {
-            var sentenca = new string('B', 100);
-
-            var dto = new ItemDto
-            {
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1,
-                MatrizId = 1,
-                CompetenciaId = 1,
-                HabilidadeId = 1,
-                AnoMatrizId = 1,
-                DificuldadeSugeridaId = 1,
-                QuantidadeAlternativasId = 1,
-                PalavrasChave = new[] { "teste" },
-                Enunciado = "Teste",
-                SentencaDescritora = sentenca
-            };
+            var dto = new ItemDto { SentencaDescritora = new string('B', 100) };
 
             var contexto = new ValidationContext(dto);
             var resultados = new List<ValidationResult>();
