@@ -33,7 +33,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases.Item
             var versoesItens = (await mediator.Send(new ObterTodasVersoesPorCodigoItemQuery(item.CodigoItem))).ToList();
 
             var listaVersoesDto = versoesItens
-                .Select(v => new ItemVersaoDto(v.Id, v.CodigoItem, v.VersaoItem, v.DataCriacao))
+                .Select(v => new ItemVersaoDto(v.Id, v.CodigoItem, v.VersaoItem, v.DataCriacao, v.Situacao))
                 .OrderBy(v => v.VersaoItem)
                 .ToList();
 

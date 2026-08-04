@@ -307,7 +307,8 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                                         id, -- Adicionado o ID da versão do item
                                         codigo_item CodigoItem, 
                                         versao_item VersaoItem,
-                                        criado_em DataCriacao
+                                        criado_em DataCriacao,
+                                        situacao Situacao
                                     FROM item
                                     WHERE codigo_item = @codigoItem
                                     ORDER BY versao_item;";
