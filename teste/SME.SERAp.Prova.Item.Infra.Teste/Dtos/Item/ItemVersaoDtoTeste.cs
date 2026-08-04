@@ -1,7 +1,5 @@
-﻿using System;
-using Xunit;
-using SME.SERAp.Prova.Item.Infra.Dtos;
-using System.Globalization;
+﻿using SME.SERAp.Prova.Item.Infra.Dtos;
+using SME.SERAp.Prova.Item.Dominio.Enums;
 
 namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
 {
@@ -12,6 +10,7 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         private readonly long VersaoItemValida = 3;
         private readonly DateTime DataCriacaoValida = new DateTime(2025, 08, 15, 14, 30, 0);
         private const string DataCriacaoFormatadaEsperada = "15/08/2025";
+        private readonly SituacaoItem? SituacaoValida = SituacaoItem.Ativo;
 
         [Fact]
         public void Deve_Criar_Dto_Com_Construtor_E_Atribuir_Propriedades_Corretamente()
@@ -20,7 +19,8 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
                 IdValido,
                 CodigoItemValido,
                 VersaoItemValida,
-                DataCriacaoValida
+                DataCriacaoValida,
+                SituacaoValida
             );
 
             Assert.Equal(IdValido, dto.Id);
@@ -38,13 +38,15 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
                 50,
                 "IT-001",
                 1,
-                DateTime.Parse(dataCriacaoParaSet)
+                DateTime.Parse(dataCriacaoParaSet),
+                SituacaoValida
             );
 
             Assert.Equal(50, dto.Id);
             Assert.Equal("IT-001", dto.CodigoItem);
             Assert.Equal(1, dto.VersaoItem);
             Assert.Equal("20/01/2024", dto.DataCriacao);
+            Assert.Equal(dto.Situacao, SituacaoValida);
         }
 
         [Fact]
@@ -57,10 +59,12 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
                 IdValido,
                 CodigoItemValido,
                 VersaoItemValida,
-                dataLimite
+                dataLimite,
+                SituacaoValida
             );
 
             Assert.Equal(dataLimiteEsperada, dto.DataCriacao);
+            Assert.Equal(dto.Situacao, SituacaoValida);
         }
     }
 }
