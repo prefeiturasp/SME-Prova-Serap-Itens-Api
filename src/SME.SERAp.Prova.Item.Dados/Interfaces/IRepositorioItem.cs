@@ -1,10 +1,8 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Entities;
+using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Itens;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SME.SERAp.Prova.Item.Dados.Interfaces
@@ -22,5 +20,8 @@ namespace SME.SERAp.Prova.Item.Dados.Interfaces
         Task<IEnumerable<SME.SERAp.Prova.Item.Dominio.Entities.Item>> ObterTodasVersoesPorCodigoItem(string codigoItem);
         Task<bool> InativarVersoesAnterioresAsync(string codigoItem, long versaoAtual);
         Task<bool> InativarRascunhoPorCodigoItemAsync(string codigoItem);
+        Task<bool> AtualizarSituacaoItemAsync(string codigoItem, long versaoItem, SituacaoItem situacao);
+        Task<Dominio.Entities.Item> ObterRascunhoNovaVersaoPorCodigoAsync(string codigoItem);
+        Task<Dominio.Entities.Item> ObterRascunhoPorCodigoAsync(string codigoItem);
     }
 }

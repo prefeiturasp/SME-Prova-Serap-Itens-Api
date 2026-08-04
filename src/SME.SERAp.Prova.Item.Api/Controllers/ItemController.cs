@@ -68,7 +68,7 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
         [HttpGet("Codigos")]
         [ProducesResponseType(typeof(IEnumerable<SelectDto>), 200)]
         [ProducesResponseType(typeof(RetornoBaseDto), 500)]
-    
+
         public async Task<IActionResult> ObterListaCodigoItens([FromQuery] string codigoItem, [FromServices] IObterCodigosItensUseCase obterListaCodigoItensUseCase)
         {
             return Ok(await obterListaCodigoItensUseCase.Executar(codigoItem));
@@ -97,6 +97,25 @@ namespace SME.SERAp.Prova.Item.Api.Controllers
             }
 
             return Ok(resumo);
+        }
+
+        [HttpPatch("situacao")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 400)]
+        [ProducesResponseType(typeof(RetornoBaseDto), 500)]
+        public async Task<IActionResult> AtualizarSituacao(
+            [FromBody] AtualizarSituacaoItemDto dto,
+            [FromServices] IAtualizarSituacaoItemUseCase atualizarSituacaoItemUseCase)
+        {
+            var resultado = await atualizarSituacaoItemUseCase.Executar(
+                dto.CodigoItem,
+                dto.VersaoItem,
+                dto.Situacao);
+
+            if (!resultado)
+                return BadRequest(new RetornoBaseDto("Não foi possível atualizar a situação do item."));
+
+            return Ok(resultado);
         }
     }
 }
