@@ -89,6 +89,7 @@ namespace SME.SERAp.Prova.Item.IoC
             services.AddScoped<IUploadArquivoUseCase, UploadArquivoUseCase>();
             services.AddScoped<IObterItemResumoPorIdUseCase, ObterItemResumoPorIdUseCase>();
             services.AddScoped<IUploadArquivoAudioVideo, UploadArquivoAudioVideo>();
+            services.AddScoped<IAtualizarSituacaoItemUseCase, AtualizarSituacaoItemUseCase>();
         }
     }
 }

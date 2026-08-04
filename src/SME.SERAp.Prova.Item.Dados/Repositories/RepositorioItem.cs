@@ -29,7 +29,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 return await conn.QueryFirstOrDefaultAsync<long?>(query);
             }
-       
+
             finally
             {
                 conn.Close();
@@ -37,7 +37,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
             }
         }
 
-        public async Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId) 
+        public async Task<long?> ObterQtdItensAreaConhecimentoEhDisciplina(long areaConhecimentoLegadoId, long disciplinaLegadoId)
         {
             using var conn = ObterConexao();
             try
@@ -135,13 +135,13 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
     	                                           FROM ITEM");
 
 
-               if(codigoItem is not null)
+                if (codigoItem is not null)
                     query.Append($@" WHERE  CAST(codigo_item AS TEXT) LIKE '%{codigoItem}%';");
 
 
                 return await conn.QueryAsync<CodigoItemDto>(query.ToString(), new { codigoItem });
             }
-          
+
             finally
             {
                 conn.Close();
@@ -189,7 +189,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                     queryBase.Append($@" AND I.habilidade_id = @habilidadeId ");
                     parameters.Add("habilidadeId", filtroDto.HabilidadeId);
                 }
-                    
+
                 if (filtroDto.DisciplinaId is not null)
                 {
                     queryBase.Append($@" AND I.disciplina_id = @disciplinaId ");
@@ -214,7 +214,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                     parameters.Add("situacao", filtroDto.Situacao);
                 }
 
-                if(filtroDto.AnoMatrizId is not null)
+                if (filtroDto.AnoMatrizId is not null)
                 {
                     queryBase.Append($@" AND I.tipo_grade_id = @anoMatrizId ");
                     parameters.Add("anoMatrizId", filtroDto.AnoMatrizId);
@@ -234,7 +234,7 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
 
                 if (filtroDto.InformacoesEstatisticas == true)
                     queryBase.Append($"AND ( I.discriminacao IS NOT NULL  AND I.acerto_casual IS NOT NULL AND I.Dificuldade is not NULL )");
-              
+
                 if (filtroDto.InformacoesEstatisticas == false)
                     queryBase.Append($"AND ( I.discriminacao IS  NULL  OR I.acerto_casual IS  NULL OR I.Dificuldade is  NULL )");
 
@@ -377,6 +377,88 @@ namespace SME.SERAp.Prova.Item.Dados.Repositories
                 });
 
                 return linhasAfetadas > 0;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        public async Task<bool> AtualizarSituacaoItemAsync(string codigoItem, long versaoItem, SituacaoItem situacao)
+        {
+            const string query = @"
+                                    UPDATE item
+                                    SET situacao    = @situacao,
+                                        alterado_em = @agora
+                                    WHERE codigo_item = @codigoItem
+                                      AND versao_item = @versaoItem";
+
+            using var conn = ObterConexao();
+            try
+            {
+                var linhasAfetadas = await conn.ExecuteAsync(query, new
+                {
+                    situacao = (int)situacao,
+                    agora = DateTime.Now,
+                    codigoItem,
+                    versaoItem
+                });
+
+                return linhasAfetadas > 0;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        public async Task<DominioItem> ObterRascunhoNovaVersaoPorCodigoAsync(string codigoItem)
+        {
+            const string query = @"
+                                    SELECT *
+                                    FROM item
+                                    WHERE codigo_item = @codigoItem
+                                      AND situacao    = @situacaoRascunho
+                                      AND versao_item > 0
+                                    ORDER BY versao_item DESC
+                                    LIMIT 1;";
+
+            using var conn = ObterConexao();
+            try
+            {
+                return await conn.QueryFirstOrDefaultAsync<DominioItem>(query, new
+                {
+                    codigoItem,
+                    situacaoRascunho = (int)SituacaoItem.Rascunho
+                });
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        public async Task<DominioItem> ObterRascunhoPorCodigoAsync(string codigoItem)
+        {
+            const string query = @"
+                                    SELECT *
+                                    FROM item
+                                    WHERE codigo_item    = @codigoItem
+                                      AND situacao       = @situacaoRascunho
+                                    ORDER BY versao_item DESC
+                                    LIMIT 1;";
+
+            using var conn = ObterConexao();
+            try
+            {
+                return await conn.QueryFirstOrDefaultAsync<DominioItem>(query, new
+                {
+                    codigoItem,
+                    situacaoRascunho = (int)SituacaoItem.Rascunho
+                });
             }
             finally
             {
