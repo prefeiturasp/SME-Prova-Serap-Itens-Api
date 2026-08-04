@@ -6,6 +6,8 @@ using SME.SERAp.Prova.Item.Aplicacao.Commands.ItemVersao;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.PublicarFilaRabbit;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.Rascunho;
 using SME.SERAp.Prova.Item.Aplicacao.Interfaces;
+using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterRascunhoNovaVersaoPorCodigo;
+using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterRascunhoPorCodigo;
 using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterUltimaVersaoItemPorCodigo;
 using SME.SERAp.Prova.Item.Dominio.Entities;
 using SME.SERAp.Prova.Item.Dominio.Enums;
@@ -46,6 +48,15 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
             if (isNovoRascunho)
             {
+                if (!string.IsNullOrEmpty(itemDto.CodigoItem))
+                {
+                    var rascunhoExistente = await mediator.Send(
+                        new ObterRascunhoNovaVersaoPorCodigoQuery(itemDto.CodigoItem));
+
+                    if (rascunhoExistente != null)
+                        throw new Exception($"Já existe um rascunho de nova versão para o item {itemDto.CodigoItem}. Envie o id do rascunho para editá-lo.");
+                }
+
                 itemDto.CodigoItem = await mediator.Send(new GeraCodigoItemQuery(areaConhecimento, disciplina));
                 itemDto.VersaoItem = 0;
             }
@@ -58,6 +69,10 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
                 if (itemExistente.Situacao != SituacaoItem.Rascunho)
                     throw new Exception("Não é permitido atualizar um item que não está em situação de rascunho.");
+
+                if (!string.IsNullOrEmpty(itemDto.CodigoItem) &&
+                    itemDto.CodigoItem != itemExistente.CodigoItem)
+                    throw new Exception("O código do item informado não corresponde ao rascunho encontrado.");
 
                 itemDto.CodigoItem = itemExistente.CodigoItem;
                 itemDto.VersaoItem = itemExistente.VersaoItem;
@@ -80,7 +95,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
             var itemId = await mediator.Send(new SalvarItemCommand(item));
 
-            await TrataAlternativasRascunho(itemDto, itemId, isNovoRascunho);
+            if (itemDto.AlternativasDto != null)
+                await TrataAlternativasRascunho(itemDto, itemId, isNovoRascunho);
 
             if (itemDto.ArquivoAudioId > 0)
                 await TrataArquivoAudio(itemDto, itemId);
@@ -97,41 +113,121 @@ namespace SME.SERAp.Prova.Item.Aplicacao.UseCases
 
             if (!string.IsNullOrEmpty(itemDto.CodigoItem))
             {
-                var ultimaVersao = await mediator.Send(
+                var ultimaVersaoAtiva = await mediator.Send(
                     new ObterUltimaVersaoItemPorCodigoQuery(itemDto.CodigoItem));
 
-                if (ultimaVersao != null)
+                var rascunhoExistente = await mediator.Send(
+                    new ObterRascunhoPorCodigoQuery(itemDto.CodigoItem));
+
+                if (rascunhoExistente != null && ultimaVersaoAtiva == null)
                 {
-                    itemDto.VersaoItem = ultimaVersao.VersaoItem + 1;
-                    itemDto.CodigoItem = ultimaVersao.CodigoItem;
+                    return await TrataAtivacaoRascunhoInicial(
+                        itemDto, areaConhecimento, disciplina, rascunhoExistente);
+                }
+                else if (rascunhoExistente != null && ultimaVersaoAtiva != null)
+                {
+                    return await TrataAtivacaoRascunhoNovaVersao(
+                        itemDto, areaConhecimento, disciplina, rascunhoExistente, ultimaVersaoAtiva);
+                }
+                else if (ultimaVersaoAtiva != null)
+                {
+                    itemDto.VersaoItem = ultimaVersaoAtiva.VersaoItem + 1;
+                    itemDto.CodigoItem = ultimaVersaoAtiva.CodigoItem;
+                    return await TrataRascunhoNovaVersao(itemDto, areaConhecimento, disciplina);
                 }
                 else
                 {
-                    itemDto.VersaoItem = 1;
+                    throw new Exception($"Nenhum item ou rascunho encontrado com o código {itemDto.CodigoItem}.");
                 }
             }
             else
             {
-                itemDto.CodigoItem = await mediator.Send(
-                    new GeraCodigoItemQuery(areaConhecimento, disciplina));
-                itemDto.VersaoItem = 1;
+                throw new Exception("Não é possível ativar um item sem informar o código.");
             }
+        }
+
+        private async Task<long> TrataRascunhoNovaVersao(ItemDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina)
+        {
+            itemDto.Situacao = SituacaoItem.Rascunho;
 
             var item = MapItemDto(itemDto, areaConhecimento, disciplina);
+            item.Id = 0;
             item.DataCriacao = DateTime.Now;
             item.DataAlteracao = DateTime.Now;
-            item.Id = 0;
 
             var itemId = await mediator.Send(new SalvarItemCommand(item));
 
-            await mediator.Send(new InativarVersoesAnterioresItemCommand(
-                itemDto.CodigoItem,
-                itemDto.VersaoItem));
+            if (itemDto.AlternativasDto != null)
+                await TrataAlternativas(itemDto, itemId);
+
+            if (itemDto.ArquivoAudioId > 0)
+                await TrataArquivoAudio(itemDto, itemId);
+
+            if (itemDto.ArquivoVideoId > 0)
+                await TrataArquivoVideo(itemDto, itemId);
+
+            return itemId;
+        }
+
+        private async Task<long> TrataAtivacaoRascunhoNovaVersao(
+            ItemDto itemDto,
+            AreaConhecimento areaConhecimento,
+            Disciplina disciplina,
+            Dominio.Entities.Item rascunhoNovaVersao,
+            Dominio.Entities.Item ultimaVersaoAtiva)
+        {
+            itemDto.VersaoItem = rascunhoNovaVersao.VersaoItem;
+            itemDto.CodigoItem = rascunhoNovaVersao.CodigoItem;
+            itemDto.Situacao = SituacaoItem.Ativo;
+
+            var item = MapItemDto(itemDto, areaConhecimento, disciplina);
+            item.Id = rascunhoNovaVersao.Id;
+            item.DataCriacao = rascunhoNovaVersao.DataCriacao;
+            item.DataAlteracao = DateTime.Now;
+
+            var itemId = await mediator.Send(new SalvarItemCommand(item));
+
+            if (ultimaVersaoAtiva != null)
+                await mediator.Send(new InativarVersoesAnterioresItemCommand(
+                    itemDto.CodigoItem,
+                    itemDto.VersaoItem));
 
             await mediator.Send(new InativarRascunhoPorCodigoItemCommand(itemDto.CodigoItem));
 
             if (itemDto.AlternativasDto != null)
-                await TrataAlternativas(itemDto, itemId);
+                await TrataAlternativasRascunho(itemDto, itemId, isNovoRascunho: false);
+
+            if (itemDto.ArquivoAudioId > 0)
+                await TrataArquivoAudio(itemDto, itemId);
+
+            if (itemDto.ArquivoVideoId > 0)
+                await TrataArquivoVideo(itemDto, itemId);
+
+            await mediator.Send(new PublicaFilaRabbitCommand(
+                RotaRabbit.ItemSalvarLegado, new ItemSalvarLegadoDto
+                {
+                    ItemId = itemId,
+                    ItemDto = itemDto
+                }));
+
+            return itemId;
+        }
+
+        private async Task<long> TrataAtivacaoRascunhoInicial(ItemDto itemDto, AreaConhecimento areaConhecimento, Disciplina disciplina, Dominio.Entities.Item rascunhoExistente)
+        {
+            itemDto.VersaoItem = 1;
+            itemDto.CodigoItem = rascunhoExistente.CodigoItem;
+            itemDto.Situacao = SituacaoItem.Ativo;
+
+            var item = MapItemDto(itemDto, areaConhecimento, disciplina);
+            item.Id = rascunhoExistente.Id;
+            item.DataCriacao = rascunhoExistente.DataCriacao;
+            item.DataAlteracao = DateTime.Now;
+
+            var itemId = await mediator.Send(new SalvarItemCommand(item));
+
+            if (itemDto.AlternativasDto != null)
+                await TrataAlternativasRascunho(itemDto, itemId, isNovoRascunho: false);
 
             if (itemDto.ArquivoAudioId > 0)
                 await TrataArquivoAudio(itemDto, itemId);

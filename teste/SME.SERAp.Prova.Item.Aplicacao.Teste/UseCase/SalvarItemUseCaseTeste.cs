@@ -4,7 +4,12 @@ using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Alterantiva;
 using SME.SERAp.Prova.Item.Aplicacao.Commands;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa;
+using SME.SERAp.Prova.Item.Aplicacao.Commands.Alternativa.RemoverAlternativasAusentesDto;
+using SME.SERAp.Prova.Item.Aplicacao.Commands.ItemVersao;
 using SME.SERAp.Prova.Item.Aplicacao.Commands.PublicarFilaRabbit;
+using SME.SERAp.Prova.Item.Aplicacao.Commands.Rascunho;
+using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterRascunhoNovaVersaoPorCodigo;
+using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterRascunhoPorCodigo;
 using SME.SERAp.Prova.Item.Aplicacao.Queries.Item.ObterUltimaVersaoItemPorCodigo;
 using SME.SERAp.Prova.Item.Aplicacao.UseCases;
 using SME.SERAp.Prova.Item.Dominio.Enums;
@@ -18,11 +23,19 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
     {
         private readonly Mock<IMediator> mediatorMock;
         private readonly SalvarItemUseCase useCase;
-        private const long AreaConhecimentoIdValido = 10L;
-        private const long DisciplinaIdValido = 20L;
-        private const long ItemIdValido = 100L;
-        private const string CodigoItemGerado = "AC10-DISC20-001";
-        private const string CodigoItemExistente = "AC10-DISC20-001";
+
+        private const long AreaConhecimentoIdValido = 21L;
+        private const long DisciplinaIdValido = 63L;
+        private const long MatrizIdValido = 23L;
+        private const long CompetenciaIdValido = 1913L;
+        private const long HabilidadeIdValido = 5821L;
+        private const long AnoMatrizIdValido = 85L;
+        private const long DificuldadeSugeridaIdValido = 1L;
+        private const long SubAssuntoIdValido = 38L;
+        private const long ItemIdValido = 546L;
+        private const long ItemIdRascunho = 614L;
+        private const string CodigoItemGerado = "AC21-DISC63-001";
+        private const string CodigoItemExistente = "2199";
 
         public SalvarItemUseCaseTeste()
         {
@@ -34,7 +47,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         {
             return new AreaConhecimento(AreaConhecimentoIdValido, 1, "Matemática", StatusGeral.Ativo)
             {
-                Codigo = 10
+                Codigo = 21
             };
         }
 
@@ -42,72 +55,62 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         {
             return new Disciplina(DisciplinaIdValido, 2, AreaConhecimentoIdValido, "Álgebra", "Fundamental", StatusGeral.Ativo)
             {
-                Codigo = 20
+                Codigo = 63
             };
         }
 
-        private ItemDto ObterItemDtoNovoMock()
+        private ItemDto ObterItemDtoBase(SituacaoItem situacao, string codigoItem = null, long? id = null, long versaoItem = 0)
         {
             return new ItemDto
             {
-                Id = null,
-                CodigoItem = null,
-                AreaConhecimentoId = AreaConhecimentoIdValido,
-                DisciplinaId = DisciplinaIdValido,
-                MatrizId = 30,
-                CompetenciaId = 40,
-                HabilidadeId = 50,
-                AnoMatrizId = 60,
-                DificuldadeSugeridaId = 70,
-                Situacao = SituacaoItem.Ativo,
-                Tipo = TipoItem.Dicotômico,
-                QuantidadeAlternativasId = 4,
-                PalavrasChave = new[] { "algebra", "equação" },
-                Enunciado = "Resolva a equação",
-                TextoBase = "Base do item",
-                Fonte = "Fonte teste"
-            };
-        }
-
-        private ItemDto ObterItemDtoNovaVersaoMock(string codigoItem = CodigoItemExistente)
-        {
-            return new ItemDto
-            {
-                Id = null,
+                Id = id,
                 CodigoItem = codigoItem,
                 AreaConhecimentoId = AreaConhecimentoIdValido,
                 DisciplinaId = DisciplinaIdValido,
-                MatrizId = 30,
-                CompetenciaId = 40,
-                HabilidadeId = 50,
-                AnoMatrizId = 60,
-                DificuldadeSugeridaId = 70,
-                Situacao = SituacaoItem.Ativo,
+                MatrizId = MatrizIdValido,
+                CompetenciaId = CompetenciaIdValido,
+                HabilidadeId = HabilidadeIdValido,
+                AnoMatrizId = AnoMatrizIdValido,
+                DificuldadeSugeridaId = DificuldadeSugeridaIdValido,
+                Discriminacao = 1.000m,
+                AcertoCasual = null,
+                Dificuldade = 2.000m,
+                AssuntoId = null,
+                SubAssuntoId = SubAssuntoIdValido,
+                Situacao = situacao,
                 Tipo = TipoItem.Dicotômico,
-                QuantidadeAlternativasId = 4,
-                PalavrasChave = new[] { "algebra", "equação" },
-                Enunciado = "Resolva a equação atualizada",
-                TextoBase = "Base do item atualizada",
-                Fonte = "Fonte teste"
+                QuantidadeAlternativasId = 23,
+                PalavrasChave = new[] { "teste" },
+                ParametroBTransformado = null,
+                MediaEhDesvio = null,
+                Observacao = null,
+                SentencaDescritora = null,
+                NivelItem = null,
+                VersaoItem = versaoItem,
+                TextoBase = null,
+                Fonte = null,
+                Enunciado = "<p>teste</p>",
+                AlternativasDto = ObterAlternativasDtoMock(),
+                ArquivoVideoId = 0,
+                ArquivoAudioId = 0
             };
         }
 
-        private DominioItem ObterUltimaVersaoItemMock(long versaoItem = 1)
+        private DominioItem ObterDominioItemMock(long id, string codigoItem, SituacaoItem situacao, long versaoItem)
         {
             var item = new DominioItem(
-                CodigoItemExistente,
+                codigoItem,
                 AreaConhecimentoIdValido, DisciplinaIdValido,
-                30, 40, 50, 60, 70,
+                MatrizIdValido, CompetenciaIdValido, HabilidadeIdValido, AnoMatrizIdValido, DificuldadeSugeridaIdValido,
+                1.000m, null, 2.000m, null, SubAssuntoIdValido,
+                situacao, TipoItem.Dicotômico,
+                23, "teste",
                 null, null, null, null, null,
-                SituacaoItem.Ativo, TipoItem.Dicotômico,
-                4, "algebra;equação",
-                null, null, null, null, null,
-                versaoItem, null, null, "Resolva a equação");
+                versaoItem, null, null, "<p>teste</p>");
 
-            item.Id = ItemIdValido;
+            item.Id = id;
             item.DataCriacao = DateTime.Now;
             item.DataAlteracao = DateTime.Now;
-
             return item;
         }
 
@@ -115,8 +118,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         {
             return new List<AltenativaDto>
             {
-                new AltenativaDto { Id = 0, Descricao = "Alternativa A", Numeracao = "A", Ordem = 1, Correta = true, Justificativa = "Correta" },
-                new AltenativaDto { Id = 0, Descricao = "Alternativa B", Numeracao = "B", Ordem = 2, Correta = false, Justificativa = "Incorreta" }
+                new AltenativaDto { Id = 0, Descricao = "Alternativa A", Justificativa = "Justificativa A", Numeracao = "A", Correta = true, Ordem = 1 },
+                new AltenativaDto { Id = 0, Descricao = "Alternativa B", Justificativa = "Justificativa B", Numeracao = "B", Correta = false, Ordem = 2 }
             };
         }
 
@@ -130,6 +133,18 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
                         .ReturnsAsync(ItemIdValido);
             mediatorMock.Setup(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(true);
+            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(1L);
+            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(1L);
+            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(1L);
+            mediatorMock.Setup(m => m.Send(It.IsAny<InativarVersoesAnterioresItemCommand>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(true);
+            mediatorMock.Setup(m => m.Send(It.IsAny<InativarRascunhoPorCodigoItemCommand>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(true);
+            mediatorMock.Setup(m => m.Send(It.IsAny<RemoverAlternativasAusentesDtoCommand>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(true);
         }
 
         [Fact]
@@ -139,177 +154,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         }
 
         [Fact]
-        public async Task Deve_Salvar_Item_Novo_Com_Sucesso_E_Retornar_ItemId()
-        {
-            var itemDto = ObterItemDtoNovoMock();
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(CodigoItemGerado);
-
-            var resultado = await useCase.Executar(itemDto);
-
-            Assert.Equal(ItemIdValido, resultado);
-            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 1 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Deve_Definir_VersaoItem_Como_1_Para_Item_Novo()
-        {
-            var itemDto = ObterItemDtoNovoMock();
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(CodigoItemGerado);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(1, itemDto.VersaoItem);
-        }
-
-        [Fact]
-        public async Task Deve_Gerar_CodigoItem_Quando_CodigoItem_For_Nulo()
-        {
-            var itemDto = ObterItemDtoNovoMock();
-            itemDto.CodigoItem = null;
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(CodigoItemGerado);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(CodigoItemGerado, itemDto.CodigoItem);
-            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Deve_Gerar_CodigoItem_Quando_CodigoItem_For_Vazio()
-        {
-            var itemDto = ObterItemDtoNovoMock();
-            itemDto.CodigoItem = string.Empty;
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(CodigoItemGerado);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(CodigoItemGerado, itemDto.CodigoItem);
-            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Deve_Criar_Nova_Versao_Quando_CodigoItem_Existir_No_Banco()
-        {
-            var itemDto = ObterItemDtoNovaVersaoMock();
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-            var ultimaVersao = ObterUltimaVersaoItemMock(versaoItem: 1);
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(ultimaVersao);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(2, itemDto.VersaoItem);
-            Assert.Null(itemDto.Id);
-            Assert.Equal(CodigoItemExistente, itemDto.CodigoItem);
-            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
-            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 2 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Deve_Incrementar_VersaoItem_Baseado_Na_Ultima_Versao_Independente_Do_Valor_Enviado()
-        {
-            var itemDto = ObterItemDtoNovaVersaoMock();
-            itemDto.VersaoItem = 99;
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-            var ultimaVersao = ObterUltimaVersaoItemMock(versaoItem: 3);
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(ultimaVersao);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(4, itemDto.VersaoItem);
-        }
-
-        [Fact]
-        public async Task Deve_Preservar_CodigoItem_Original_Ignorando_Alteracoes_No_Dto()
-        {
-            var itemDto = ObterItemDtoNovaVersaoMock();
-            itemDto.CodigoItem = "CODIGO-ALTERADO";
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-            var ultimaVersao = ObterUltimaVersaoItemMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(ultimaVersao);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(CodigoItemExistente, itemDto.CodigoItem);
-        }
-
-        [Fact]
-        public async Task Deve_Criar_Item_Novo_Com_Codigo_Informado_Quando_Nao_Existir_No_Banco()
-        {
-            var codigoInexistente = "CODIGO-INEXISTENTE";
-            var itemDto = ObterItemDtoNovaVersaoMock(codigoInexistente);
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync((DominioItem)null);
-
-            await useCase.Executar(itemDto);
-
-            Assert.Equal(1, itemDto.VersaoItem);
-            Assert.Null(itemDto.Id);
-            Assert.Equal(codigoInexistente, itemDto.CodigoItem);
-            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
-            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 1 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Nao_Deve_Chamar_ObterUltimaVersao_Quando_CodigoItem_For_Nulo()
-        {
-            var itemDto = ObterItemDtoNovoMock();
-            itemDto.CodigoItem = null;
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(CodigoItemGerado);
-
-            await useCase.Executar(itemDto);
-
-            mediatorMock.Verify(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()), Times.Never);
-        }
-
-        [Fact]
         public async Task Deve_Lancar_Exception_Quando_AreaConhecimento_Nao_For_Encontrada()
         {
-            var itemDto = ObterItemDtoNovoMock();
-
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho);
             mediatorMock.Setup(m => m.Send(It.IsAny<ObterAreaConhecimentoPorIdQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync((AreaConhecimento)null);
 
@@ -323,9 +170,8 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         [Fact]
         public async Task Deve_Lancar_Exception_Quando_Disciplina_Nao_For_Encontrada()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho);
             var areaConhecimento = ObterAreaConhecimentoMock();
-
             mediatorMock.Setup(m => m.Send(It.IsAny<ObterAreaConhecimentoPorIdQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(areaConhecimento);
             mediatorMock.Setup(m => m.Send(It.IsAny<ObterDisciplinaPorIdQuery>(), It.IsAny<CancellationToken>()))
@@ -339,9 +185,216 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         }
 
         [Fact]
-        public async Task Deve_Salvar_Alternativas_Quando_AlternativasDto_Nao_For_Nulo()
+        public async Task TrataRascunho_Deve_Criar_Novo_Rascunho_Quando_Id_E_CodigoItem_Sao_Nulos()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, codigoItem: null, id: null);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(CodigoItemGerado);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoNovaVersaoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync((DominioItem)null);
+
+            var resultado = await useCase.Executar(itemDto);
+
+            Assert.Equal(ItemIdValido, resultado);
+            Assert.Equal(CodigoItemGerado, itemDto.CodigoItem);
+            Assert.Equal(0, itemDto.VersaoItem);
+            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.Situacao == SituacaoItem.Rascunho), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataRascunho_Deve_Lancar_Exception_Se_Ja_Existe_Rascunho_Nova_Versao_Para_CodigoItem()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, codigoItem: CodigoItemExistente, id: null);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var rascunhoExistente = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 2);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoNovaVersaoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(rascunhoExistente);
+
+            var exception = await Assert.ThrowsAsync<Exception>(() => useCase.Executar(itemDto));
+
+            Assert.Contains($"Já existe um rascunho de nova versão para o item {itemDto.CodigoItem}. Envie o id do rascunho para editá-lo.", exception.Message);
+            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataRascunho_Deve_Atualizar_Rascunho_Existente()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, codigoItem: CodigoItemExistente, id: ItemIdRascunho);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var itemExistente = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 0);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.Is<ObterItemPorIdQuery>(q => q.Id == ItemIdRascunho), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(itemExistente);
+
+            var resultado = await useCase.Executar(itemDto);
+
+            Assert.Equal(ItemIdValido, resultado);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == ItemIdRascunho && cmd.Item.Situacao == SituacaoItem.Rascunho), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataRascunho_Deve_Lancar_Exception_Ao_Atualizar_Item_Nao_Rascunho()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, codigoItem: CodigoItemExistente, id: ItemIdRascunho);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var itemExistente = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Ativo, 1);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.Is<ObterItemPorIdQuery>(q => q.Id == ItemIdRascunho), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(itemExistente);
+
+            var exception = await Assert.ThrowsAsync<Exception>(() => useCase.Executar(itemDto));
+
+            Assert.Contains("Não é permitido atualizar um item que não está em situação de rascunho.", exception.Message);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataRascunho_Deve_Lancar_Exception_Se_CodigoItem_Nao_Corresponde_Ao_Rascunho()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, codigoItem: "CODIGO-DIFERENTE", id: ItemIdRascunho);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var itemExistente = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 0);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.Is<ObterItemPorIdQuery>(q => q.Id == ItemIdRascunho), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(itemExistente);
+
+            var exception = await Assert.ThrowsAsync<Exception>(() => useCase.Executar(itemDto));
+
+            Assert.Contains("O código do item informado não corresponde ao rascunho encontrado.", exception.Message);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataNovaVersao_Deve_Lancar_Exception_Quando_CodigoItem_For_Nulo_Ou_Vazio()
+        {
+            var itemDtoNulo = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: null);
+            var itemDtoVazio = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: string.Empty);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+
+            var exceptionNulo = await Assert.ThrowsAsync<Exception>(() => useCase.Executar(itemDtoNulo));
+            Assert.Contains("Não é possível ativar um item sem informar o código.", exceptionNulo.Message);
+
+            var exceptionVazio = await Assert.ThrowsAsync<Exception>(() => useCase.Executar(itemDtoVazio));
+            Assert.Contains("Não é possível ativar um item sem informar o código.", exceptionVazio.Message);
+
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataNovaVersao_Deve_Ativar_Rascunho_Inicial_Quando_Nao_Ha_Versao_Ativa_E_Existe_Rascunho()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: CodigoItemExistente, id: null);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var rascunhoExistente = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 0);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync((DominioItem)null);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(rascunhoExistente);
+
+            var resultado = await useCase.Executar(itemDto);
+
+            Assert.Equal(ItemIdValido, resultado);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == ItemIdRascunho && cmd.Item.Situacao == SituacaoItem.Ativo && cmd.Item.VersaoItem == 1), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<InativarVersoesAnterioresItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<InativarRascunhoPorCodigoItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task TrataNovaVersao_Deve_Ativar_Rascunho_Nova_Versao_Quando_Ha_Versao_Ativa_E_Existe_Rascunho()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: CodigoItemExistente, id: null);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var ultimaVersaoAtiva = ObterDominioItemMock(ItemIdValido, CodigoItemExistente, SituacaoItem.Ativo, 1);
+            var rascunhoNovaVersao = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 2);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(ultimaVersaoAtiva);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(rascunhoNovaVersao);
+
+            var resultado = await useCase.Executar(itemDto);
+
+            Assert.Equal(ItemIdValido, resultado);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == ItemIdRascunho && cmd.Item.Situacao == SituacaoItem.Ativo && cmd.Item.VersaoItem == 2), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<InativarVersoesAnterioresItemCommand>(cmd => cmd.CodigoItem == CodigoItemExistente && cmd.VersaoAtual == 2), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<InativarRascunhoPorCodigoItemCommand>(cmd => cmd.CodigoItem == CodigoItemExistente), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task TrataNovaVersao_Deve_Criar_Novo_Rascunho_Para_Edicao_Quando_Ha_Versao_Ativa_E_Nao_Ha_Rascunho()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: CodigoItemExistente, id: null);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var ultimaVersaoAtiva = ObterDominioItemMock(ItemIdValido, CodigoItemExistente, SituacaoItem.Ativo, 1);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(ultimaVersaoAtiva);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync((DominioItem)null);
+
+            var resultado = await useCase.Executar(itemDto);
+
+            Assert.Equal(ItemIdValido, resultado);
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.Situacao == SituacaoItem.Rascunho && cmd.Item.VersaoItem == 2), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<InativarVersoesAnterioresItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<InativarRascunhoPorCodigoItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task TrataNovaVersao_Deve_Lancar_Exception_Quando_Nenhum_Item_Ou_Rascunho_Encontrado()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: "CODIGO-INEXISTENTE", id: null);
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync((DominioItem)null);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync((DominioItem)null);
+
+            var exception = await Assert.ThrowsAsync<Exception>(() => useCase.Executar(itemDto));
+
+            Assert.Contains($"Nenhum item ou rascunho encontrado com o código {itemDto.CodigoItem}.", exception.Message);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task Deve_Salvar_Alternativas_Quando_AlternativasDto_Nao_For_Nulo_No_Fluxo_Rascunho()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.AlternativasDto = ObterAlternativasDtoMock();
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
@@ -349,18 +402,16 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             ConfigurarMocksPadrao(areaConhecimento, disciplina);
             mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(CodigoItemGerado);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
 
             await useCase.Executar(itemDto);
 
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(itemDto.AlternativasDto.Count));
         }
 
         [Fact]
-        public async Task Nao_Deve_Salvar_Alternativas_Quando_AlternativasDto_For_Nulo()
+        public async Task Nao_Deve_Salvar_Alternativas_Quando_AlternativasDto_For_Nulo_No_Fluxo_Rascunho()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.AlternativasDto = null;
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
@@ -375,9 +426,29 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         }
 
         [Fact]
+        public async Task Deve_Remover_E_Salvar_Alternativas_Ao_Atualizar_Rascunho_Existente()
+        {
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, codigoItem: CodigoItemExistente, id: ItemIdRascunho);
+            itemDto.AlternativasDto = ObterAlternativasDtoMock();
+            itemDto.AlternativasDto.First().Id = 10L;
+            var areaConhecimento = ObterAreaConhecimentoMock();
+            var disciplina = ObterDisciplinaMock();
+            var itemExistente = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 0);
+
+            ConfigurarMocksPadrao(areaConhecimento, disciplina);
+            mediatorMock.Setup(m => m.Send(It.Is<ObterItemPorIdQuery>(q => q.Id == ItemIdRascunho), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(itemExistente);
+
+            await useCase.Executar(itemDto);
+
+            mediatorMock.Verify(m => m.Send(It.Is<RemoverAlternativasAusentesDtoCommand>(cmd => cmd.ItemId == ItemIdValido && cmd.IdsAlternativasManter.Contains(10L)), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(itemDto.AlternativasDto.Count));
+        }
+
+        [Fact]
         public async Task Deve_Salvar_ItemAudio_Quando_ArquivoAudioId_For_Maior_Que_Zero()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.ArquivoAudioId = 500;
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
@@ -385,8 +456,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             ConfigurarMocksPadrao(areaConhecimento, disciplina);
             mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(CodigoItemGerado);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
 
             await useCase.Executar(itemDto);
 
@@ -396,7 +465,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         [Fact]
         public async Task Nao_Deve_Salvar_ItemAudio_Quando_ArquivoAudioId_For_Zero()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.ArquivoAudioId = 0;
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
@@ -413,7 +482,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         [Fact]
         public async Task Deve_Salvar_ItemVideo_Quando_ArquivoVideoId_For_Maior_Que_Zero()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.ArquivoVideoId = 600;
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
@@ -421,8 +490,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             ConfigurarMocksPadrao(areaConhecimento, disciplina);
             mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(CodigoItemGerado);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
 
             await useCase.Executar(itemDto);
 
@@ -432,7 +499,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         [Fact]
         public async Task Nao_Deve_Salvar_ItemVideo_Quando_ArquivoVideoId_For_Zero()
         {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.ArquivoVideoId = 0;
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
@@ -447,42 +514,9 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         }
 
         [Fact]
-        public async Task Deve_Publicar_Na_Fila_Apos_Salvar_Item_Novo()
+        public async Task Deve_Salvar_Item_Rascunho_Com_Alternativas_Audio_E_Video_Em_Fluxo_Completo()
         {
-            var itemDto = ObterItemDtoNovoMock();
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(CodigoItemGerado);
-
-            await useCase.Executar(itemDto);
-
-            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Deve_Publicar_Na_Fila_Apos_Criar_Nova_Versao()
-        {
-            var itemDto = ObterItemDtoNovaVersaoMock();
-            var areaConhecimento = ObterAreaConhecimentoMock();
-            var disciplina = ObterDisciplinaMock();
-            var ultimaVersao = ObterUltimaVersaoItemMock(versaoItem: 1);
-
-            ConfigurarMocksPadrao(areaConhecimento, disciplina);
-            mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(ultimaVersao);
-
-            await useCase.Executar(itemDto);
-
-            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task Deve_Salvar_Item_Alternativas_Audio_E_Video_Em_Fluxo_Completo()
-        {
-            var itemDto = ObterItemDtoNovoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Rascunho, id: null);
             itemDto.AlternativasDto = ObterAlternativasDtoMock();
             itemDto.ArquivoAudioId = 500;
             itemDto.ArquivoVideoId = 600;
@@ -492,12 +526,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             ConfigurarMocksPadrao(areaConhecimento, disciplina);
             mediatorMock.Setup(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()))
                         .ReturnsAsync(CodigoItemGerado);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
 
             var resultado = await useCase.Executar(itemDto);
 
@@ -505,46 +533,45 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             mediatorMock.Verify(m => m.Send(It.IsAny<ObterAreaConhecimentoPorIdQuery>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<ObterDisciplinaPorIdQuery>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 1 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.Situacao == SituacaoItem.Rascunho && cmd.Item.VersaoItem == 0), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(itemDto.AlternativasDto.Count));
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
-        public async Task Deve_Criar_Nova_Versao_Com_Alternativas_Audio_E_Video_Em_Fluxo_Completo()
+        public async Task Deve_Ativar_Rascunho_Com_Alternativas_Audio_E_Video_Em_Fluxo_Completo()
         {
-            var itemDto = ObterItemDtoNovaVersaoMock();
+            var itemDto = ObterItemDtoBase(SituacaoItem.Ativo, codigoItem: CodigoItemExistente, id: null);
             itemDto.AlternativasDto = ObterAlternativasDtoMock();
+            itemDto.AlternativasDto.First().Id = 10L;
             itemDto.ArquivoAudioId = 500;
             itemDto.ArquivoVideoId = 600;
             var areaConhecimento = ObterAreaConhecimentoMock();
             var disciplina = ObterDisciplinaMock();
-            var ultimaVersao = ObterUltimaVersaoItemMock(versaoItem: 2);
+            var ultimaVersaoAtiva = ObterDominioItemMock(ItemIdValido, CodigoItemExistente, SituacaoItem.Ativo, 1);
+            var rascunhoNovaVersao = ObterDominioItemMock(ItemIdRascunho, CodigoItemExistente, SituacaoItem.Rascunho, 2);
 
             ConfigurarMocksPadrao(areaConhecimento, disciplina);
             mediatorMock.Setup(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(ultimaVersao);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
-            mediatorMock.Setup(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(1L);
+                        .ReturnsAsync(ultimaVersaoAtiva);
+            mediatorMock.Setup(m => m.Send(It.IsAny<ObterRascunhoPorCodigoQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(rascunhoNovaVersao);
 
             var resultado = await useCase.Executar(itemDto);
 
             Assert.Equal(ItemIdValido, resultado);
-            Assert.Equal(3, itemDto.VersaoItem);
-            Assert.Equal(CodigoItemExistente, itemDto.CodigoItem);
-            Assert.Null(itemDto.Id);
+            mediatorMock.Verify(m => m.Send(It.IsAny<ObterAreaConhecimentoPorIdQuery>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<ObterDisciplinaPorIdQuery>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<GeraCodigoItemQuery>(), It.IsAny<CancellationToken>()), Times.Never);
-            mediatorMock.Verify(m => m.Send(It.IsAny<ObterUltimaVersaoItemPorCodigoQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == 0 && cmd.Item.VersaoItem == 3 && cmd.Item.DataCriacao != default(DateTime)), It.IsAny<CancellationToken>()), Times.Once);
-            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+            mediatorMock.Verify(m => m.Send(It.Is<SalvarItemCommand>(cmd => cmd.Item.Id == ItemIdRascunho && cmd.Item.Situacao == SituacaoItem.Ativo && cmd.Item.VersaoItem == 2), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<RemoverAlternativasAusentesDtoCommand>(cmd => cmd.ItemId == ItemIdValido && cmd.IdsAlternativasManter.Contains(10L)), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.IsAny<SalvarAlternativaCommand>(), It.IsAny<CancellationToken>()), Times.Exactly(itemDto.AlternativasDto.Count));
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemAudioCommand>(), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<SalvarItemVideoCommand>(), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<InativarVersoesAnterioresItemCommand>(cmd => cmd.CodigoItem == CodigoItemExistente && cmd.VersaoAtual == 2), It.IsAny<CancellationToken>()), Times.Once);
+            mediatorMock.Verify(m => m.Send(It.Is<InativarRascunhoPorCodigoItemCommand>(cmd => cmd.CodigoItem == CodigoItemExistente), It.IsAny<CancellationToken>()), Times.Once);
             mediatorMock.Verify(m => m.Send(It.IsAny<PublicaFilaRabbitCommand>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
