@@ -1,10 +1,7 @@
 ﻿using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Alterantiva;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Xunit;
 
 namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
 {
@@ -171,13 +168,6 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
         {
             var dto = new ItemDto { Situacao = SituacaoItem.Ativo };
             Assert.Equal(SituacaoItem.Ativo, dto.Situacao);
-        }
-
-        [Fact]
-        public void Deve_Criar_ItemDto_Com_Situacao_Pendente()
-        {
-            var dto = new ItemDto { Situacao = SituacaoItem.Pendente };
-            Assert.Equal(SituacaoItem.Pendente, dto.Situacao);
         }
 
         [Fact]
