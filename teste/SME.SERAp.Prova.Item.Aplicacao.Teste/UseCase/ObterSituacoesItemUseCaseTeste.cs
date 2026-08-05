@@ -1,9 +1,4 @@
 ﻿using Moq;
-using Xunit;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Aplicacao.UseCases;
 using SME.SERAp.Prova.Item.Dominio.Enums;
@@ -30,25 +25,23 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         }
 
         [Fact]
-        public async Task Deve_Retornar_Lista_De_SelectDto_Com_Todas_SituacoesItem_Do_Enum()
+        public async Task Deve_Retornar_Lista_De_SelectDto_Com_Situacoes_Ativo_E_Rascunho()
         {
             var resultado = await useCase.Executar();
 
             Assert.NotNull(resultado);
 
-            var enumValues = Enum.GetValues(typeof(SituacaoItem));
-            Assert.Equal(enumValues.Length, resultado.Count());
+            Assert.Equal(2, resultado.Count());
 
             var resultadoLista = resultado.ToList();
 
-            Assert.Contains(resultadoLista, s => s.Valor == (int)SituacaoItem.Inativo && s.Descricao == "Inativo");
             Assert.Contains(resultadoLista, s => s.Valor == (int)SituacaoItem.Ativo && s.Descricao == "Ativo");
-            Assert.Contains(resultadoLista, s => s.Valor == (int)SituacaoItem.Pendente && s.Descricao == "Pendente");
             Assert.Contains(resultadoLista, s => s.Valor == (int)SituacaoItem.Rascunho && s.Descricao == "Rascunho");
+            Assert.DoesNotContain(resultadoLista, s => s.Valor == (int)SituacaoItem.Inativo);
         }
 
         [Fact]
-        public async Task Deve_Retornar_Situacao_Inativo_Com_Valor_Zero()
+        public async Task Nao_Deve_Retornar_Situacao_Inativo()
         {
             var resultado = await useCase.Executar();
 
@@ -56,9 +49,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
 
             var situacaoInativo = resultado.FirstOrDefault(s => s.Descricao == "Inativo");
 
-            Assert.NotNull(situacaoInativo);
-            Assert.Equal(0, situacaoInativo.Valor);
-            Assert.Equal("Inativo", situacaoInativo.Descricao);
+            Assert.Null(situacaoInativo);
         }
 
         [Fact]
@@ -73,20 +64,6 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             Assert.NotNull(situacaoAtivo);
             Assert.Equal(1, situacaoAtivo.Valor);
             Assert.Equal("Ativo", situacaoAtivo.Descricao);
-        }
-
-        [Fact]
-        public async Task Deve_Retornar_Situacao_Pendente_Com_Valor_Dois()
-        {
-            var resultado = await useCase.Executar();
-
-            Assert.NotNull(resultado);
-
-            var situacaoPendente = resultado.FirstOrDefault(s => s.Descricao == "Pendente");
-
-            Assert.NotNull(situacaoPendente);
-            Assert.Equal(2, situacaoPendente.Valor);
-            Assert.Equal("Pendente", situacaoPendente.Descricao);
         }
 
         [Fact]
@@ -118,7 +95,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
             var resultado = await useCase.Executar();
 
             Assert.NotNull(resultado);
-            Assert.Equal(4, resultado.Count());
+            Assert.Equal(2, resultado.Count());
         }
 
         [Fact]
@@ -147,31 +124,33 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
         }
 
         [Fact]
-        public async Task Deve_Retornar_Todos_Valores_Do_Enum_SituacaoItem()
+        public async Task Deve_Retornar_Apenas_Valores_Do_Enum_SituacaoItem_Esperados()
         {
             var resultado = await useCase.Executar();
 
             Assert.NotNull(resultado);
 
-            var valoresEsperados = new[] { 0, 1, 2, 3 };
+            var valoresEsperados = new[] { 1, 3 };
             var valoresRetornados = resultado.Select(s => (int)s.Valor).ToArray();
 
             Assert.Equal(valoresEsperados.Length, valoresRetornados.Length);
             Assert.All(valoresEsperados, valor => Assert.Contains(valor, valoresRetornados));
+            Assert.DoesNotContain(0, valoresRetornados);
         }
 
         [Fact]
-        public async Task Deve_Retornar_Todos_Nomes_Do_Enum_SituacaoItem()
+        public async Task Deve_Retornar_Apenas_Nomes_Do_Enum_SituacaoItem_Esperados()
         {
             var resultado = await useCase.Executar();
 
             Assert.NotNull(resultado);
 
-            var nomesEsperados = new[] { "Inativo", "Ativo", "Pendente", "Rascunho" };
+            var nomesEsperados = new[] { "Ativo", "Rascunho" };
             var nomesRetornados = resultado.Select(s => s.Descricao).ToArray();
 
             Assert.Equal(nomesEsperados.Length, nomesRetornados.Length);
             Assert.All(nomesEsperados, nome => Assert.Contains(nome, nomesRetornados));
+            Assert.DoesNotContain("Inativo", nomesRetornados);
         }
 
         [Fact]
@@ -220,6 +199,7 @@ namespace SME.SERAp.Prova.Item.Aplicacao.Teste.UseCase
 
             Assert.Equal(resultado1.Count(), resultado2.Count());
             Assert.Equal(resultado2.Count(), resultado3.Count());
+            Assert.Equal(2, resultado1.Count());
         }
 
         [Fact]
