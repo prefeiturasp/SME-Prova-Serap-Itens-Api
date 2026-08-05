@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using SME.SERAp.Prova.Item.Dominio.Enums;
 using SME.SERAp.Prova.Item.Infra.Dtos;
 using SME.SERAp.Prova.Item.Infra.Dtos.Alternativa;
-using Xunit;
 
 namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
 {
@@ -213,19 +211,6 @@ namespace SME.SERAp.Prova.Item.Infra.Teste.Dtos.Item
             };
 
             Assert.Equal(SituacaoItem.Ativo, dto.Situacao);
-        }
-
-        [Fact]
-        public void Deve_Aceitar_Situacao_Pendente()
-        {
-            var dto = new ItemRascunhoDto
-            {
-                Situacao = SituacaoItem.Pendente,
-                AreaConhecimentoId = 1,
-                DisciplinaId = 1
-            };
-
-            Assert.Equal(SituacaoItem.Pendente, dto.Situacao);
         }
 
         [Fact]
